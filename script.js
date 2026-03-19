@@ -108,7 +108,7 @@
        ───────────────────────────────────────────── */
     function showInfo(event, args) {
         dom.infoTitle.innerText = args.title || '';
-        dom.infoDesc.innerText = args.description || '';
+        dom.infoDesc.innerHTML = args.description || '';
         if (args.image) {
             dom.infoImage.src = args.image;
             dom.popupImgWrap.style.display = 'block';
@@ -276,17 +276,7 @@
         }
     })();
 
-    /*
-     * Floor → Lab data.
-     * Each lab has:
-     *   label:            Display name
-     *   destinationScene: The scene ID where the lab/destination is
-     *   destinationInfo:  Title of the info hotspot to blink (null if none)
-     *   route:            Array of steps  { scene, direction, arrowTarget }
-     *                     arrowTarget = sceneId the highlighted arrow points to (null at destination)
-     *
-     * Floors without 360° data keep their lab structure for future use.
-     */
+
     const FLOOR_DATA = {
 
         /* ══════ GROUND FLOOR (ACTIVE — has 360° images) ══════ */

@@ -155,14 +155,14 @@
       ]
     },
     "scene6": {
-      "title": "Way to IOS LAB ",
-      "panorama": "assets/ground floor/photo8.jpg",
+      "title": "L-102 ARTIFICIAL INTELLIGENCE & MACHINE LEARNING LAB ",
+      "panorama": "assets/ground floor/photo4.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
         {
           "pitch": -15,
-          "yaw": -98,
+          "yaw": 90,
           "cssClass": "nav-btn animate-bounce-up",
           "clickHandlerArgs": {
             "sceneId": "scene7",
@@ -171,16 +171,16 @@
         },
         {
           "pitch": -15,
-          "yaw": 0,
+          "yaw": 2,
           "cssClass": "nav-btn animate-bounce-up",
           "clickHandlerArgs": {
-            "sceneId": "scene9",
+            "sceneId": "scene55",
             "targetYaw": 0
           }
         },
         {
           "pitch": -15,
-          "yaw": -180,
+          "yaw": -175,
           "cssClass": "nav-btn animate-bounce-up",
           "clickHandlerArgs": {
             "sceneId": "scene3",
@@ -189,11 +189,11 @@
         },
         {
           "pitch": -10,
-          "yaw": -200,
+          "yaw": -20,
           "cssClass": "nav-btn animate-bounce-left",
           "clickHandlerArgs": {
-            "sceneId": "scene10",
-            "targetYaw": 0
+            "sceneId": "scene7",
+            "targetYaw": 90
           }
         }
       ]
@@ -218,7 +218,7 @@
           "yaw": -90,
           "cssClass": "nav-btn animate-bounce-up",
           "clickHandlerArgs": {
-            "sceneId": "scene6",
+            "sceneId": "scene55",
             "targetYaw": 180
           }
         },
@@ -288,7 +288,7 @@
           "yaw": -180,
           "cssClass": "nav-btn animate-bounce-up",
           "clickHandlerArgs": {
-            "sceneId": "scene6",
+            "sceneId": "scene55",
             "targetYaw": -180
           }
         }
@@ -416,7 +416,7 @@
       ]
     },
     "scene15": {
-      "title": "DATA CENTERE",
+      "title": "DATA CENTER",
       "panorama": "assets/ground floor/photo13.jpg",
       "hfov": 110,
       "northOffset": 0,
@@ -511,7 +511,7 @@
       ]
     },
     "scene19": {
-      "title": "AWS LAB",
+      "title": "L-103 CLOUD COMPUTING & L-104 CYBAR SECURITY LAB",
       "panorama": "assets/ground floor/photo17.jpg",
       "hfov": 110,
       "northOffset": 0,
@@ -541,6 +541,26 @@
           "clickHandlerArgs": {
             "sceneId": "scene9",
             "targetYaw": 180
+          }
+        },
+        {
+          "pitch": 15,
+          "yaw": -63,
+          "type": "info",
+          "text": "L-104 Cyber Security Lab",
+          "clickHandlerArgs": {
+            "title": "L-104 Cyber Security Lab",
+            "description": "<h4>Purpose</h4><ul><li>Monitoring client's critical data and network activities</li><li>Detecting and responding to cybersecurity threats</li><li>Learning real-time security monitoring and incident response</li><li>Improving data protection and threat prevention techniques</li></ul><h4>Key Equipment</h4><ul><li>SIEM tools (Security Information and Event Management)</li><li>Firewalls and Intrusion Detection Systems (IDS/IPS)</li><li>Security monitoring dashboards</li><li>Threat intelligence and analysis tools</li><li>Secure servers and network monitoring systems</li></ul><h4>Skills Developed</h4><ul><li>Security threat detection and analysis</li><li>Incident response and mitigation</li><li>Network security monitoring</li><li>Cyber attack investigation</li><li>Data protection and risk management</li></ul>"
+          }
+        },
+        {
+          "pitch": 26,
+          "yaw": 26,
+          "type": "info",
+          "text": "L-103 Cloud Computing Lab",
+          "clickHandlerArgs": {
+            "title": "L-103 Cloud Computing Lab",
+            "description": "<h4>Purpose</h4><ul><li>Deploying and managing cloud-based infrastructure and services</li><li>Working with virtualization, containerization, and cloud orchestration</li><li>Learning IaaS, PaaS, and SaaS cloud service models</li><li>Building scalable and distributed applications on cloud platforms</li></ul><h4>Key Equipment</h4><ul><li>Cloud platforms – AWS, Microsoft Azure, and Google Cloud (GCP)</li><li>Virtualization tools – VMware, VirtualBox, and Hyper-V</li><li>Containerization – Docker and Kubernetes clusters</li><li>High-performance servers with multi-core processors and high RAM</li><li>Networking equipment for cloud simulation and SDN labs</li></ul><h4>Skills Developed</h4><ul><li>Cloud architecture design and deployment</li><li>DevOps practices – CI/CD pipelines, Infrastructure as Code</li><li>Containerization and microservices orchestration</li><li>Cloud security, identity management, and access control</li><li>Serverless computing and auto-scaling configurations</li></ul>"
           }
         }
       ]
@@ -847,8 +867,8 @@
           }
         },
         {
-          "pitch": 19,
-          "yaw": 63,
+          "pitch": 21,
+          "yaw": 40,
           "type": "info",
           "text": "L-106 IOT Lab",
           "clickHandlerArgs": {
@@ -857,8 +877,8 @@
           }
         },
         {
-          "pitch": 30,
-          "yaw": -30,
+          "pitch": 19,
+          "yaw": -55,
           "type": "info",
           "text": "L-107 Extended Reality & Game Development Lab",
           "clickHandlerArgs": {
@@ -875,7 +895,7 @@
       "northOffset": 0,
       "hotSpots": [
         {
-          "pitch": -6,
+          "pitch": -10,
           "yaw": 80,
           "type": "info",
           "text": "VR headset",
@@ -886,14 +906,25 @@
           }
         },
         {
-          "pitch": -6,
-          "yaw": 70,
+          "pitch": -9,
+          "yaw": 73,
           "type": "info",
           "text": "hololens",
           "clickHandlerArgs": {
             "title": "Hololens",
             "description": "Microsoft HoloLens is a mixed reality (MR) headset that blends digital holograms with the real world. Unlike traditional VR, it allows users to see and interact with virtual 3D objects while remaining aware of their physical surroundings. HoloLens is widely used in education, research, engineering, healthcare, and industrial training for tasks such as 3D visualization, simulation, remote assistance, and collaborative development. It enables hands-free interaction using gestures, voice commands, and eye tracking.",
             "image": "assets/hololens.png"
+          }
+        },
+        {
+          "pitch": -10,
+          "yaw": 90,
+          "type": "info",
+          "text": " ",
+          "clickHandlerArgs": {
+            "title": "Holoboard",
+            "description": "Microsoft HoloLens is a mixed reality (MR) headset that blends digital holograms with the real world. Unlike traditional VR, it allows users to see and interact with virtual 3D objects while remaining aware of their physical surroundings. HoloLens is widely used in education, research, engineering, healthcare, and industrial training for tasks such as 3D visualization, simulation, remote assistance, and collaborative development. It enables hands-free interaction using gestures, voice commands, and eye tracking.",
+            "image": "assets/holoboard.png"
           }
         },
         {
@@ -1071,25 +1102,25 @@
           }
         },
         {
-          "pitch": 15,
-          "yaw": -150,
+          "pitch": 25,
+          "yaw": 28,
           "type": "info",
           "text": "L-108 Network Architecture Lab",
           "clickHandlerArgs": {
             "title": "L-108 Network Architecture Lab",
-            "description": "The Network Architecture Lab is a specialized facility designed for hands-on learning and research in network design, configuration, and management. It provides students with practical experience in setting up, configuring, and troubleshooting network infrastructure. The lab includes advanced network devices, routers, switches, and servers, along with tools for network analysis and security testing. Students can simulate real-world network scenarios, learn about different network topologies, and develop skills in network planning, implementation, and optimization. This lab is essential for preparing students for careers in network engineering, cybersecurity, and IT infrastructure management.",
+            "description": "<h4>Purpose</h4><ul><li>Hands-on learning in network design and configuration</li><li>Real-world network scenario simulation</li><li>Network planning, implementation, and optimization</li></ul><h4>Key Equipment</h4><ul><li>Advanced routers and managed switches</li><li>Enterprise-grade servers</li><li>Network analysis and monitoring tools</li><li>Security testing platforms</li></ul><h4>Skills Developed</h4><ul><li>Network topology design and implementation</li><li>Configuration and troubleshooting</li><li>Network security and analysis</li><li>IT infrastructure management</li></ul>",
             "image": "assets/Network_architecture.png"
           }
         },
         {
-          "pitch": -1,
-          "yaw": 38,
+          "pitch": 12,
+          "yaw": -70,
           "type": "info",
-          "text": "Data Center",
+          "text": "Seminar Hall",
           "clickHandlerArgs": {
-            "title": "Data Center",
-            "description": "The College Data Center is a centralized facility that supports the digital and academic operations of the institution. It manages essential IT infrastructure such as servers, storage systems, networking equipment, and databases used for learning management systems, student records, online examinations, and research activities. The data center ensures secure data storage, reliable network connectivity, and uninterrupted access to academic resources. It also provides students with exposure to real-world data management, server administration, cloud computing, and cybersecurity concepts, helping them understand how modern educational and enterprise IT systems operate.",
-            "image": "assets/data center.jpg"
+            "title": "Seminar Hall",
+            "description": "<h4>Purpose</h4><ul><li>Academic seminars and guest lectures</li><li>Technical presentations and workshops</li><li>Student project demonstrations</li></ul><h4>Infrastructure</h4><ul><li>High-definition projector and display system</li><li>Professional sound and PA system</li><li>Seating capacity for large audiences</li><li>Air-conditioned environment</li></ul><h4>Activities</h4><ul><li>Industry expert talks and panel discussions</li><li>Research paper presentations</li><li>Cultural and academic events</li><li>Online webinar hosting</li></ul>",
+            "image": "assets/.jpg"
           }
         }
       ]
@@ -1514,6 +1545,41 @@
           "clickHandlerArgs": {
             "sceneId": "scene4",
             "targetYaw": 0
+          }
+        }
+      ]
+    },
+    "scene55": {
+      "title": "APPLE AUTHORIZED TRAINING CENTER ",
+      "panorama": "assets/ground floor/photo8.jpg",
+      "hfov": 110,
+      "northoffset": 0,
+      "hotSpots": [
+        {
+          "pitch": -10,
+          "yaw": 2,
+          "cssClass": "nav-btn animate-bounce-up",
+          "clickHandlerArgs": {
+            "sceneId": "scene9",
+            "targetYaw": 0
+          }
+        },
+        {
+          "pitch": -10,
+          "yaw": 180,
+          "cssClass": "nav-btn animate-bounce-up",
+          "clickHandlerArgs": {
+            "sceneId": "scene6",
+            "targetYaw": 180
+          }
+        },
+        {
+          "pitch": -10,
+          "yaw": -100,
+          "cssClass": "nav-btn animate-bounce-up",
+          "clickHandlerArgs": {
+            "sceneId": "scene7",
+            "targetYaw": 90
           }
         }
       ]
