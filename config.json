@@ -341,6 +341,17 @@
             "sceneId": "scene55",
             "targetYaw": -180
           }
+        },
+         
+        {
+          "pitch": 25,
+          "yaw": -60,
+          "type": "info",
+          "text": "System Support Cell",
+          "clickHandlerArgs": {
+            "title": "System Support Cell ",
+            "description": "<h4>System Support Cell</h4><b>Infrastructure & Hardware</b><ul><li>Dell R740xd (24 Bay) Blade Servers – 6 Nos</li><li>Dell ME4012 Storage Controllers with 49 TB Storage – 2 Nos</li><li>VMware vSphere Standard Subscription – 12 Nos</li><li>VMware Infrastructure Monitoring & Management – 2 Nos</li><li>VMware vCenter Server License – 4 Nos</li><li>Veeam Backup & Replication Enterprise Plus Suite License</li><li>Dell S5248F-ON Core Switch – 25 Nos (100 Gbps Ports) – 2 Nos (Duplicate)</li></ul><b>Networking & Power</b><ul><li>Dell S4148F-ON Core Switch – 25 Nos (100 Gbps Ports)</li><li>Cisco Load Balancer Appliance – 1 No (Duplicate)</li><li>Temp, Humidity & Air Flow Controller – 2 Nos</li><li>Temp & Humidity Sensors for Fire Detection & Suppression System</li><li>Water Leak Detection System</li><li>Door Switch Sensors for Server Rooms</li><li>UPS: 60 KVA – Backup up to 4 Hours for Data Centre (Duplicate)</li></ul><b>Servers & Storage</b><ul><li>EP Blade Centre C7000 (8 Bay Blade Server Chassis) – 2 Nos</li><li>HP MSA 2000 Storage Controllers – 12 TB Storage (Duplicate)</li><li>HP LTO Tape Drive Backup (Duplicate)</li><li>HP DL380 Blade Server (Duplicate)</li><li>QNAP Storage – 18 TB Storage – 2 Nos (Duplicate)</li></ul><b>Computing Resources</b><ul><li>Core i5 Computers – 3300+</li><li>Core i3 Laptops – 600+</li><li>Core i3 Workstations – 200+</li></ul><b>Security & Surveillance</b><ul><li>Endpoint Security (4500 PCs)</li><li>32 Channel Network Video Recorder for Surveillance</li><li>1500+ IP Cameras (24x7 Monitoring)</li><li>Biometric Attendance System</li></ul><b>Networking Infrastructure</b><ul><li>450+ Managed Network Switches (Access Network)</li></ul><b>Labs, Facilities & Campus IT</b><ul><li>20+ Data Centres (Core & Distribution Network)</li><li>Cisco Network Monitoring & Enterprise Software</li><li>High-speed Fiber Backbone Connectivity</li><li>Language Labs (German, French, etc.)</li><li>Multiple Open Stack Labs</li><li>42+ Servers in Racks</li><li>150+ Computer Laboratories for UG & PG Students</li></ul><b>Healthcare & Smart Systems</b><ul><li>Hospital Management System integrated with IoT</li><li>Devices: MRI, CT Scan, Ultrasound, etc.</li><li>Ophthalmology, Skin, Eye, Cath Lab, Operation Theatre Surveillance</li></ul><b>Classroom & Smart Campus</b><ul><li>ICT-enabled Classrooms (Projector, Laptop, Presenter)</li><li>600+ Smart Classrooms (Interactive Panels)</li><li>30+ Seminar Halls</li><li>10+ Conference Halls</li><li>2 Auditoriums (Capacity: 450+)</li></ul><b>Devices & Connectivity</b><ul><li>400+ Laser Printers</li><li>100+ Scanners</li><li>20+ Network Printers</li><li>Network connectivity for 10,000+ IP devices across campus</li></ul><b>Servers & Research</b><ul><li>Supercomputer (Research Purpose)</li><li>IBM Servers – 2 Nos (Duplicate)</li><li>Dell Entry-Level Servers – 2 Nos</li></ul><b>Software & Licenses</b><ul><li>Microsoft Azure / MSDN Academic Alliance</li><li>Campus-wide Microsoft Licenses</li><li>ERP, LMS Systems</li><li>Adobe Suite (Education License)</li><li>Antivirus, Backup, and Security Tools</li><li>AI/ML, Data Analytics, Research Tools</li></ul>"
+          }
         }
       ]
     },
@@ -366,6 +377,16 @@
           "clickHandlerArgs": {
             "sceneId": "scene6",
             "targetYaw": 0
+          }
+        },
+        {
+          "pitch": -14,
+          "yaw": -6,
+          "type": "info",
+          "text": "PC INFORMATION",
+          "clickHandlerArgs": {
+            "title": "PC INFORMATION",
+            "description": "<h4>PC INFORMATION</h4><b>🖥️ Device Details</b><ul><li>Model: HP Pro Tower 280 G9 PCI Desktop PC</li><li>System Type: 64-bit (x64-based PC)</li><li>Manufacturer: HP</li></ul><b>⚙️ Processor</b><ul><li>Current CPU: Intel Core i7-12700 (12th Gen)</li><li>Cores/Threads: 12 Cores / 20 Threads</li><li>Base Speed: 2.10 GHz</li></ul><b>🧠 Memory (RAM)</b><ul><li>Installed RAM: 16 GB</li><li>Usable RAM: 15.7 GB</li></ul><b>💾 Storage</b><ul><li>Primary Storage: SSD (Fast Performance) (Exact size depends on configuration)</li></ul><b>🎮 Graphics</b><ul><li>GPU: Intel UHD Graphics (Integrated)</li></ul><b>🪟 Operating System</b><ul><li>OS: Windows 10 Pro</li><li>Version: 10.0.19045</li></ul><b>🔐 System Features</b><ul><li>BIOS Mode: UEFI</li><li>Virtualization: Enabled</li><li>Secure Boot: Off</li></ul><b>🚀 UPGRADE OPTION</b><ul><li>⚡ High Performance Upgrade</li><li>Processor: Intel Core i9-14900</li><li>RAM: 32 GB (Recommended)</li><li>Storage: 1 TB NVMe SSD</li><li>GPU: Optional Dedicated GPU</li></ul><b>🎯 PERFORMANCE STATUS</b><ul><li>✅ Current System: High Performance (Best for coding & development)</li><li>🚀 With i9 Upgrade: Ultra Performance (Best for AI / heavy tasks)</li></ul>"
           }
         }
       ]
@@ -436,6 +457,16 @@
             "sceneId": "scene19",
             "targetYaw": 0
           }
+        },
+        {
+          "pitch": -10,
+          "yaw": -65,
+          "type": "info",
+          "text": "Parul Map",
+          "clickHandlerArgs": {
+            "title": "Parul Map",
+            "description": ""
+          }
         }
       ]
     },
@@ -479,6 +510,36 @@
             "sceneId": "scene16",
             "targetYaw": 0
           }
+        },
+        {
+          "pitch":15,
+          "yaw":-35,
+          "type":"info",
+          "text":"Rack 1 – ISP Connectivity",
+          "clickHandlerArgs":{
+            "title":"Rack 1 – ISP Connectivity",
+            "description":"<h4>Rack 1 – ISP Connectivity</h4><ul><li><b>ISP (Internet Service Provider) Infrastructure</b></li><li>➡️ Handles external internet connectivity</li><li>➡ Class A category ISP services</li><li>➡️ Ensures stable and high-availability Internet</li></ul>"
+          }
+        },
+        {
+          "pitch":12,
+          "yaw":5,
+          "type":"info",
+          "text":"Rack 2 – CCTV Storage",
+          "clickHandlerArgs":{
+            "title":"Rack 2 – CCTV Storage",
+            "description":"<h4>Rack 2 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
+          }
+        },
+        {
+          "pitch":12,
+          "yaw":30,
+          "type":"info",
+          "text":"Rack 3 – CCTV Storage",
+          "clickHandlerArgs":{
+            "title":"Rack 3 – CCTV Storage",
+            "description":"<h4>Rack 3 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
+          }
         }
       ]
     },
@@ -504,6 +565,36 @@
           "clickHandlerArgs": {
             "sceneId": "scene15",
             "targetYaw": 0
+          }
+        },
+        {
+          "pitch":15,
+          "yaw":-35,
+          "type":"info",
+          "text":"Rack 4 – CCTV Storage",
+          "clickHandlerArgs":{
+            "title":"Rack 4 – CCTV Storage",
+            "description":"<h4>Rack 4 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
+          }
+        },
+        {
+          "pitch":12,
+          "yaw":5,
+          "type":"info",
+          "text":"Rack 5 – CCTV Storage",
+          "clickHandlerArgs":{
+            "title":"Rack 5 – CCTV Storage",
+            "description":"<h4>Rack 5 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
+          }
+        },
+        {
+          "pitch":12,
+          "yaw":30,
+          "type":"info",
+          "text":"Rack 6 – Network Security & Distribution",
+          "clickHandlerArgs":{
+            "title":"Rack 6 – Network Security & Distribution",
+            "description":"<h4>Rack 6 – Network Security & Distribution</h4><ul><li><b>Palo Alto Firewall</b></li><li>➡️ Provides network security, threat prevention, and traffic filtering</li><li><b>Distribution Switch</b></li></ul>"
           }
         }
       ]
@@ -531,6 +622,36 @@
             "sceneId": "scene16",
             "targetYaw": 0
           }
+        },
+        {
+          "pitch":15,
+          "yaw":-45,
+          "type":"info",
+          "text":"Rack 7 – Smart Integrated Data Center",
+          "clickHandlerArgs":{
+            "title":"Rack 7 – Smart Integrated Data Center",
+            "description":"<h4>Rack 7 – Smart Integrated Data Center</h4><p><b>Vertiv SmartCabinet – Data Center in a Box</b></p><b>Key Features:</b><ul><li>Integrated precision cooling system</li><li>Automated fire suppression (CO₂ / clean agent)</li><li>Environmental monitoring (humidity & water leak detection)</li><li>Biometric access control (fingerprint-based)</li><li>Emergency backup fans</li></ul><b>Installed Equipment:</b><ul><li>Dell EMC PowerEdge Servers</li><li>Dell EMC SAN Storage</li><li>HP HPC GPU Server</li><li>VMware and Hyper V</li></ul>"
+          }
+        },
+        {
+          "pitch":12,
+          "yaw":5,
+          "type":"info",
+          "text":"Rack 8 – Core Network Rack",
+          "clickHandlerArgs":{
+            "title":"Rack 8 – Core Network Rack",
+            "description":"<h4>Rack 8 – Core Network Rack</h4><ul><li><b>Core/Tore Network Fiber Switches</b></li><li>➡️ Handles backbone network traffic</li><li>➡️ Supports high-speed Ethernet and fiber connectivity</li><li><b>High-density cabling infrastructure</b></li></ul>"
+          }
+        },
+        {
+          "pitch":12,
+          "yaw":50,
+          "type":"info",
+          "text":"Rack 9 – Video Surveillance Server",
+          "clickHandlerArgs":{
+            "title":"Rack 9 – Video Surveillance Server",
+            "description":"<h4>Rack 9 – Video Surveillance Server</h4><ul><li><b>DSS (Dahua Security System)</b></li><li>➡️ Intelligent video surveillance management server</li><li>➡️ Provides centralized monitoring and analytics</li></ul>"
+          }
         }
       ]
     },
@@ -556,6 +677,36 @@
           "clickHandlerArgs": {
             "sceneId": "scene17",
             "targetYaw": 0
+          }
+        },
+        {
+          "pitch":15,
+          "yaw":-35,
+          "type":"info",
+          "text":"Rack 10 – Surveillance Recording",
+          "clickHandlerArgs":{
+            "title":"Rack 10 – Surveillance Recording",
+            "description":"<h4>Rack 10 – Surveillance Recording</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Used for centralized CCTV recording and storage</li></ul>"
+          }
+        },
+        {
+          "pitch":12,
+          "yaw":5,
+          "type":"info",
+          "text":"Rack 11 – Surveillance Recording",
+          "clickHandlerArgs":{
+            "title":"Rack 11 – Surveillance Recording",
+            "description":"<h4>Rack 11 – Surveillance Recording</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Used for centralized CCTV recording and storage</li></ul>"
+          }
+        },
+        {
+          "pitch":12,
+          "yaw":40,
+          "type":"info",
+          "text":"Rack 12 – High Performance Systems",
+          "clickHandlerArgs":{
+            "title":"Rack 12 – High Performance Systems",
+            "description":"<h4>Rack 12 – High Performance Systems</h4><ul><li><b>CDAC Supercomputer</b></li><li><b>NAS (Network Attached Storage) Device</b></li><li><b>GPU Tower Server</b></li><li>➡️ Supports high-performance computing, data analytics, and GPU-based workloads</li></ul>"
           }
         }
       ]
@@ -638,6 +789,16 @@
             "sceneId": "scene19",
             "targetYaw": 0
           }
+        },
+        {
+          "pitch": -16,
+          "yaw": -48,
+          "type": "info",
+          "text": "PC INFORMATION",
+          "clickHandlerArgs": {
+            "title": "PC INFORMATION",
+            "description": "<h4>PC INFORMATION</h4><b>🖥️ Device Details</b><ul><li>Model: HP Pro Tower 280 G9 PCI Desktop PC</li><li>System Type: 64-bit (x64-based PC)</li><li>Manufacturer: HP</li></ul><b>⚙️ Processor</b><ul><li>Current CPU: Intel Core i7-12700 (12th Gen)</li><li>Cores/Threads: 12 Cores / 20 Threads</li><li>Base Speed: 2.10 GHz</li></ul><b>🧠 Memory (RAM)</b><ul><li>Installed RAM: 16 GB</li><li>Usable RAM: 15.7 GB</li></ul><b>💾 Storage</b><ul><li>Primary Storage: SSD (Fast Performance) (Exact size depends on configuration)</li></ul><b>🎮 Graphics</b><ul><li>GPU: Intel UHD Graphics (Integrated)</li></ul><b>🪟 Operating System</b><ul><li>OS: Windows 10 Pro</li><li>Version: 10.0.19045</li></ul><b>🔐 System Features</b><ul><li>BIOS Mode: UEFI</li><li>Virtualization: Enabled</li><li>Secure Boot: Off</li></ul><b>🚀 UPGRADE OPTION</b><ul><li>⚡ High Performance Upgrade</li><li>Processor: Intel Core i9-14900</li><li>RAM: 32 GB (Recommended)</li><li>Storage: 1 TB NVMe SSD</li><li>GPU: Optional Dedicated GPU</li></ul><b>🎯 PERFORMANCE STATUS</b><ul><li>✅ Current System: High Performance (Best for coding & development)</li><li>🚀 With i9 Upgrade: Ultra Performance (Best for AI / heavy tasks)</li></ul>"
+          }
         }
       ]
     },
@@ -706,6 +867,16 @@
           "clickHandlerArgs": {
             "sceneId": "scene19",
             "targetYaw": 0
+          }
+        },
+          {
+          "pitch": -13,
+          "yaw": -43,
+          "type": "info",
+          "text": "PC INFORMATION",
+          "clickHandlerArgs": {
+            "title": "PC INFORMATION",
+            "description": "<h4>PC INFORMATION</h4><b>🖥️ Device Details</b><ul><li>Model: HP Pro Tower 280 G9 PCI Desktop PC</li><li>System Type: 64-bit (x64-based PC)</li><li>Manufacturer: HP</li></ul><b>⚙️ Processor</b><ul><li>Current CPU: Intel Core i7-12700 (12th Gen)</li><li>Cores/Threads: 12 Cores / 20 Threads</li><li>Base Speed: 2.10 GHz</li></ul><b>🧠 Memory (RAM)</b><ul><li>Installed RAM: 16 GB</li><li>Usable RAM: 15.7 GB</li></ul><b>💾 Storage</b><ul><li>Primary Storage: SSD (Fast Performance) (Exact size depends on configuration)</li></ul><b>🎮 Graphics</b><ul><li>GPU: Intel UHD Graphics (Integrated)</li></ul><b>🪟 Operating System</b><ul><li>OS: Windows 10 Pro</li><li>Version: 10.0.19045</li></ul><b>🔐 System Features</b><ul><li>BIOS Mode: UEFI</li><li>Virtualization: Enabled</li><li>Secure Boot: Off</li></ul><b>🚀 UPGRADE OPTION</b><ul><li>⚡ High Performance Upgrade</li><li>Processor: Intel Core i9-14900</li><li>RAM: 32 GB (Recommended)</li><li>Storage: 1 TB NVMe SSD</li><li>GPU: Optional Dedicated GPU</li></ul><b>🎯 PERFORMANCE STATUS</b><ul><li>✅ Current System: High Performance (Best for coding & development)</li><li>🚀 With i9 Upgrade: Ultra Performance (Best for AI / heavy tasks)</li></ul>"
           }
         }
       ]
@@ -1046,6 +1217,16 @@
             "sceneId": "scene33",
             "targetYaw": 0
           }
+        },
+         {
+          "pitch": -10,
+          "yaw": 47,
+          "type": "info",
+          "text": "PC INFORMATION",
+          "clickHandlerArgs": {
+            "title": "PC INFORMATION",
+            "description": "<h4>PC INFORMATION</h4><b>🖥️ Device Details</b><ul><li>Model: HP Pro Tower 280 G9 PCI Desktop PC</li><li>System Type: 64-bit (x64-based PC)</li><li>Manufacturer: HP</li></ul><b>⚙️ Processor</b><ul><li>Current CPU: Intel Core i7-12700 (12th Gen)</li><li>Cores/Threads: 12 Cores / 20 Threads</li><li>Base Speed: 2.10 GHz</li></ul><b>🧠 Memory (RAM)</b><ul><li>Installed RAM: 16 GB</li><li>Usable RAM: 15.7 GB</li></ul><b>💾 Storage</b><ul><li>Primary Storage: SSD (Fast Performance) (Exact size depends on configuration)</li></ul><b>🎮 Graphics</b><ul><li>GPU: Intel UHD Graphics (Integrated)</li></ul><b>🪟 Operating System</b><ul><li>OS: Windows 10 Pro</li><li>Version: 10.0.19045</li></ul><b>🔐 System Features</b><ul><li>BIOS Mode: UEFI</li><li>Virtualization: Enabled</li><li>Secure Boot: Off</li></ul><b>🚀 UPGRADE OPTION</b><ul><li>⚡ High Performance Upgrade</li><li>Processor: Intel Core i9-14900</li><li>RAM: 32 GB (Recommended)</li><li>Storage: 1 TB NVMe SSD</li><li>GPU: Optional Dedicated GPU</li></ul>"
+          }
         }
       ]
     },
@@ -1140,6 +1321,16 @@
           "clickHandlerArgs": {
             "sceneId": "scene35",
             "targetYaw": 90
+          }
+        },
+         {
+          "pitch": -8,
+          "yaw": 3,
+          "type": "info",
+          "text": "PC INFORMATION",
+          "clickHandlerArgs": {
+            "title": "PC INFORMATION",
+            "description": "<h4>PC INFORMATION</h4><b>🖥️ Device Details</b><ul><li>Model: HP Pro Tower 280 G9 PCI Desktop PC</li><li>System Type: 64-bit (x64-based PC)</li><li>Manufacturer: HP</li></ul><b>⚙️ Processor</b><ul><li>Current CPU: Intel Core i7-12700 (12th Gen)</li><li>Cores/Threads: 12 Cores / 20 Threads</li><li>Base Speed: 2.10 GHz</li></ul><b>🧠 Memory (RAM)</b><ul><li>Installed RAM: 16 GB</li><li>Usable RAM: 15.7 GB</li></ul><b>💾 Storage</b><ul><li>Primary Storage: SSD (Fast Performance) (Exact size depends on configuration)</li></ul><b>🎮 Graphics</b><ul><li>GPU: Intel UHD Graphics (Integrated)</li></ul><b>🪟 Operating System</b><ul><li>OS: Windows 10 Pro</li><li>Version: 10.0.19045</li></ul><b>🔐 System Features</b><ul><li>BIOS Mode: UEFI</li><li>Virtualization: Enabled</li><li>Secure Boot: Off</li></ul><b>🚀 UPGRADE OPTION</b><ul><li>⚡ High Performance Upgrade</li><li>Processor: Intel Core i9-14900</li><li>RAM: 32 GB (Recommended)</li><li>Storage: 1 TB NVMe SSD</li><li>GPU: Optional Dedicated GPU</li></ul><b>🎯 PERFORMANCE STATUS</b><ul><li>✅ Current System: High Performance (Best for coding & development)</li><li>🚀 With i9 Upgrade: Ultra Performance (Best for AI / heavy tasks)</li></ul>"
           }
         },
         {
@@ -1479,6 +1670,56 @@
           "clickHandlerArgs": {
             "sceneId": "scene40",
             "targetYaw": 180
+          }
+        },
+         {
+          "pitch": -2,
+          "yaw": 65,
+          "type": "info",
+          "text": "",
+          "clickHandlerArgs": {
+            "title": "",
+            "description": ""
+          }
+        },
+        {
+          "pitch": -12,
+          "yaw": 82,
+          "type": "info",
+          "text": "",
+          "clickHandlerArgs": {
+            "title": "",
+            "description": ""
+          }
+        },
+        {
+          "pitch": -12,
+          "yaw": 91,
+          "type": "info",
+          "text": "",
+          "clickHandlerArgs": {
+            "title": "",
+            "description": ""
+          }
+        },
+        {
+          "pitch": -30,
+          "yaw": 91,
+          "type": "info",
+          "text": "",
+          "clickHandlerArgs": {
+            "title": "",
+            "description": ""
+          }
+        },
+        {
+          "pitch": -29,
+          "yaw": 135,
+          "type": "info",
+          "text": "PC INFORMATION",
+          "clickHandlerArgs": {
+            "title": "PC INFORMATION",
+            "description": "<h4>PC INFORMATION</h4><b>🖥️ Device Details</b><ul><li>Model: HP Pro Tower 280 G9 PCI Desktop PC</li><li>System Type: 64-bit (x64-based PC)</li><li>Manufacturer: HP</li></ul><b>⚙️ Processor</b><ul><li>Current CPU: Intel Core i7-12700 (12th Gen)</li><li>Cores/Threads: 12 Cores / 20 Threads</li><li>Base Speed: 2.10 GHz</li></ul><b>🧠 Memory (RAM)</b><ul><li>Installed RAM: 16 GB</li><li>Usable RAM: 15.7 GB</li></ul><b>💾 Storage</b><ul><li>Primary Storage: SSD (Fast Performance) (Exact size depends on configuration)</li></ul><b>🎮 Graphics</b><ul><li>GPU: Intel UHD Graphics (Integrated)</li></ul><b>🪟 Operating System</b><ul><li>OS: Windows 10 Pro</li><li>Version: 10.0.19045</li></ul><b>🔐 System Features</b><ul><li>BIOS Mode: UEFI</li><li>Virtualization: Enabled</li><li>Secure Boot: Off</li></ul><b>🚀 UPGRADE OPTION</b><ul><li>⚡ High Performance Upgrade</li><li>Processor: Intel Core i9-14900</li><li>RAM: 32 GB (Recommended)</li><li>Storage: 1 TB NVMe SSD</li><li>GPU: Optional Dedicated GPU</li></ul><b>🎯 PERFORMANCE STATUS</b><ul><li>✅ Current System: High Performance (Best for coding & development)</li><li>🚀 With i9 Upgrade: Ultra Performance (Best for AI / heavy tasks)</li></ul>"
           }
         }
       ]
