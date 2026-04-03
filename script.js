@@ -71,7 +71,7 @@
                 dom.loading.classList.add('done');
                 dom.topBar.classList.add('show');
                 dom.infoBox.classList.add('show');
-            }, 350);
+            }, 50);
         });
     }
 
@@ -92,7 +92,7 @@
         let loaderw = 10;
         let loaderInterval = setInterval(() => {
             if (loaderw < 90) loaderw += 15;
-            dom.loaderFill.style.transition = 'width 0.4s linear';
+            dom.loaderFill.style.transition = 'width 0.1s linear';
             dom.loaderFill.style.width = loaderw + '%';
         }, 100);
 
@@ -111,7 +111,7 @@
             
             setTimeout(() => {
                 dom.loading.classList.add('done');
-            }, 300);
+            }, 50);
 
             // Memory Optimization: Unload previous scene from DOM/Pannellum
             if (prevSceneId && prevSceneId !== sceneId) {
@@ -148,17 +148,16 @@
         const src = configData.scenes[sceneId].panorama;
         
         const doPreload = () => {
-            const img = new Image();
-            img.src = src;
-            preloadedImages[sceneId] = img;
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = 'image';
+            link.href = src;
+            document.head.appendChild(link);
+            preloadedImages[sceneId] = link;
         };
 
-        // Non-blocking preloading
-        if ('requestIdleCallback' in window) {
-            requestIdleCallback(doPreload, { timeout: 500 });
-        } else {
-            setTimeout(doPreload, 500);
-        }
+        // Aggressively preload using browser's network layer immediately
+        doPreload();
     }
 
     function preloadConnectedScenes(sceneId) {
