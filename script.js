@@ -71,7 +71,7 @@
                 dom.loading.classList.add('done');
                 dom.topBar.classList.add('show');
                 dom.infoBox.classList.add('show');
-            }, 50);
+            }, 10);
         });
     }
 
@@ -111,7 +111,7 @@
             
             setTimeout(() => {
                 dom.loading.classList.add('done');
-            }, 50);
+            }, 10);
 
             // Memory Optimization: Unload previous scene from DOM/Pannellum
             if (prevSceneId && prevSceneId !== sceneId) {
