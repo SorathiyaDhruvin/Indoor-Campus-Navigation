@@ -8,7 +8,7 @@
   "scenes": {
     "scene1": {
       "title": "CV RAMAN CENTER ",
-      "panorama": "assets/ground floor/photo1.jpg",
+      "panorama": "assets/ground floor/photo1.webp",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
