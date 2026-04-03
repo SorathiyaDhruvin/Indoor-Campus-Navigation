@@ -92,7 +92,7 @@
         let loaderw = 10;
         let loaderInterval = setInterval(() => {
             if (loaderw < 90) loaderw += 15;
-            dom.loaderFill.style.transition = 'width 0.2s linear';
+            dom.loaderFill.style.transition = 'width 0.4s linear';
             dom.loaderFill.style.width = loaderw + '%';
         }, 100);
 
@@ -155,9 +155,9 @@
 
         // Non-blocking preloading
         if ('requestIdleCallback' in window) {
-            requestIdleCallback(doPreload, { timeout: 2000 });
+            requestIdleCallback(doPreload, { timeout: 500 });
         } else {
-            setTimeout(doPreload, 800);
+            setTimeout(doPreload, 500);
         }
     }
 
