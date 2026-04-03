@@ -76,7 +76,105 @@
     }
 
     /* ─────────────────────────────────────────────
-       PANNELLUM HOTSPOT HANDLERS (original logic)
+       SCENE MANAGEMENT (Single Scene Loading & Smart Preloading)
+       ───────────────────────────────────────────── */
+    let preloadedImages = {};
+
+    function loadScene(sceneId, pitch, yaw, hfov) {
+        if (!configData || !configData.scenes[sceneId]) return;
+
+        // Display smooth loading indicator
+        dom.loading.classList.remove('done');
+        dom.loaderFill.style.transition = 'none';
+        dom.loaderFill.style.width = '10%';
+        
+        // Fast UI feedback
+        let loaderw = 10;
+        let loaderInterval = setInterval(() => {
+            if (loaderw < 90) loaderw += 15;
+            dom.loaderFill.style.transition = 'width 0.2s linear';
+            dom.loaderFill.style.width = loaderw + '%';
+        }, 100);
+
+        const sceneConfig = Object.assign({}, configData.scenes[sceneId]);
+
+        // Dynamic Loading - Only added when needed
+        viewer.addScene(sceneId, sceneConfig);
+        
+        const prevSceneId = currentSceneId;
+
+        // Listen for next load to remove loader and optimize memory
+        const onLoad = () => {
+            viewer.off('load', onLoad);
+            clearInterval(loaderInterval);
+            dom.loaderFill.style.width = '100%';
+            
+            setTimeout(() => {
+                dom.loading.classList.add('done');
+            }, 300);
+
+            // Memory Optimization: Unload previous scene from DOM/Pannellum
+            if (prevSceneId && prevSceneId !== sceneId) {
+                unloadScene(prevSceneId);
+            }
+
+            // Smart Preloading: Load next possible scenes in background
+            preloadConnectedScenes(sceneId);
+        };
+        viewer.on('load', onLoad);
+
+        viewer.loadScene(sceneId, pitch, yaw, hfov);
+    }
+
+    function unloadScene(sceneId) {
+        if (!sceneId) return;
+        try {
+            // Remove scene from Pannellum memory to avoid memory leaks
+            viewer.removeScene(sceneId);
+            
+            if (preloadedImages[sceneId]) {
+                preloadedImages[sceneId].src = ''; // Clean up image reference
+                delete preloadedImages[sceneId];
+            }
+        } catch (e) {
+            console.warn("Unload scene failed", e);
+        }
+    }
+
+    function preloadScene(sceneId) {
+        if (!configData || !configData.scenes[sceneId]) return;
+        if (preloadedImages[sceneId]) return; // Already cached
+        
+        const src = configData.scenes[sceneId].panorama;
+        
+        const doPreload = () => {
+            const img = new Image();
+            img.src = src;
+            preloadedImages[sceneId] = img;
+        };
+
+        // Non-blocking preloading
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(doPreload, { timeout: 2000 });
+        } else {
+            setTimeout(doPreload, 800);
+        }
+    }
+
+    function preloadConnectedScenes(sceneId) {
+        if (!configData || !configData.scenes[sceneId]) return;
+        const config = configData.scenes[sceneId];
+        const hotspots = config.hotSpots || [];
+        
+        hotspots.forEach(hp => {
+            if (hp.clickHandlerArgs && hp.clickHandlerArgs.sceneId) {
+                preloadScene(hp.clickHandlerArgs.sceneId);
+            }
+        });
+    }
+
+    /* ─────────────────────────────────────────────
+       PANNELLUM HOTSPOT HANDLERS
        ───────────────────────────────────────────── */
     function smoothTransition(event, args) {
         if (event) event.stopPropagation();
@@ -92,7 +190,7 @@
             hfov: entryHfov
         };
 
-        viewer.loadScene(args.sceneId, entryPitch, entryYaw, entryHfov);
+        loadScene(args.sceneId, entryPitch, entryYaw, entryHfov);
     }
 
     function hotspotText(div) {
@@ -175,7 +273,7 @@
                     yaw: sc.yaw || 0,
                     hfov: sc.hfov || 110
                 };
-                viewer.loadScene(id);
+                loadScene(id);
                 closeGrid();
             });
             dom.gridBody.appendChild(item);
@@ -456,7 +554,7 @@
         /* Load the floor's corridor scene in the viewer */
         const corridorScene = FLOOR_CORRIDOR_MAP[floor];
         if (corridorScene && viewer && viewer.getScene() !== corridorScene) {
-            viewer.loadScene(corridorScene);
+            loadScene(corridorScene);
         }
 
         /* Populate labs */
@@ -503,7 +601,7 @@
         if (matchIdx < 0 && activeRoute.length > 0) {
             const firstStep = activeRoute[0];
             if (viewer && viewer.getScene() !== firstStep.scene) {
-                viewer.loadScene(firstStep.scene);
+                loadScene(firstStep.scene);
             }
         }
 
@@ -619,7 +717,7 @@
             /* Navigate viewer to the step's scene */
             const step = activeRoute[currentStepIndex];
             if (step && viewer && viewer.getScene() !== step.scene) {
-                viewer.loadScene(step.scene);
+                loadScene(step.scene);
             }
         }
     });
@@ -630,7 +728,7 @@
             updateDirectionStep();
             const step = activeRoute[currentStepIndex];
             if (step && viewer && viewer.getScene() !== step.scene) {
-                viewer.loadScene(step.scene);
+                loadScene(step.scene);
             }
         }
     });
@@ -647,15 +745,7 @@
         setTimeout(applyHighlights, 200);
     }
 
-    /* ─────────────────────────────────────────────
-       PRELOAD
-       ───────────────────────────────────────────── */
-    function preloadImages(config) {
-        for (const id in config.scenes) {
-            const src = config.scenes[id].panorama;
-            if (src) { const img = new Image(); img.src = src; }
-        }
-    }
+    /* (Preloading is now handled dynamically by preloadScene) */
 
     /* ─────────────────────────────────────────────
        HFOV LOCK (original logic)
@@ -710,12 +800,19 @@
 
                 const TARGET_HFOV = window.innerWidth < 768 ? 100 : 110;
 
-                /* Create viewer */
-                viewer = pannellum.viewer('panorama', config);
+                const first = config.default.firstScene || sceneKeys[0];
+
+                /* Create viewer with single scene for memory optimization */
+                const startupConfig = Object.assign({}, config);
+                startupConfig.scenes = {};
+                
+                let firstSceneConfig = Object.assign({}, config.scenes[first]);
+                startupConfig.scenes[first] = firstSceneConfig;
+
+                viewer = pannellum.viewer('panorama', startupConfig);
                 window.viewer = viewer;
 
                 /* Initial UI */
-                const first = config.default.firstScene || sceneKeys[0];
                 updateUI(first);
                 buildGrid(config);
 
@@ -770,7 +867,8 @@
                 }
 
                 lockHfov(TARGET_HFOV);
-                setTimeout(() => preloadImages(config), 800);
+                // Preload nearby scenes to optimize performance
+                preloadConnectedScenes(first);
                 ready();
             })
             .catch((err) => { console.error(err); ready(); });
