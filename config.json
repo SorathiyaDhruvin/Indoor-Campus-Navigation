@@ -25,7 +25,7 @@
     },
     "scene2": {
       "title": "CV RAMAN CENTER ",
-      "panorama": "assets/ground floor/photo2.jpg",
+      "panorama": "assets/ground floor/photo12.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
