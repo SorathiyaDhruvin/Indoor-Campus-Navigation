@@ -51,6 +51,8 @@
     let sceneKeys = [];
     let totalScenes = 0;
     let currentSceneId = '';
+    let activeLoadTimeout = null;
+    let currentOnLoadHandler = null;
     const sceneEntryPositions = {};
 
     /* ─────────────────────────────────────────────
@@ -82,14 +84,19 @@
     let addedScenes = new Set();
 
     function addSceneToViewer(sceneId) {
-        if (!configData || !configData.scenes[sceneId]) return;
+        if (!configData || !configData.scenes[sceneId]) {
+            console.error("[addSceneToViewer] Invalid scene config for: " + sceneId);
+            return;
+        }
         if (addedScenes.has(sceneId)) return;
         try {
             const sceneConfig = Object.assign({}, configData.scenes[sceneId]);
             viewer.addScene(sceneId, sceneConfig);
             addedScenes.add(sceneId);
+            console.log("[addSceneToViewer] Scene added: " + sceneId);
         } catch (e) {
-            console.warn("Add scene failed", e);
+            console.error("[addSceneToViewer] Add scene failed for " + sceneId, e);
+            throw e;
         }
     }
 
@@ -99,6 +106,7 @@
             if (addedScenes.has(sceneId)) {
                 viewer.removeScene(sceneId);
                 addedScenes.delete(sceneId);
+                console.log("[unloadScene] Scene removed: " + sceneId);
             }
             if (preloadedImages[sceneId]) {
                 const link = preloadedImages[sceneId];
@@ -108,14 +116,28 @@
                 delete preloadedImages[sceneId];
             }
         } catch (e) {
-            console.warn("Unload scene failed for " + sceneId, e);
+            console.error("[unloadScene] Unload scene failed for " + sceneId, e);
+            throw e;
         }
     }
 
     function loadScene(sceneId, pitch, yaw, hfov) {
-        if (!configData || !configData.scenes[sceneId]) return;
+        // 1. Verify that scene exists before loading
+        if (!configData || !configData.scenes[sceneId]) {
+            console.error("[loadScene] Scene config not found for: " + sceneId);
+            return;
+        }
 
-        // Display smooth loading indicator
+        // 2. Validate panorama image URL before loading
+        const panoramaUrl = configData.scenes[sceneId].panorama;
+        if (!panoramaUrl || typeof panoramaUrl !== 'string' || panoramaUrl.trim() === '') {
+            console.error("[loadScene] Invalid panorama URL for scene: " + sceneId);
+            return;
+        }
+
+        console.log("[loadScene] Loading started for scene: " + sceneId);
+
+        // 3. Display smooth loading indicator
         dom.loading.classList.remove('done');
         dom.loaderFill.style.transition = 'none';
         dom.loaderFill.style.width = '10%';
@@ -128,14 +150,83 @@
             dom.loaderFill.style.width = loaderw + '%';
         }, 100);
 
-        // Ensure the scene is added to the viewer
-        addSceneToViewer(sceneId);
-        
+        // 4. Prevent memory leaks by removing duplicate load listeners and timeouts
+        if (currentOnLoadHandler) {
+            try {
+                viewer.off('load', currentOnLoadHandler);
+            } catch (e) {
+                console.warn("[loadScene] Error removing old load listener:", e);
+            }
+            currentOnLoadHandler = null;
+        }
+        if (activeLoadTimeout) {
+            clearTimeout(activeLoadTimeout);
+            activeLoadTimeout = null;
+        }
+
         const prevSceneId = currentSceneId;
 
-        // Listen for next load to remove loader and optimize memory
+        // 5. Wrap viewer.addScene in try-catch
+        try {
+            addSceneToViewer(sceneId);
+        } catch (e) {
+            console.error("[loadScene] Error in addSceneToViewer:", e);
+            clearInterval(loaderInterval);
+            dom.loading.classList.add('done');
+            return;
+        }
+
+        // 6. Handle loading failure / timeout
+        const onLoadFailed = (reason) => {
+            console.error("[loadScene] Scene load failed for " + sceneId + ". Reason: " + reason);
+            
+            if (activeLoadTimeout) {
+                clearTimeout(activeLoadTimeout);
+                activeLoadTimeout = null;
+            }
+            if (currentOnLoadHandler) {
+                try {
+                    viewer.off('load', currentOnLoadHandler);
+                } catch (e) {}
+                currentOnLoadHandler = null;
+            }
+            
+            clearInterval(loaderInterval);
+            dom.loading.classList.add('done'); // Hide loading screen
+            
+            // Keep the current/previous scene visible instead of locking the app
+            if (prevSceneId && prevSceneId !== sceneId) {
+                try {
+                    console.log("[loadScene] Reverting to previous scene: " + prevSceneId);
+                    viewer.loadScene(prevSceneId);
+                    currentSceneId = prevSceneId;
+                } catch (e) {
+                    console.error("[loadScene] Error reverting to previous scene:", e);
+                }
+            }
+        };
+
+        // 7. Add 10-second timeout fallback
+        activeLoadTimeout = setTimeout(() => {
+            console.error("[loadScene] Scene timeout (10s) reached for scene: " + sceneId);
+            onLoadFailed("Timeout");
+        }, 10000);
+
+        // 8. Load success handler
         const onLoad = () => {
-            viewer.off('load', onLoad);
+            console.log("[loadScene] Scene loaded successfully: " + sceneId);
+            
+            if (activeLoadTimeout) {
+                clearTimeout(activeLoadTimeout);
+                activeLoadTimeout = null;
+            }
+            if (currentOnLoadHandler === onLoad) {
+                try {
+                    viewer.off('load', onLoad);
+                } catch (e) {}
+                currentOnLoadHandler = null;
+            }
+            
             clearInterval(loaderInterval);
             dom.loaderFill.style.width = '100%';
             
@@ -143,16 +234,29 @@
                 dom.loading.classList.add('done');
             }, 50);
 
-            // In Single Scene Strategy, unload previous scene immediately on load completion
+            // In Single Scene Strategy, unload previous scene only after next scene is fully loaded
             if (prevSceneId && prevSceneId !== sceneId) {
-                unloadScene(prevSceneId);
+                try {
+                    unloadScene(prevSceneId);
+                    console.log("[loadScene] Scene removed from memory: " + prevSceneId);
+                } catch (e) {
+                    console.error("[loadScene] Error unloading previous scene " + prevSceneId + ":", e);
+                }
             }
 
             currentSceneId = sceneId;
         };
+
+        currentOnLoadHandler = onLoad;
         viewer.on('load', onLoad);
 
-        viewer.loadScene(sceneId, pitch, yaw, hfov);
+        // 9. Wrap viewer.loadScene in try-catch
+        try {
+            viewer.loadScene(sceneId, pitch, yaw, hfov);
+        } catch (e) {
+            console.error("[loadScene] viewer.loadScene failed for " + sceneId + ":", e);
+            onLoadFailed(e.message || "viewer.loadScene error");
+        }
     }
 
     /* ─────────────────────────────────────────────
@@ -224,8 +328,17 @@
     /* ─────────────────────────────────────────────
        GRID PANEL (right side — only one at a time)
        ───────────────────────────────────────────── */
-    function openGrid() { closeHelp(); dom.gridOverlay.classList.add('active'); }
-    function closeGrid() { dom.gridOverlay.classList.remove('active'); }
+    function openGrid() {
+        closeHelp();
+        if (configData) {
+            buildGrid(configData);
+        }
+        dom.gridOverlay.classList.add('active');
+    }
+    function closeGrid() {
+        dom.gridOverlay.classList.remove('active');
+        dom.gridBody.innerHTML = ''; // Clear items and unload images from DOM memory
+    }
     function toggleGrid() {
         dom.gridOverlay.classList.contains('active') ? closeGrid() : openGrid();
     }
@@ -289,6 +402,9 @@
                 observer.observe(img);
             }
         });
+
+        // Highlight the currently active scene card
+        markGridActive(currentSceneId);
     }
 
     function markGridActive(sceneId) {
@@ -826,7 +942,6 @@
 
                 /* Initial UI */
                 updateUI(first);
-                buildGrid(config);
 
                 viewer.on('scenechange', function (sceneId) {
                     updateUI(sceneId);
