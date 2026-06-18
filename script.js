@@ -238,15 +238,38 @@
 
     function buildGrid(config) {
         dom.gridBody.innerHTML = '';
+
+        // Initialize IntersectionObserver to lazy load thumbnails only when they enter viewport
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                    obs.unobserve(img);
+                }
+            });
+        }, {
+            root: dom.gridBody,
+            rootMargin: '100px' // Load a bit early before scrolling into view
+        });
+
         sceneKeys.forEach((id, i) => {
             const scene = config.scenes[id];
             const item = document.createElement('div');
             item.className = 'grid-item';
             item.dataset.scene = id;
+            
+            // Use an inline lightweight SVG placeholder so no initial network request is made
+            const placeholder = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='45' viewBox='0 0 80 45'><rect width='80' height='45' fill='%23222'/></svg>";
+            
             item.innerHTML =
-                '<img class="grid-thumb" src="' + scene.panorama + '" alt="' + scene.title + '" loading="lazy">' +
+                '<img class="grid-thumb" src="' + placeholder + '" data-src="' + scene.panorama + '" alt="' + scene.title + '">' +
                 '<span class="grid-num">' + (i + 1) + '</span>' +
                 '<span class="grid-label">' + scene.title + '</span>';
+                
             item.addEventListener('click', () => {
                 // Grid loads scene at config defaults — record as entry position
                 const sc = config.scenes[id];
@@ -259,6 +282,12 @@
                 closeGrid();
             });
             dom.gridBody.appendChild(item);
+
+            // Start observing the image inside the created item
+            const img = item.querySelector('.grid-thumb');
+            if (img) {
+                observer.observe(img);
+            }
         });
     }
 
