@@ -71,7 +71,7 @@
                 dom.loading.classList.add('done');
                 dom.topBar.classList.add('show');
                 dom.infoBox.classList.add('show');
-            }, 10);
+            }, 50);
         });
     }
 
@@ -79,6 +79,38 @@
        SCENE MANAGEMENT (Single Scene Loading & Smart Preloading)
        ───────────────────────────────────────────── */
     let preloadedImages = {};
+    let addedScenes = new Set();
+
+    function addSceneToViewer(sceneId) {
+        if (!configData || !configData.scenes[sceneId]) return;
+        if (addedScenes.has(sceneId)) return;
+        try {
+            const sceneConfig = Object.assign({}, configData.scenes[sceneId]);
+            viewer.addScene(sceneId, sceneConfig);
+            addedScenes.add(sceneId);
+        } catch (e) {
+            console.warn("Add scene failed", e);
+        }
+    }
+
+    function unloadScene(sceneId) {
+        if (!sceneId) return;
+        try {
+            if (addedScenes.has(sceneId)) {
+                viewer.removeScene(sceneId);
+                addedScenes.delete(sceneId);
+            }
+            if (preloadedImages[sceneId]) {
+                const link = preloadedImages[sceneId];
+                if (link && link.parentNode) {
+                    link.parentNode.removeChild(link);
+                }
+                delete preloadedImages[sceneId];
+            }
+        } catch (e) {
+            console.warn("Unload scene failed for " + sceneId, e);
+        }
+    }
 
     function loadScene(sceneId, pitch, yaw, hfov) {
         if (!configData || !configData.scenes[sceneId]) return;
@@ -96,10 +128,8 @@
             dom.loaderFill.style.width = loaderw + '%';
         }, 100);
 
-        const sceneConfig = Object.assign({}, configData.scenes[sceneId]);
-
-        // Dynamic Loading - Only added when needed
-        viewer.addScene(sceneId, sceneConfig);
+        // Ensure the scene is added to the viewer
+        addSceneToViewer(sceneId);
         
         const prevSceneId = currentSceneId;
 
@@ -111,65 +141,18 @@
             
             setTimeout(() => {
                 dom.loading.classList.add('done');
-            }, 10);
+            }, 50);
 
-            // Memory Optimization: Unload previous scene from DOM/Pannellum
+            // In Single Scene Strategy, unload previous scene immediately on load completion
             if (prevSceneId && prevSceneId !== sceneId) {
                 unloadScene(prevSceneId);
             }
 
-            // Smart Preloading: Load next possible scenes in background
-            preloadConnectedScenes(sceneId);
+            currentSceneId = sceneId;
         };
         viewer.on('load', onLoad);
 
         viewer.loadScene(sceneId, pitch, yaw, hfov);
-    }
-
-    function unloadScene(sceneId) {
-        if (!sceneId) return;
-        try {
-            // Remove scene from Pannellum memory to avoid memory leaks
-            viewer.removeScene(sceneId);
-            
-            if (preloadedImages[sceneId]) {
-                preloadedImages[sceneId].src = ''; // Clean up image reference
-                delete preloadedImages[sceneId];
-            }
-        } catch (e) {
-            console.warn("Unload scene failed", e);
-        }
-    }
-
-    function preloadScene(sceneId) {
-        if (!configData || !configData.scenes[sceneId]) return;
-        if (preloadedImages[sceneId]) return; // Already cached
-        
-        const src = configData.scenes[sceneId].panorama;
-        
-        const doPreload = () => {
-            const link = document.createElement('link');
-            link.rel = 'preload';
-            link.as = 'image';
-            link.href = src;
-            document.head.appendChild(link);
-            preloadedImages[sceneId] = link;
-        };
-
-        // Aggressively preload using browser's network layer immediately
-        doPreload();
-    }
-
-    function preloadConnectedScenes(sceneId) {
-        if (!configData || !configData.scenes[sceneId]) return;
-        const config = configData.scenes[sceneId];
-        const hotspots = config.hotSpots || [];
-        
-        hotspots.forEach(hp => {
-            if (hp.clickHandlerArgs && hp.clickHandlerArgs.sceneId) {
-                preloadScene(hp.clickHandlerArgs.sceneId);
-            }
-        });
     }
 
     /* ─────────────────────────────────────────────
@@ -810,6 +793,7 @@
 
                 viewer = pannellum.viewer('panorama', startupConfig);
                 window.viewer = viewer;
+                addedScenes.add(first);
 
                 /* Initial UI */
                 updateUI(first);
@@ -866,8 +850,7 @@
                 }
 
                 lockHfov(TARGET_HFOV);
-                // Preload nearby scenes to optimize performance
-                preloadConnectedScenes(first);
+                currentSceneId = first;
                 ready();
             })
             .catch((err) => { console.error(err); ready(); });
