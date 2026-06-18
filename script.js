@@ -54,7 +54,7 @@
     let activeLoadTimeout = null;
     let currentOnLoadHandler = null;
     const sceneEntryPositions = {};
-
+    
     /* ─────────────────────────────────────────────
        LOADING SCREEN
        ───────────────────────────────────────────── */
@@ -84,6 +84,7 @@
     let addedScenes = new Set();
 
     function addSceneToViewer(sceneId) {
+        console.log("Adding Scene:", sceneId);
         if (!configData || !configData.scenes[sceneId]) {
             console.error("[addSceneToViewer] Invalid scene config for: " + sceneId);
             return;
@@ -122,6 +123,7 @@
     }
 
     function loadScene(sceneId, pitch, yaw, hfov) {
+        console.log("Loading Scene:", sceneId);
         // 1. Verify that scene exists before loading
         if (!configData || !configData.scenes[sceneId]) {
             console.error("[loadScene] Scene config not found for: " + sceneId);
@@ -206,11 +208,37 @@
             }
         };
 
-        // 7. Add 10-second timeout fallback
+        // 7. Add 4-second timeout fallback (prevent infinite loading screen)
         activeLoadTimeout = setTimeout(() => {
-            console.error("[loadScene] Scene timeout (10s) reached for scene: " + sceneId);
-            onLoadFailed("Timeout");
-        }, 10000);
+            console.warn("[loadScene] Scene timeout (4s) reached for scene: " + sceneId + ". Forcing loader screen hide.");
+            
+            clearInterval(loaderInterval);
+            dom.loading.classList.add('done');
+            
+            // Assume loaded/loading is far enough along, or failed, but keep app active
+            currentSceneId = sceneId;
+            
+            // Defer unloading the previous scene to prevent reentrancy issues
+            if (prevSceneId && prevSceneId !== sceneId) {
+                setTimeout(() => {
+                    try {
+                        unloadScene(prevSceneId);
+                        console.log("[loadScene] Scene removed from memory (timeout fallback): " + prevSceneId);
+                    } catch (e) {
+                        console.warn("[loadScene] Timeout unload failed:", e);
+                    }
+                }, 500);
+            }
+
+            // Cleanup listeners
+            if (currentOnLoadHandler) {
+                try {
+                    viewer.off('load', currentOnLoadHandler);
+                } catch (e) {}
+                currentOnLoadHandler = null;
+            }
+            activeLoadTimeout = null;
+        }, 4000);
 
         // 8. Load success handler
         const onLoad = () => {
@@ -235,13 +263,16 @@
             }, 50);
 
             // In Single Scene Strategy, unload previous scene only after next scene is fully loaded
+            // Wrap in setTimeout 500ms to allow Pannellum to complete its load/render loop and avoid WebGL crashes
             if (prevSceneId && prevSceneId !== sceneId) {
-                try {
-                    unloadScene(prevSceneId);
-                    console.log("[loadScene] Scene removed from memory: " + prevSceneId);
-                } catch (e) {
-                    console.error("[loadScene] Error unloading previous scene " + prevSceneId + ":", e);
-                }
+                setTimeout(() => {
+                    try {
+                        unloadScene(prevSceneId);
+                        console.log("[loadScene] Scene removed from memory: " + prevSceneId);
+                    } catch (e) {
+                        console.error("[loadScene] Error unloading previous scene " + prevSceneId + ":", e);
+                    }
+                }, 500);
             }
 
             currentSceneId = sceneId;
@@ -264,6 +295,8 @@
        ───────────────────────────────────────────── */
     function smoothTransition(event, args) {
         if (event) event.stopPropagation();
+        console.log("Hotspot clicked");
+        console.log("Target Scene:", args.sceneId);
 
         const entryPitch = args.targetPitch ?? 0;
         const entryYaw = args.targetYaw ?? 0;
@@ -429,6 +462,7 @@
        UPDATE UI ON SCENE CHANGE
        ───────────────────────────────────────────── */
     function updateUI(sceneId) {
+        console.log("updateUI:", sceneId);
         if (!configData) return;
         const scene = configData.scenes[sceneId];
         if (!scene) return;
