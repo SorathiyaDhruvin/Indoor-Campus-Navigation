@@ -8,7 +8,7 @@
   "scenes": {
     "scene1": {
       "title": "CV RAMAN CENTER ",
-      "panorama": "assets/ground floor/photo1.jpg",
+      "panorama": "assets/ground floor/photo1_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -25,7 +25,7 @@
     },
     "scene2": {
       "title": "CV RAMAN CENTER ",
-      "panorama": "assets/ground floor/photo2.jpg",
+      "panorama": "assets/ground floor/photo2_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -51,7 +51,7 @@
     },
     "scene3": {
       "title": "CV RAMAN CENTER ",
-      "panorama": "assets/ground floor/photo3.jpg",
+      "panorama": "assets/ground floor/photo3_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -104,7 +104,7 @@
     },
     "scene4": {
       "title": "System Support Cell",
-      "panorama": "assets/ground floor/photo55.jpg",
+      "panorama": "assets/ground floor/photo55_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -139,7 +139,7 @@
     },
     "scene5": {
       "title": "System Support Cell ",
-      "panorama": "assets/ground floor/photo56.jpg",
+      "panorama": "assets/ground floor/photo56_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -156,7 +156,7 @@
     },
     "scene6": {
       "title": "L-102 ARTIFICIAL INTELLIGENCE & MACHINE LEARNING LAB ",
-      "panorama": "assets/ground floor/photo4.jpg",
+      "panorama": "assets/ground floor/photo4_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -210,7 +210,7 @@
     },
     "scene7": {
       "title": "APPLE AUTHORIZED TRAINING CENTER",
-      "panorama": "assets/ground floor/photo24.jpg",
+      "panorama": "assets/ground floor/photo24_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -255,7 +255,7 @@
     },
     "scene8": {
       "title": "APPLE AUTHORIZED TRAINING CENTER",
-      "panorama": "assets/ground floor/photo25.jpg",
+      "panorama": "assets/ground floor/photo25_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -311,7 +311,7 @@
     },
     "scene9": {
       "title": "System Support Cell ",
-      "panorama": "assets/ground floor/photo9.jpg",
+      "panorama": "assets/ground floor/photo9_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -357,7 +357,7 @@
     },
     "scene10": {
       "title": "L-102 ARTIFICIAL INTELLIGENCE & MACHINE LEARNING LAB ",
-      "panorama": "assets/ground floor/photo5.jpg",
+      "panorama": "assets/ground floor/photo5_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -393,7 +393,7 @@
     },
     "scene11": {
       "title": "L-102 ARTIFICIAL INTELLIGENCE & MACHINE LEARNING LAB ",
-      "panorama": "assets/ground floor/photo6.jpg",
+      "panorama": "assets/ground floor/photo6_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -419,7 +419,7 @@
     },
     "scene12": {
       "title": "L-102 ARTIFICIAL INTELLIGENCE & MACHINE LEARNING LAB ",
-      "panorama": "assets/ground floor/photo7.jpg",
+      "panorama": "assets/ground floor/photo7_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -436,7 +436,7 @@
     },
     "scene13": {
       "title": "System Support Cell",
-      "panorama": "assets/ground floor/photo10.jpg",
+      "panorama": "assets/ground floor/photo10_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -472,7 +472,7 @@
     },
     "scene14": {
       "title": "System Support Cell",
-      "panorama": "assets/ground floor/photo12.jpg",
+      "panorama": "assets/ground floor/photo12_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -498,7 +498,7 @@
     },
     "scene15": {
       "title": "DATA CENTER",
-      "panorama": "assets/ground floor/photo13.jpg",
+      "panorama": "assets/ground floor/photo13_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -545,7 +545,7 @@
     },
     "scene16": {
       "title": "DATA CENTER",
-      "panorama": "assets/ground floor/photo14.jpg",
+      "panorama": "assets/ground floor/photo14_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -601,7 +601,7 @@
     },
     "scene17": {
       "title": "DATA CENTER",
-      "panorama": "assets/ground floor/photo15.jpg",
+      "panorama": "assets/ground floor/photo15_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -657,7 +657,7 @@
     },
     "scene18": {
       "title": "DATA CENTER",
-      "panorama": "assets/ground floor/photo16.jpg",
+      "panorama": "assets/ground floor/photo16_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -713,7 +713,7 @@
     },
     "scene19": {
       "title": "L-103 CLOUD COMPUTING & L-104 CYBAR SECURITY LAB",
-      "panorama": "assets/ground floor/photo17.jpg",
+      "panorama": "assets/ground floor/photo17_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -768,7 +768,7 @@
     },
     "scene20": {
       "title": "L-103 Cloud Computing Lab",
-      "panorama": "assets/ground floor/photo18.jpg",
+      "panorama": "assets/ground floor/photo18_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -804,7 +804,7 @@
     },
     "scene21": {
       "title": "L-103 Cloud Computing Lab",
-      "panorama": "assets/ground floor/photo19.jpg",
+      "panorama": "assets/ground floor/photo19_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -830,7 +830,7 @@
     },
     "scene22": {
       "title": "L-103 Cloud Computing Lab",
-      "panorama": "assets/ground floor/photo20.jpg",
+      "panorama": "assets/ground floor/photo20_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -847,7 +847,7 @@
     },
     "scene23": {
       "title": "L-104 CYBAR SECURITY LAB",
-      "panorama": "assets/ground floor/photo21.jpg",
+      "panorama": "assets/ground floor/photo21_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -883,7 +883,7 @@
     },
     "scene24": {
       "title": "L-104 CYBAR SECURITY LAB",
-      "panorama": "assets/ground floor/photo22.jpg",
+      "panorama": "assets/ground floor/photo22_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -909,7 +909,7 @@
     },
     "scene25": {
       "title": "L-104 CYBAR SECURITY LAB",
-      "panorama": "assets/ground floor/photo23.jpg",
+      "panorama": "assets/ground floor/photo23_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -926,7 +926,7 @@
     },
     "scene26": {
       "title": "APPLE AUTHORIZED TRAINING CENTER",
-      "panorama": "assets/ground floor/photo26.jpg",
+      "panorama": "assets/ground floor/photo26_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -982,7 +982,7 @@
     },
     "scene27": {
       "title": "APPLE AUTHORIZED TRAINING CENTER",
-      "panorama": "assets/ground floor/photo27.jpg",
+      "panorama": "assets/ground floor/photo27_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1008,7 +1008,7 @@
     },
     "scene28": {
       "title": "APPLE AUTHORIZED TRAINING CENTER",
-      "panorama": "assets/ground floor/photo28.jpg",
+      "panorama": "assets/ground floor/photo28_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1025,7 +1025,7 @@
     },
     "scene29": {
       "title": "Network Architecture LAB",
-      "panorama": "assets/ground floor/photo29.jpg",
+      "panorama": "assets/ground floor/photo29_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1071,7 +1071,7 @@
     },
     "scene30": {
       "title": "L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB",
-      "panorama": "assets/L-108 lab1.jpg",
+      "panorama": "assets/L-108 lab1_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1097,7 +1097,7 @@
     },
     "scene31": {
       "title": "L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB",
-      "panorama": "assets/ground floor/photo30.jpg",
+      "panorama": "assets/ground floor/photo30_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1152,7 +1152,7 @@
     },
     "scene32": {
       "title": "L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB",
-      "panorama": "assets/ground floor/photo31.jpg",
+      "panorama": "assets/ground floor/photo31_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1232,7 +1232,7 @@
     },
     "scene33": {
       "title": "L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB",
-      "panorama": "assets/ground floor/photo32.jpg",
+      "panorama": "assets/ground floor/photo32_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1258,7 +1258,7 @@
     },
     "scene34": {
       "title": "L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB",
-      "panorama": "assets/ground floor/photo33.jpg",
+      "panorama": "assets/ground floor/photo33_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1275,7 +1275,7 @@
     },
     "scene35": {
       "title": "L-106 INTERNET OF THINGS INNOVATION LAB",
-      "panorama": "assets/ground floor/photo34.jpg",
+      "panorama": "assets/ground floor/photo34_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1301,7 +1301,7 @@
     },
     "scene36": {
       "title": "L-106 INTERNET OF THINGS INNOVATION LAB",
-      "panorama": "assets/ground floor/photo35.jpg",
+      "panorama": "assets/ground floor/photo35_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1567,7 +1567,7 @@
     },
     "scene37": {
       "title": "L-106 INTERNET OF THINGS INNOVATION LAB",
-      "panorama": "assets/ground floor/photo36.jpg",
+      "panorama": "assets/ground floor/photo36_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1584,7 +1584,7 @@
     },
     "scene38": {
       "title": "L-108 Network Architecture Lab",
-      "panorama": "assets/ground floor/photo37.jpg",
+      "panorama": "assets/ground floor/photo37_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1650,7 +1650,7 @@
     },
     "scene39": {
       "title": "L-108 Network Architecture Lab",
-      "panorama": "assets/ground floor/photo38.jpg",
+      "panorama": "assets/ground floor/photo38_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1726,7 +1726,7 @@
     },
     "scene40": {
       "title": "L-108 Network Architecture Lab",
-      "panorama": "assets/ground floor/photo39.jpg",
+      "panorama": "assets/ground floor/photo39_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1752,7 +1752,7 @@
     },
     "scene41": {
       "title": "L-108 Network Architecture Lab",
-      "panorama": "assets/ground floor/photo40.jpg",
+      "panorama": "assets/ground floor/photo40_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1769,7 +1769,7 @@
     },
     "scene42": {
       "title": "Seminar Hall",
-      "panorama": "assets/ground floor/photo42.jpg",
+      "panorama": "assets/ground floor/photo42_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1795,7 +1795,7 @@
     },
     "scene43": {
       "title": "Seminar Hall",
-      "panorama": "assets/ground floor/photo43.jpg",
+      "panorama": "assets/ground floor/photo43_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1812,7 +1812,7 @@
     },
     "scene44": {
       "title": "Fan Area",
-      "panorama": "assets/ground floor/photo44.jpg",
+      "panorama": "assets/ground floor/photo44_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -1838,7 +1838,7 @@
     },
     "scene45": {
       "title": "Way near lift",
-      "panorama": "assets/ground floor/photo45.jpg",
+      "panorama": "assets/ground floor/photo45_result.jpg",
       "hfov": 110,
       "hotSpots": [
         {
@@ -1872,7 +1872,7 @@
     },
     "scene46": {
       "title": "Way to first floor",
-      "panorama": "assets/ground floor/photo46.jpg",
+      "panorama": "assets/ground floor/photo46_result.jpg",
       "hfov": 110,
       "northoffset": 0,
       "hotSpots": [
@@ -1898,7 +1898,7 @@
     },
     "scene47": {
       "title": "Way to first floor",
-      "panorama": "assets/ground floor/photo47.jpg",
+      "panorama": "assets/ground floor/photo47_result.jpg",
       "hfov": 110,
       "northoffset": 0,
       "hotSpots": [
@@ -1924,7 +1924,7 @@
     },
     "scene48": {
       "title": "Way to first floor",
-      "panorama": "assets/ground floor/photo48.jpg",
+      "panorama": "assets/ground floor/photo48_result.jpg",
       "hfov": 110,
       "northoffset": 0,
       "hotSpots": [
@@ -1959,7 +1959,7 @@
     },
     "scene49": {
       "title": "Way to first floor",
-      "panorama": "assets/ground floor/photo53.jpg",
+      "panorama": "assets/ground floor/photo53_result.jpg",
       "hfov": 110,
       "northoffset": 0,
       "hotSpots": [
@@ -1994,7 +1994,7 @@
     },
     "scene50": {
       "title": "Way to first floor",
-      "panorama": "assets/ground floor/photo50.jpg",
+      "panorama": "assets/ground floor/photo50_result.jpg",
       "hfov": 110,
       "northoffset": 0,
       "hotSpots": [
@@ -2011,7 +2011,7 @@
     },
     "scene51": {
       "title": "Way to first floor",
-      "panorama": "assets/ground floor/photo51.jpg",
+      "panorama": "assets/ground floor/photo51_result.jpg",
       "hfov": 110,
       "northoffset": 0,
       "hotSpots": [
@@ -2037,7 +2037,7 @@
     },
     "scene52": {
       "title": "Way to first floor",
-      "panorama": "assets/ground floor/photo52.jpg",
+      "panorama": "assets/ground floor/photo52_result.jpg",
       "hfov": 110,
       "northoffset": 0,
       "hotSpots": [
@@ -2063,7 +2063,7 @@
     },
     "scene53": {
       "title": "Way to first floor",
-      "panorama": "assets/ground floor/photo54.jpg",
+      "panorama": "assets/ground floor/photo54_result.jpg",
       "hfov": 110,
       "northoffset": 0,
       "hotSpots": [
@@ -2080,7 +2080,7 @@
     },
     "scene54": {
       "title": "Way to first floor",
-      "panorama": "assets/ground floor/photo49.jpg",
+      "panorama": "assets/ground floor/photo49_result.jpg",
       "hfov": 110,
       "northoffset": 0,
       "hotSpots": [
@@ -2124,7 +2124,7 @@
     },
     "scene55": {
       "title": "APPLE AUTHORIZED TRAINING CENTER ",
-      "panorama": "assets/ground floor/photo8.jpg",
+      "panorama": "assets/ground floor/photo8_result.jpg",
       "hfov": 110,
       "northoffset": 0,
       "hotSpots": [
