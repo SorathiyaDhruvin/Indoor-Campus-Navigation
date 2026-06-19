@@ -51,8 +51,10 @@
     let sceneKeys = [];
     let totalScenes = 0;
     let currentSceneId = '';
+    let activeLoadTimeout = null;
+    let currentOnLoadHandler = null;
     const sceneEntryPositions = {};
-
+    
     /* ─────────────────────────────────────────────
        LOADING SCREEN
        ───────────────────────────────────────────── */
@@ -71,15 +73,314 @@
                 dom.loading.classList.add('done');
                 dom.topBar.classList.add('show');
                 dom.infoBox.classList.add('show');
-            }, 350);
+            }, 50);
         });
     }
 
     /* ─────────────────────────────────────────────
-       PANNELLUM HOTSPOT HANDLERS (original logic)
+       SCENE MANAGEMENT (Single Scene Loading & Smart Preloading)
+       ───────────────────────────────────────────── */
+    let preloadedImages = {};
+    let addedScenes = new Set();
+
+    function getMaxTextureSize() {
+        try {
+            const canvas = document.createElement('canvas');
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            if (gl) {
+                const maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+                console.log("[getMaxTextureSize] Hardware MAX_TEXTURE_SIZE:", maxTextureSize);
+                return maxTextureSize;
+            }
+        } catch (e) {
+            console.warn("[getMaxTextureSize] Failed to get WebGL context, falling back to 8192:", e);
+        }
+        return 8192; // safe fallback
+    }
+
+    function checkPanoramaDimensions(url, onSuccess, onFailure) {
+        console.log("[checkPanoramaDimensions] Pre-checking image dimensions for URL:", url);
+        const img = new Image();
+        
+        let isSettled = false;
+        let timeout = setTimeout(() => {
+            if (isSettled) return;
+            isSettled = true;
+            img.onload = null;
+            img.onerror = null;
+            console.warn("[checkPanoramaDimensions] Image check timed out for:", url);
+            onFailure("Image verification timed out. The file might be too slow to load or inaccessible.");
+        }, 5000); // 5 seconds pre-flight timeout
+
+        img.onload = () => {
+            if (isSettled) return;
+            isSettled = true;
+            clearTimeout(timeout);
+            
+            const width = img.width;
+            const height = img.height;
+            console.log(`[checkPanoramaDimensions] Image pre-loaded. Dimensions: ${width}x${height} for ${url}`);
+
+            const maxTextureSize = getMaxTextureSize();
+
+            // Warn when width exceeds 8192px
+            if (width > 8192) {
+                console.warn(`[checkPanoramaDimensions] Warning: Image width ${width}px exceeds the standard recommended limit of 8192px.`);
+            } else if (width > 7680) {
+                console.info(`[checkPanoramaDimensions] Optimization tip: Image width ${width}px is close to the limit. We recommend a maximum panorama width of 7680px–8192px for optimal compatibility across standard smart displays.`);
+            }
+
+            // GPU maximum texture limit enforcement
+            if (width > maxTextureSize) {
+                const errMsg = `This panorama is too big for your device! It's ${width}px wide, but your device only supports images up to ${maxTextureSize}px wide. We recommend a maximum panorama width of 7680px–8192px for compatibility.`;
+                console.error("[checkPanoramaDimensions] GPU Limit Exceeded:", errMsg);
+                onFailure(errMsg);
+            } else {
+                onSuccess();
+            }
+        };
+
+        img.onerror = (e) => {
+            if (isSettled) return;
+            isSettled = true;
+            clearTimeout(timeout);
+            console.error("[checkPanoramaDimensions] Failed to load image:", url, e);
+            onFailure("Failed to load panorama image. Please check the network or file path.");
+        };
+
+        img.src = url;
+    }
+
+    function addSceneToViewer(sceneId) {
+        console.log("Adding Scene:", sceneId);
+        if (!configData || !configData.scenes[sceneId]) {
+            console.error("[addSceneToViewer] Invalid scene config for: " + sceneId);
+            return;
+        }
+        if (addedScenes.has(sceneId)) return;
+        try {
+            const sceneConfig = Object.assign({}, configData.scenes[sceneId]);
+            viewer.addScene(sceneId, sceneConfig);
+            addedScenes.add(sceneId);
+            console.log("[addSceneToViewer] Scene added: " + sceneId);
+        } catch (e) {
+            console.error("[addSceneToViewer] Add scene failed for " + sceneId, e);
+            throw e;
+        }
+    }
+
+    function unloadScene(sceneId) {
+        if (!sceneId) return;
+        try {
+            if (addedScenes.has(sceneId)) {
+                viewer.removeScene(sceneId);
+                addedScenes.delete(sceneId);
+                console.log("[unloadScene] Scene removed: " + sceneId);
+            }
+            if (preloadedImages[sceneId]) {
+                const link = preloadedImages[sceneId];
+                if (link && link.parentNode) {
+                    link.parentNode.removeChild(link);
+                }
+                delete preloadedImages[sceneId];
+            }
+        } catch (e) {
+            console.error("[unloadScene] Unload scene failed for " + sceneId, e);
+            throw e;
+        }
+    }
+
+    function loadScene(sceneId, pitch, yaw, hfov) {
+        console.log("Loading Scene:", sceneId);
+        // 1. Verify that scene exists before loading
+        if (!configData || !configData.scenes[sceneId]) {
+            console.error("[loadScene] Scene config not found for: " + sceneId);
+            return;
+        }
+
+        // 2. Validate panorama image URL before loading
+        const panoramaUrl = configData.scenes[sceneId].panorama;
+        if (!panoramaUrl || typeof panoramaUrl !== 'string' || panoramaUrl.trim() === '') {
+            console.error("[loadScene] Invalid panorama URL for scene: " + sceneId);
+            return;
+        }
+
+        console.log("[loadScene] Loading started for scene: " + sceneId);
+
+        // 3. Display smooth loading indicator
+        dom.loading.classList.remove('done');
+        dom.loaderFill.style.transition = 'none';
+        dom.loaderFill.style.width = '10%';
+        
+        // Fast UI feedback
+        let loaderw = 10;
+        let loaderInterval = setInterval(() => {
+            if (loaderw < 90) loaderw += 15;
+            dom.loaderFill.style.transition = 'width 0.1s linear';
+            dom.loaderFill.style.width = loaderw + '%';
+        }, 100);
+
+        // 4. Prevent memory leaks by removing duplicate load listeners and timeouts
+        if (currentOnLoadHandler) {
+            try {
+                viewer.off('load', currentOnLoadHandler);
+            } catch (e) {
+                console.warn("[loadScene] Error removing old load listener:", e);
+            }
+            currentOnLoadHandler = null;
+        }
+        if (activeLoadTimeout) {
+            clearTimeout(activeLoadTimeout);
+            activeLoadTimeout = null;
+        }
+
+        const prevSceneId = currentSceneId;
+
+        // Perform dynamic hardware limit verification before loading
+        checkPanoramaDimensions(panoramaUrl, () => {
+            // 5. Wrap viewer.addScene in try-catch
+            try {
+                addSceneToViewer(sceneId);
+            } catch (e) {
+                console.error("[loadScene] Error in addSceneToViewer:", e);
+                clearInterval(loaderInterval);
+                dom.loading.classList.add('done');
+                return;
+            }
+
+            // 6. Handle loading failure / timeout
+            const onLoadFailed = (reason) => {
+                console.error("[loadScene] Scene load failed for " + sceneId + ". Reason: " + reason);
+                
+                if (activeLoadTimeout) {
+                    clearTimeout(activeLoadTimeout);
+                    activeLoadTimeout = null;
+                }
+                if (currentOnLoadHandler) {
+                    try {
+                        viewer.off('load', currentOnLoadHandler);
+                    } catch (e) {}
+                    currentOnLoadHandler = null;
+                }
+                
+                clearInterval(loaderInterval);
+                dom.loading.classList.add('done'); // Hide loading screen
+                
+                // Keep the current/previous scene visible instead of locking the app
+                if (prevSceneId && prevSceneId !== sceneId) {
+                    try {
+                        console.log("[loadScene] Reverting to previous scene: " + prevSceneId);
+                        viewer.loadScene(prevSceneId);
+                        currentSceneId = prevSceneId;
+                    } catch (e) {
+                        console.error("[loadScene] Error reverting to previous scene:", e);
+                    }
+                }
+            };
+
+            // 7. Add 4-second timeout fallback (prevent infinite loading screen)
+            activeLoadTimeout = setTimeout(() => {
+                console.warn("[loadScene] Scene timeout (4s) reached for scene: " + sceneId + ". Forcing loader screen hide.");
+                
+                clearInterval(loaderInterval);
+                dom.loading.classList.add('done');
+                
+                // Assume loaded/loading is far enough along, or failed, but keep app active
+                currentSceneId = sceneId;
+                
+                // Defer unloading the previous scene to prevent reentrancy issues
+                if (prevSceneId && prevSceneId !== sceneId) {
+                    setTimeout(() => {
+                        try {
+                            unloadScene(prevSceneId);
+                            console.log("[loadScene] Scene removed from memory (timeout fallback): " + prevSceneId);
+                        } catch (e) {
+                            console.warn("[loadScene] Timeout unload failed:", e);
+                        }
+                    }, 500);
+                }
+
+                // Cleanup listeners
+                if (currentOnLoadHandler) {
+                    try {
+                        viewer.off('load', currentOnLoadHandler);
+                    } catch (e) {}
+                    currentOnLoadHandler = null;
+                }
+                activeLoadTimeout = null;
+            }, 4000);
+
+            // 8. Load success handler
+            const onLoad = () => {
+                console.log("[loadScene] Scene loaded successfully: " + sceneId);
+                
+                if (activeLoadTimeout) {
+                    clearTimeout(activeLoadTimeout);
+                    activeLoadTimeout = null;
+                }
+                if (currentOnLoadHandler === onLoad) {
+                    try {
+                        viewer.off('load', onLoad);
+                    } catch (e) {}
+                    currentOnLoadHandler = null;
+                }
+                
+                clearInterval(loaderInterval);
+                dom.loaderFill.style.width = '100%';
+                
+                setTimeout(() => {
+                    dom.loading.classList.add('done');
+                }, 50);
+
+                // In Single Scene Strategy, unload previous scene only after next scene is fully loaded
+                // Wrap in setTimeout 500ms to allow Pannellum to complete its load/render loop and avoid WebGL crashes
+                if (prevSceneId && prevSceneId !== sceneId) {
+                    setTimeout(() => {
+                        try {
+                            unloadScene(prevSceneId);
+                            console.log("[loadScene] Scene removed from memory: " + prevSceneId);
+                        } catch (e) {
+                            console.error("[loadScene] Error unloading previous scene " + prevSceneId + ":", e);
+                        }
+                    }, 500);
+                }
+
+                currentSceneId = sceneId;
+            };
+
+            currentOnLoadHandler = onLoad;
+            viewer.on('load', onLoad);
+
+            // 9. Wrap viewer.loadScene in try-catch
+            try {
+                viewer.loadScene(sceneId, pitch, yaw, hfov);
+            } catch (e) {
+                console.error("[loadScene] viewer.loadScene failed for " + sceneId + ":", e);
+                onLoadFailed(e.message || "viewer.loadScene error");
+            }
+        }, (errorMsg) => {
+            // Pre-flight check failed (dimensions too large, timeout, or load error)
+            clearInterval(loaderInterval);
+            dom.loading.classList.add('done');
+            alert(errorMsg);
+
+            // Roll back to previous scene state representation in UI
+            if (prevSceneId) {
+                console.log("[loadScene] Pre-flight check failed. Restoring active scene state to:", prevSceneId);
+                currentSceneId = prevSceneId;
+                updateUI(prevSceneId);
+                onSceneChangeNav(prevSceneId);
+            }
+        });
+    }
+
+    /* ─────────────────────────────────────────────
+       PANNELLUM HOTSPOT HANDLERS
        ───────────────────────────────────────────── */
     function smoothTransition(event, args) {
         if (event) event.stopPropagation();
+        console.log("Hotspot clicked");
+        console.log("Target Scene:", args.sceneId);
 
         const entryPitch = args.targetPitch ?? 0;
         const entryYaw = args.targetYaw ?? 0;
@@ -92,7 +393,7 @@
             hfov: entryHfov
         };
 
-        viewer.loadScene(args.sceneId, entryPitch, entryYaw, entryHfov);
+        loadScene(args.sceneId, entryPitch, entryYaw, entryHfov);
     }
 
     function hotspotText(div) {
@@ -108,7 +409,7 @@
        ───────────────────────────────────────────── */
     function showInfo(event, args) {
         dom.infoTitle.innerText = args.title || '';
-        dom.infoDesc.innerText = args.description || '';
+        dom.infoDesc.innerHTML = args.description || '';
         if (args.image) {
             dom.infoImage.src = args.image;
             dom.popupImgWrap.style.display = 'block';
@@ -144,8 +445,17 @@
     /* ─────────────────────────────────────────────
        GRID PANEL (right side — only one at a time)
        ───────────────────────────────────────────── */
-    function openGrid() { closeHelp(); dom.gridOverlay.classList.add('active'); }
-    function closeGrid() { dom.gridOverlay.classList.remove('active'); }
+    function openGrid() {
+        closeHelp();
+        if (configData) {
+            buildGrid(configData);
+        }
+        dom.gridOverlay.classList.add('active');
+    }
+    function closeGrid() {
+        dom.gridOverlay.classList.remove('active');
+        dom.gridBody.innerHTML = ''; // Clear items and unload images from DOM memory
+    }
     function toggleGrid() {
         dom.gridOverlay.classList.contains('active') ? closeGrid() : openGrid();
     }
@@ -158,15 +468,38 @@
 
     function buildGrid(config) {
         dom.gridBody.innerHTML = '';
+
+        // Initialize IntersectionObserver to lazy load thumbnails only when they enter viewport
+        const observer = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    if (img.dataset.src) {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    }
+                    obs.unobserve(img);
+                }
+            });
+        }, {
+            root: dom.gridBody,
+            rootMargin: '100px' // Load a bit early before scrolling into view
+        });
+
         sceneKeys.forEach((id, i) => {
             const scene = config.scenes[id];
             const item = document.createElement('div');
             item.className = 'grid-item';
             item.dataset.scene = id;
+            
+            // Use an inline lightweight SVG placeholder so no initial network request is made
+            const placeholder = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='45' viewBox='0 0 80 45'><rect width='80' height='45' fill='%23222'/></svg>";
+            
             item.innerHTML =
-                '<img class="grid-thumb" src="' + scene.panorama + '" alt="' + scene.title + '" loading="lazy">' +
+                '<img class="grid-thumb" src="' + placeholder + '" data-src="' + scene.panorama + '" alt="' + scene.title + '">' +
                 '<span class="grid-num">' + (i + 1) + '</span>' +
                 '<span class="grid-label">' + scene.title + '</span>';
+                
             item.addEventListener('click', () => {
                 // Grid loads scene at config defaults — record as entry position
                 const sc = config.scenes[id];
@@ -175,11 +508,20 @@
                     yaw: sc.yaw || 0,
                     hfov: sc.hfov || 110
                 };
-                viewer.loadScene(id);
+                loadScene(id);
                 closeGrid();
             });
             dom.gridBody.appendChild(item);
+
+            // Start observing the image inside the created item
+            const img = item.querySelector('.grid-thumb');
+            if (img) {
+                observer.observe(img);
+            }
         });
+
+        // Highlight the currently active scene card
+        markGridActive(currentSceneId);
     }
 
     function markGridActive(sceneId) {
@@ -204,6 +546,7 @@
        UPDATE UI ON SCENE CHANGE
        ───────────────────────────────────────────── */
     function updateUI(sceneId) {
+        console.log("updateUI:", sceneId);
         if (!configData) return;
         const scene = configData.scenes[sceneId];
         if (!scene) return;
@@ -276,17 +619,7 @@
         }
     })();
 
-    /*
-     * Floor → Lab data.
-     * Each lab has:
-     *   label:            Display name
-     *   destinationScene: The scene ID where the lab/destination is
-     *   destinationInfo:  Title of the info hotspot to blink (null if none)
-     *   route:            Array of steps  { scene, direction, arrowTarget }
-     *                     arrowTarget = sceneId the highlighted arrow points to (null at destination)
-     *
-     * Floors without 360° data keep their lab structure for future use.
-     */
+
     const FLOOR_DATA = {
 
         /* ══════ GROUND FLOOR (ACTIVE — has 360° images) ══════ */
@@ -466,7 +799,7 @@
         /* Load the floor's corridor scene in the viewer */
         const corridorScene = FLOOR_CORRIDOR_MAP[floor];
         if (corridorScene && viewer && viewer.getScene() !== corridorScene) {
-            viewer.loadScene(corridorScene);
+            loadScene(corridorScene);
         }
 
         /* Populate labs */
@@ -513,7 +846,7 @@
         if (matchIdx < 0 && activeRoute.length > 0) {
             const firstStep = activeRoute[0];
             if (viewer && viewer.getScene() !== firstStep.scene) {
-                viewer.loadScene(firstStep.scene);
+                loadScene(firstStep.scene);
             }
         }
 
@@ -629,7 +962,7 @@
             /* Navigate viewer to the step's scene */
             const step = activeRoute[currentStepIndex];
             if (step && viewer && viewer.getScene() !== step.scene) {
-                viewer.loadScene(step.scene);
+                loadScene(step.scene);
             }
         }
     });
@@ -640,7 +973,7 @@
             updateDirectionStep();
             const step = activeRoute[currentStepIndex];
             if (step && viewer && viewer.getScene() !== step.scene) {
-                viewer.loadScene(step.scene);
+                loadScene(step.scene);
             }
         }
     });
@@ -657,15 +990,7 @@
         setTimeout(applyHighlights, 200);
     }
 
-    /* ─────────────────────────────────────────────
-       PRELOAD
-       ───────────────────────────────────────────── */
-    function preloadImages(config) {
-        for (const id in config.scenes) {
-            const src = config.scenes[id].panorama;
-            if (src) { const img = new Image(); img.src = src; }
-        }
-    }
+    /* (Preloading is now handled dynamically by preloadScene) */
 
     /* ─────────────────────────────────────────────
        HFOV LOCK (original logic)
@@ -720,68 +1045,90 @@
 
                 const TARGET_HFOV = window.innerWidth < 768 ? 100 : 110;
 
-                /* Create viewer */
-                viewer = pannellum.viewer('panorama', config);
-                window.viewer = viewer;
-
-                /* Initial UI */
                 const first = config.default.firstScene || sceneKeys[0];
-                updateUI(first);
-                buildGrid(config);
+                const firstSceneConfig = config.scenes[first];
 
-                viewer.on('scenechange', function (sceneId) {
-                    updateUI(sceneId);
-                    onSceneChangeNav(sceneId);
-                });
+                function initializeViewer() {
+                    /* Create viewer with single scene for memory optimization */
+                    const startupConfig = Object.assign({}, config);
+                    startupConfig.scenes = {};
+                    
+                    let activeFirstConfig = Object.assign({}, firstSceneConfig);
+                    startupConfig.scenes[first] = activeFirstConfig;
 
-                /* ── Record entry position for the first scene (config defaults) ── */
-                const firstScene = config.scenes[first];
-                sceneEntryPositions[first] = {
-                    pitch: firstScene.pitch || 0,
-                    yaw: firstScene.yaw || 0,
-                    hfov: firstScene.hfov || TARGET_HFOV
-                };
+                    viewer = pannellum.viewer('panorama', startupConfig);
+                    window.viewer = viewer;
+                    addedScenes.add(first);
 
-                /* ── Compass click → reset to ENTRY position ── */
-                viewer.on('load', function () {
-                    const compass = document.querySelector('.pnlm-compass');
-                    if (compass) {
-                        compass.style.cursor = 'pointer';
-                        compass.title = 'Reset to original view';
+                    /* Initial UI */
+                    updateUI(first);
 
-                        compass.addEventListener('click', function (e) {
-                            e.stopPropagation();
+                    viewer.on('scenechange', function (sceneId) {
+                        updateUI(sceneId);
+                        onSceneChangeNav(sceneId);
+                    });
 
-                            // Stay in the SAME scene — reset to the direction user entered from
-                            const id = viewer.getScene();
-                            const pos = sceneEntryPositions[id];
+                    /* ── Record entry position for the first scene (config defaults) ── */
+                    sceneEntryPositions[first] = {
+                        pitch: firstSceneConfig.pitch || 0,
+                        yaw: firstSceneConfig.yaw || 0,
+                        hfov: firstSceneConfig.hfov || TARGET_HFOV
+                    };
 
-                            if (pos) {
-                                viewer.setPitch(pos.pitch, true);  // true = animated
-                                viewer.setYaw(pos.yaw, true);      // entry yaw (targetYaw or config default)
-                                viewer.setHfov(pos.hfov, true);
-                            }
+                    /* ── Compass click → reset to ENTRY position ── */
+                    viewer.on('load', function () {
+                        const compass = document.querySelector('.pnlm-compass');
+                        if (compass) {
+                            compass.style.cursor = 'pointer';
+                            compass.title = 'Reset to original view';
 
-                            // Visual click feedback — pulse animation
-                            compass.classList.remove('compass-pulse');
-                            void compass.offsetWidth;            // force reflow
-                            compass.classList.add('compass-pulse');
-                            compass.addEventListener('animationend', function () {
+                            compass.addEventListener('click', function (e) {
+                                e.stopPropagation();
+
+                                // Stay in the SAME scene — reset to the direction user entered from
+                                const id = viewer.getScene();
+                                const pos = sceneEntryPositions[id];
+
+                                if (pos) {
+                                    viewer.setPitch(pos.pitch, true);  // true = animated
+                                    viewer.setYaw(pos.yaw, true);      // entry yaw (targetYaw or config default)
+                                    viewer.setHfov(pos.hfov, true);
+                                }
+
+                                // Visual click feedback — pulse animation
                                 compass.classList.remove('compass-pulse');
-                            }, { once: true });
-                        });
-                    }
-                });
+                                void compass.offsetWidth;            // force reflow
+                                compass.classList.add('compass-pulse');
+                                compass.addEventListener('animationend', function () {
+                                    compass.classList.remove('compass-pulse');
+                                }, { once: true });
+                            });
+                        }
+                    });
 
-                /* Move info popup inside panorama for fullscreen support */
-                if (window.innerWidth > 768) {
-                    const pano = document.getElementById('panorama');
-                    if (pano && dom.infoPopup) pano.appendChild(dom.infoPopup);
+                    /* Move info popup inside panorama for fullscreen support */
+                    if (window.innerWidth > 768) {
+                        const pano = document.getElementById('panorama');
+                        if (pano && dom.infoPopup) pano.appendChild(dom.infoPopup);
+                    }
+
+                    lockHfov(TARGET_HFOV);
+                    currentSceneId = first;
+                    ready();
                 }
 
-                lockHfov(TARGET_HFOV);
-                setTimeout(() => preloadImages(config), 800);
-                ready();
+                if (firstSceneConfig && firstSceneConfig.panorama) {
+                    checkPanoramaDimensions(firstSceneConfig.panorama, () => {
+                        initializeViewer();
+                    }, (err) => {
+                        console.error("[init] First scene failed GPU compatibility check:", err);
+                        alert("Initial scene loading failed: " + err);
+                        dom.loading.classList.add('done');
+                        ready();
+                    });
+                } else {
+                    initializeViewer();
+                }
             })
             .catch((err) => { console.error(err); ready(); });
     });
