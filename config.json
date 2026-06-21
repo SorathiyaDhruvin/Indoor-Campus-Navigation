@@ -1072,7 +1072,7 @@
     },
     "scene30": {
       "title": "L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB",
-      "panorama": "assets/way_107_lab.jpg",
+      "panorama": "assets/ground floor/way_107_lab.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
