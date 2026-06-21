@@ -255,7 +255,7 @@
     },
     "scene8": {
       "title": "APPLE AUTHORIZED TRAINING CENTER",
-      "panorama": "assets/ground floor/image25_result.jpg",
+      "panorama": "assets/ground floor/apple_device_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
