@@ -1187,7 +1187,7 @@
           "clickHandlerArgs": {
             "title": "Holoboard",
             "description": "HoloBoard is a next-generation augmented reality (AR) wearable device designed to seamlessly blend digital content with the real world. It features a sleek, futuristic headset with a transparent visor that projects high-quality holographic visuals directly into the user’s field of view.🔹 Key Features  Immersive AR Experience: Displays 3D holograms, interactive interfaces, and real-time data overlays. Lightweight & Ergonomic Design: Built for comfort during extended use, with an adjustable headband. Gesture & Controller Support: Can be operated using hand gestures or a compact handheld controller. High-Resolution Optics: Ensures clear and sharp visuals with minimal distortion. Real-Time Interaction: Allows users to interact with virtual objects as if they exist in the physical environment.🔹 Applications Education & Training: Visualize complex concepts in 3D for better understanding. Gaming & Entertainment: Experience immersive gameplay and interactive media. Business & Collaboration: Conduct virtual meetings with holographic presentations. Healthcare & Engineering: Assist in simulations, diagnostics, and design visualization.",
-            "image": "assets/hololens.png"
+            "image": "assets/holoboard.png"
           }
         },
         {
