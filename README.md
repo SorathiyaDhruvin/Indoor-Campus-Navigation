@@ -2,7 +2,7 @@
 
 An immersive, browser-based 360° virtual tour of **Parul University** (Vadodara, Gujarat), built with the Pannellum panorama viewer. Students, parents, and visitors can explore campus buildings, labs, and corridors interactively — from any device, with no installation required.
 
-🌐 **Live Demo:** [test-nine-sepia-35.vercel.app](https://test-nine-sepia-35.vercel.app)
+🌐 **Live Demo:** [indoor-campus-navigation.vercel.app](https://indoor-campus-navigation.vercel.app)
 
 ---
 
