@@ -210,7 +210,7 @@
     },
     "scene7": {
       "title": "APPLE AUTHORIZED TRAINING CENTER",
-      "panorama": "assets/ground floor/photo25_result.jpg",
+      "panorama": "assets/ground floor/photo24_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -255,7 +255,7 @@
     },
     "scene8": {
       "title": "APPLE AUTHORIZED TRAINING CENTER",
-      "panorama": "assets/ground floor/photo24_result.jpg",
+      "panorama": "assets/ground floor/image25_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
