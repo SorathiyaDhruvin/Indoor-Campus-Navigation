@@ -54,7 +54,7 @@
     let activeLoadTimeout = null;
     let currentOnLoadHandler = null;
     const sceneEntryPositions = {};
-    
+
     /* ─────────────────────────────────────────────
        LOADING SCREEN
        ───────────────────────────────────────────── */
@@ -101,7 +101,7 @@
     function checkPanoramaDimensions(url, onSuccess, onFailure) {
         console.log("[checkPanoramaDimensions] Pre-checking image dimensions for URL:", url);
         const img = new Image();
-        
+
         let isSettled = false;
         let timeout = setTimeout(() => {
             if (isSettled) return;
@@ -116,7 +116,7 @@
             if (isSettled) return;
             isSettled = true;
             clearTimeout(timeout);
-            
+
             const width = img.width;
             const height = img.height;
             console.log(`[checkPanoramaDimensions] Image pre-loaded. Dimensions: ${width}x${height} for ${url}`);
@@ -211,7 +211,7 @@
         dom.loading.classList.remove('done');
         dom.loaderFill.style.transition = 'none';
         dom.loaderFill.style.width = '10%';
-        
+
         // Fast UI feedback
         let loaderw = 10;
         let loaderInterval = setInterval(() => {
@@ -251,7 +251,7 @@
             // 6. Handle loading failure / timeout
             const onLoadFailed = (reason) => {
                 console.error("[loadScene] Scene load failed for " + sceneId + ". Reason: " + reason);
-                
+
                 if (activeLoadTimeout) {
                     clearTimeout(activeLoadTimeout);
                     activeLoadTimeout = null;
@@ -259,13 +259,13 @@
                 if (currentOnLoadHandler) {
                     try {
                         viewer.off('load', currentOnLoadHandler);
-                    } catch (e) {}
+                    } catch (e) { }
                     currentOnLoadHandler = null;
                 }
-                
+
                 clearInterval(loaderInterval);
                 dom.loading.classList.add('done'); // Hide loading screen
-                
+
                 // Keep the current/previous scene visible instead of locking the app
                 if (prevSceneId && prevSceneId !== sceneId) {
                     try {
@@ -281,13 +281,13 @@
             // 7. Add 4-second timeout fallback (prevent infinite loading screen)
             activeLoadTimeout = setTimeout(() => {
                 console.warn("[loadScene] Scene timeout (4s) reached for scene: " + sceneId + ". Forcing loader screen hide.");
-                
+
                 clearInterval(loaderInterval);
                 dom.loading.classList.add('done');
-                
+
                 // Assume loaded/loading is far enough along, or failed, but keep app active
                 currentSceneId = sceneId;
-                
+
                 // Defer unloading the previous scene to prevent reentrancy issues
                 if (prevSceneId && prevSceneId !== sceneId) {
                     setTimeout(() => {
@@ -304,7 +304,7 @@
                 if (currentOnLoadHandler) {
                     try {
                         viewer.off('load', currentOnLoadHandler);
-                    } catch (e) {}
+                    } catch (e) { }
                     currentOnLoadHandler = null;
                 }
                 activeLoadTimeout = null;
@@ -313,7 +313,7 @@
             // 8. Load success handler
             const onLoad = () => {
                 console.log("[loadScene] Scene loaded successfully: " + sceneId);
-                
+
                 if (activeLoadTimeout) {
                     clearTimeout(activeLoadTimeout);
                     activeLoadTimeout = null;
@@ -321,13 +321,13 @@
                 if (currentOnLoadHandler === onLoad) {
                     try {
                         viewer.off('load', onLoad);
-                    } catch (e) {}
+                    } catch (e) { }
                     currentOnLoadHandler = null;
                 }
-                
+
                 clearInterval(loaderInterval);
                 dom.loaderFill.style.width = '100%';
-                
+
                 setTimeout(() => {
                     dom.loading.classList.add('done');
                 }, 50);
@@ -491,15 +491,15 @@
             const item = document.createElement('div');
             item.className = 'grid-item';
             item.dataset.scene = id;
-            
+
             // Use an inline lightweight SVG placeholder so no initial network request is made
             const placeholder = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='45' viewBox='0 0 80 45'><rect width='80' height='45' fill='%23222'/></svg>";
-            
+
             item.innerHTML =
                 '<img class="grid-thumb" src="' + placeholder + '" data-src="' + scene.panorama + '" alt="' + scene.title + '">' +
                 '<span class="grid-num">' + (i + 1) + '</span>' +
                 '<span class="grid-label">' + scene.title + '</span>';
-                
+
             item.addEventListener('click', () => {
                 // Grid loads scene at config defaults — record as entry position
                 const sc = config.scenes[id];
@@ -1052,7 +1052,7 @@
                     /* Create viewer with single scene for memory optimization */
                     const startupConfig = Object.assign({}, config);
                     startupConfig.scenes = {};
-                    
+
                     let activeFirstConfig = Object.assign({}, firstSceneConfig);
                     startupConfig.scenes[first] = activeFirstConfig;
 
