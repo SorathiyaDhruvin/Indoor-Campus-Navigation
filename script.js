@@ -51,6 +51,7 @@
     let sceneKeys = [];
     let totalScenes = 0;
     let currentSceneId = '';
+    let sceneHistory = [];
     let activeLoadTimeout = null;
     let currentOnLoadHandler = null;
     const sceneEntryPositions = {};
@@ -73,6 +74,13 @@
                 dom.loading.classList.add('done');
                 dom.topBar.classList.add('show');
                 dom.infoBox.classList.add('show');
+
+                // Focus the panorama container so WASD keys work instantly
+                const pano = document.getElementById('panorama');
+                if (pano) {
+                    pano.setAttribute('tabindex', '0');
+                    pano.focus();
+                }
             }, 50);
         });
     }
@@ -190,7 +198,7 @@
         }
     }
 
-    function loadScene(sceneId, pitch, yaw, hfov) {
+    function loadScene(sceneId, pitch, yaw, hfov, isBack = false) {
         console.log("Loading Scene:", sceneId);
         // 1. Verify that scene exists before loading
         if (!configData || !configData.scenes[sceneId]) {
@@ -235,6 +243,10 @@
         }
 
         const prevSceneId = currentSceneId;
+
+        if (prevSceneId && prevSceneId !== sceneId && !isBack) {
+            sceneHistory.push(prevSceneId);
+        }
 
         // Perform dynamic hardware limit verification before loading
         checkPanoramaDimensions(panoramaUrl, () => {
@@ -545,6 +557,37 @@
     /* ─────────────────────────────────────────────
        UPDATE UI ON SCENE CHANGE
        ───────────────────────────────────────────── */
+    function updatePreloads(sceneId) {
+        if (!configData || !configData.scenes[sceneId]) return;
+        const scene = configData.scenes[sceneId];
+
+        const adjacent = [sceneId];
+        if (scene.hotSpots) {
+            scene.hotSpots.forEach(h => {
+                if (h.clickHandlerArgs && h.clickHandlerArgs.sceneId) {
+                    adjacent.push(h.clickHandlerArgs.sceneId);
+                }
+            });
+        }
+
+        for (const id in preloadedImages) {
+            if (!adjacent.includes(id)) {
+                if (preloadedImages[id] instanceof Image) {
+                    preloadedImages[id].src = "";
+                }
+                delete preloadedImages[id];
+            }
+        }
+
+        adjacent.forEach(id => {
+            if (!preloadedImages[id] && configData.scenes[id] && configData.scenes[id].panorama) {
+                const img = new Image();
+                img.src = configData.scenes[id].panorama;
+                preloadedImages[id] = img;
+            }
+        });
+    }
+
     function updateUI(sceneId) {
         console.log("updateUI:", sceneId);
         if (!configData) return;
@@ -557,21 +600,147 @@
         dom.infoBoxText.textContent = scene.title;
 
         markGridActive(sceneId);
+        updatePreloads(sceneId);
     }
 
     /* ─────────────────────────────────────────────
-       KEYBOARD SHORTCUTS
+       KEYBOARD SHORTCUTS & NAVIGATION
        ───────────────────────────────────────────── */
+    function navigateDirection(direction) {
+        if (!configData || !currentSceneId || !viewer) return;
+        const scene = configData.scenes[currentSceneId];
+        if (!scene || !scene.hotSpots) return;
+
+        const currentYaw = viewer.getYaw();
+
+        let bestTarget = null;
+        let minDiff = Infinity;
+        let bestTargetYaw = null;
+
+        scene.hotSpots.forEach(h => {
+            if (h.clickHandlerArgs && h.clickHandlerArgs.sceneId) {
+                let delta = (h.yaw - currentYaw) % 360;
+                if (delta > 180) delta -= 360;
+                if (delta < -180) delta += 360;
+
+                let targetAngle = 0; // Forward
+                if (direction === 'right') targetAngle = 90;
+                else if (direction === 'left') targetAngle = -90;
+                else if (direction === 'backward') targetAngle = 180;
+
+                let angleDiff = Math.abs(delta - targetAngle);
+                if (angleDiff > 180) angleDiff = 360 - angleDiff;
+
+                // Match if the hotspot is within a 60-degree cone of the target direction
+                if (angleDiff <= 60 && angleDiff < minDiff) {
+                    minDiff = angleDiff;
+                    bestTarget = h.clickHandlerArgs.sceneId;
+                    bestTargetYaw = h.clickHandlerArgs.targetYaw;
+                }
+            }
+        });
+
+        if (bestTarget && configData.scenes[bestTarget]) {
+            const sc = configData.scenes[bestTarget];
+            sceneEntryPositions[bestTarget] = {
+                pitch: sc.pitch || 0,
+                yaw: (bestTargetYaw !== undefined && bestTargetYaw !== null) ? bestTargetYaw : (sc.yaw || 0),
+                hfov: sc.hfov || 110
+            };
+            loadScene(bestTarget);
+        }
+    }
+
+    function goBack() {
+        if (sceneHistory.length > 0) {
+            const lastSceneId = sceneHistory.pop();
+            const sc = configData && configData.scenes[lastSceneId] ? configData.scenes[lastSceneId] : {};
+            const entryPos = sceneEntryPositions[lastSceneId] || {};
+            loadScene(lastSceneId, entryPos.pitch || sc.pitch || 0, entryPos.yaw || sc.yaw || 0, entryPos.hfov || sc.hfov || 110, true);
+        } else {
+            console.log("No previous scene in history.");
+        }
+    }
+
+    const activeKeys = new Set();
+    let isAnimatingCamera = false;
+
+    function smoothCameraLoop() {
+        if (!activeKeys.has('w') && !activeKeys.has('a') && !activeKeys.has('s') && !activeKeys.has('d')) {
+            isAnimatingCamera = false;
+            return;
+        }
+
+        if (viewer) {
+            const rotationSpeed = 0.7; // Adjust this value for desired smoothness vs speed
+            let pitch = viewer.getPitch();
+            let yaw = viewer.getYaw();
+            let changed = false;
+
+            if (activeKeys.has('w')) { pitch += rotationSpeed; changed = true; }
+            if (activeKeys.has('s')) { pitch -= rotationSpeed; changed = true; }
+            if (activeKeys.has('a')) { yaw -= rotationSpeed; changed = true; }
+            if (activeKeys.has('d')) { yaw += rotationSpeed; changed = true; }
+
+            if (changed) {
+                viewer.setPitch(pitch, false);
+                viewer.setYaw(yaw, false);
+            }
+        }
+        requestAnimationFrame(smoothCameraLoop);
+    }
+
     document.addEventListener('keydown', (e) => {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
         const k = e.key.toLowerCase();
+
+        if (['arrowup', 'arrowdown'].includes(k)) {
+            e.preventDefault(); // Prevent page scroll
+            e.stopPropagation(); // Prevent Pannellum from rotating camera
+            if (k === 'arrowup') navigateDirection('forward');
+            else if (k === 'arrowdown') goBack();
+            return;
+        }
+
+        // Smooth fast rotation with WASD
+        if (['w', 'a', 's', 'd'].includes(k)) {
+            e.preventDefault();
+            e.stopPropagation();
+            activeKeys.add(k);
+            if (!isAnimatingCamera) {
+                isAnimatingCamera = true;
+                requestAnimationFrame(smoothCameraLoop);
+            }
+            return;
+        }
+
         if (k === 'escape') { closeInfo(); closeHelp(); closeGrid(); closeNavGuide(); return; }
         if (k === 'g') { e.preventDefault(); toggleGrid(); return; }
         if (k === 'h') { e.preventDefault(); toggleHelp(); return; }
         if (k === 'f') { e.preventDefault(); toggleFullscreen(); return; }
         if (k === 'n') { e.preventDefault(); toggleNavGuide(); return; }
-    });
+    }, { capture: true });
 
+    document.addEventListener('keyup', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+        const k = e.key.toLowerCase();
+        if (['w', 'a', 's', 'd'].includes(k)) {
+            activeKeys.delete(k);
+        }
+    }, { capture: true });
+
+    // Safely attach to buttons if they exist
+    const btnForward = document.getElementById('forwardBtn');
+    if (btnForward) btnForward.addEventListener('click', () => navigateDirection('forward'));
+
+    const btnBackward = document.getElementById('backwardBtn');
+    if (btnBackward) btnBackward.addEventListener('click', () => goBack());
+
+    const btnLeft = document.getElementById('leftBtn');
+    if (btnLeft) btnLeft.addEventListener('click', () => navigateDirection('left'));
+
+    const btnRight = document.getElementById('rightBtn');
+    if (btnRight) btnRight.addEventListener('click', () => navigateDirection('right'));
     /* ─────────────────────────────────────────────
        INDOOR NAVIGATION SYSTEM — 8-FLOOR
        ───────────────────────────────────────────── */

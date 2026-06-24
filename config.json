@@ -255,7 +255,7 @@
     },
     "scene8": {
       "title": "APPLE AUTHORIZED TRAINING CENTER",
-      "panorama": "assets/ground floor/apple_device_result.jpg",
+      "panorama": "assets/ground floor/photo25_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -342,6 +342,7 @@
             "targetYaw": -180
           }
         },
+         
         {
           "pitch": 25,
           "yaw": -60,
@@ -511,33 +512,33 @@
           }
         },
         {
-          "pitch": 15,
-          "yaw": -35,
-          "type": "info",
-          "text": "Rack 1 – ISP Connectivity",
-          "clickHandlerArgs": {
-            "title": "Rack 1 – ISP Connectivity",
-            "description": "<h4>Rack 1 – ISP Connectivity</h4><ul><li><b>ISP (Internet Service Provider) Infrastructure</b></li><li>➡️ Handles external internet connectivity</li><li>➡ Class A category ISP services</li><li>➡️ Ensures stable and high-availability Internet</li></ul>"
+          "pitch":15,
+          "yaw":-35,
+          "type":"info",
+          "text":"Rack 1 – ISP Connectivity",
+          "clickHandlerArgs":{
+            "title":"Rack 1 – ISP Connectivity",
+            "description":"<h4>Rack 1 – ISP Connectivity</h4><ul><li><b>ISP (Internet Service Provider) Infrastructure</b></li><li>➡️ Handles external internet connectivity</li><li>➡ Class A category ISP services</li><li>➡️ Ensures stable and high-availability Internet</li></ul>"
           }
         },
         {
-          "pitch": 12,
-          "yaw": 5,
-          "type": "info",
-          "text": "Rack 2 – CCTV Storage",
-          "clickHandlerArgs": {
-            "title": "Rack 2 – CCTV Storage",
-            "description": "<h4>Rack 2 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
+          "pitch":12,
+          "yaw":5,
+          "type":"info",
+          "text":"Rack 2 – CCTV Storage",
+          "clickHandlerArgs":{
+            "title":"Rack 2 – CCTV Storage",
+            "description":"<h4>Rack 2 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
           }
         },
         {
-          "pitch": 12,
-          "yaw": 30,
-          "type": "info",
-          "text": "Rack 3 – CCTV Storage",
-          "clickHandlerArgs": {
-            "title": "Rack 3 – CCTV Storage",
-            "description": "<h4>Rack 3 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
+          "pitch":12,
+          "yaw":30,
+          "type":"info",
+          "text":"Rack 3 – CCTV Storage",
+          "clickHandlerArgs":{
+            "title":"Rack 3 – CCTV Storage",
+            "description":"<h4>Rack 3 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
           }
         }
       ]
@@ -567,33 +568,33 @@
           }
         },
         {
-          "pitch": 15,
-          "yaw": -35,
-          "type": "info",
-          "text": "Rack 4 – CCTV Storage",
-          "clickHandlerArgs": {
-            "title": "Rack 4 – CCTV Storage",
-            "description": "<h4>Rack 4 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
+          "pitch":15,
+          "yaw":-35,
+          "type":"info",
+          "text":"Rack 4 – CCTV Storage",
+          "clickHandlerArgs":{
+            "title":"Rack 4 – CCTV Storage",
+            "description":"<h4>Rack 4 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
           }
         },
         {
-          "pitch": 12,
-          "yaw": 5,
-          "type": "info",
-          "text": "Rack 5 – CCTV Storage",
-          "clickHandlerArgs": {
-            "title": "Rack 5 – CCTV Storage",
-            "description": "<h4>Rack 5 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
+          "pitch":12,
+          "yaw":5,
+          "type":"info",
+          "text":"Rack 5 – CCTV Storage",
+          "clickHandlerArgs":{
+            "title":"Rack 5 – CCTV Storage",
+            "description":"<h4>Rack 5 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
           }
         },
         {
-          "pitch": 12,
-          "yaw": 30,
-          "type": "info",
-          "text": "Rack 6 – Network Security & Distribution",
-          "clickHandlerArgs": {
-            "title": "Rack 6 – Network Security & Distribution",
-            "description": "<h4>Rack 6 – Network Security & Distribution</h4><ul><li><b>Palo Alto Firewall</b></li><li>➡️ Provides network security, threat prevention, and traffic filtering</li><li><b>Distribution Switch</b></li></ul>"
+          "pitch":12,
+          "yaw":30,
+          "type":"info",
+          "text":"Rack 6 – Network Security & Distribution",
+          "clickHandlerArgs":{
+            "title":"Rack 6 – Network Security & Distribution",
+            "description":"<h4>Rack 6 – Network Security & Distribution</h4><ul><li><b>Palo Alto Firewall</b></li><li>➡️ Provides network security, threat prevention, and traffic filtering</li><li><b>Distribution Switch</b></li></ul>"
           }
         }
       ]
@@ -623,33 +624,33 @@
           }
         },
         {
-          "pitch": 15,
-          "yaw": -45,
-          "type": "info",
-          "text": "Rack 7 – Smart Integrated Data Center",
-          "clickHandlerArgs": {
-            "title": "Rack 7 – Smart Integrated Data Center",
-            "description": "<h4>Rack 7 – Smart Integrated Data Center</h4><p><b>Vertiv SmartCabinet – Data Center in a Box</b></p><b>Key Features:</b><ul><li>Integrated precision cooling system</li><li>Automated fire suppression (CO₂ / clean agent)</li><li>Environmental monitoring (humidity & water leak detection)</li><li>Biometric access control (fingerprint-based)</li><li>Emergency backup fans</li></ul><b>Installed Equipment:</b><ul><li>Dell EMC PowerEdge Servers</li><li>Dell EMC SAN Storage</li><li>HP HPC GPU Server</li><li>VMware and Hyper V</li></ul>"
+          "pitch":15,
+          "yaw":-45,
+          "type":"info",
+          "text":"Rack 7 – Smart Integrated Data Center",
+          "clickHandlerArgs":{
+            "title":"Rack 7 – Smart Integrated Data Center",
+            "description":"<h4>Rack 7 – Smart Integrated Data Center</h4><p><b>Vertiv SmartCabinet – Data Center in a Box</b></p><b>Key Features:</b><ul><li>Integrated precision cooling system</li><li>Automated fire suppression (CO₂ / clean agent)</li><li>Environmental monitoring (humidity & water leak detection)</li><li>Biometric access control (fingerprint-based)</li><li>Emergency backup fans</li></ul><b>Installed Equipment:</b><ul><li>Dell EMC PowerEdge Servers</li><li>Dell EMC SAN Storage</li><li>HP HPC GPU Server</li><li>VMware and Hyper V</li></ul>"
           }
         },
         {
-          "pitch": 12,
-          "yaw": 5,
-          "type": "info",
-          "text": "Rack 8 – Core Network Rack",
-          "clickHandlerArgs": {
-            "title": "Rack 8 – Core Network Rack",
-            "description": "<h4>Rack 8 – Core Network Rack</h4><ul><li><b>Core/Tore Network Fiber Switches</b></li><li>➡️ Handles backbone network traffic</li><li>➡️ Supports high-speed Ethernet and fiber connectivity</li><li><b>High-density cabling infrastructure</b></li></ul>"
+          "pitch":12,
+          "yaw":5,
+          "type":"info",
+          "text":"Rack 8 – Core Network Rack",
+          "clickHandlerArgs":{
+            "title":"Rack 8 – Core Network Rack",
+            "description":"<h4>Rack 8 – Core Network Rack</h4><ul><li><b>Core/Tore Network Fiber Switches</b></li><li>➡️ Handles backbone network traffic</li><li>➡️ Supports high-speed Ethernet and fiber connectivity</li><li><b>High-density cabling infrastructure</b></li></ul>"
           }
         },
         {
-          "pitch": 12,
-          "yaw": 50,
-          "type": "info",
-          "text": "Rack 9 – Video Surveillance Server",
-          "clickHandlerArgs": {
-            "title": "Rack 9 – Video Surveillance Server",
-            "description": "<h4>Rack 9 – Video Surveillance Server</h4><ul><li><b>DSS (Dahua Security System)</b></li><li>➡️ Intelligent video surveillance management server</li><li>➡️ Provides centralized monitoring and analytics</li></ul>"
+          "pitch":12,
+          "yaw":50,
+          "type":"info",
+          "text":"Rack 9 – Video Surveillance Server",
+          "clickHandlerArgs":{
+            "title":"Rack 9 – Video Surveillance Server",
+            "description":"<h4>Rack 9 – Video Surveillance Server</h4><ul><li><b>DSS (Dahua Security System)</b></li><li>➡️ Intelligent video surveillance management server</li><li>➡️ Provides centralized monitoring and analytics</li></ul>"
           }
         }
       ]
@@ -679,33 +680,33 @@
           }
         },
         {
-          "pitch": 15,
-          "yaw": -35,
-          "type": "info",
-          "text": "Rack 10 – Surveillance Recording",
-          "clickHandlerArgs": {
-            "title": "Rack 10 – Surveillance Recording",
-            "description": "<h4>Rack 10 – Surveillance Recording</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Used for centralized CCTV recording and storage</li></ul>"
+          "pitch":15,
+          "yaw":-35,
+          "type":"info",
+          "text":"Rack 10 – Surveillance Recording",
+          "clickHandlerArgs":{
+            "title":"Rack 10 – Surveillance Recording",
+            "description":"<h4>Rack 10 – Surveillance Recording</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Used for centralized CCTV recording and storage</li></ul>"
           }
         },
         {
-          "pitch": 12,
-          "yaw": 5,
-          "type": "info",
-          "text": "Rack 11 – Surveillance Recording",
-          "clickHandlerArgs": {
-            "title": "Rack 11 – Surveillance Recording",
-            "description": "<h4>Rack 11 – Surveillance Recording</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Used for centralized CCTV recording and storage</li></ul>"
+          "pitch":12,
+          "yaw":5,
+          "type":"info",
+          "text":"Rack 11 – Surveillance Recording",
+          "clickHandlerArgs":{
+            "title":"Rack 11 – Surveillance Recording",
+            "description":"<h4>Rack 11 – Surveillance Recording</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Used for centralized CCTV recording and storage</li></ul>"
           }
         },
         {
-          "pitch": 12,
-          "yaw": 40,
-          "type": "info",
-          "text": "Rack 12 – High Performance Systems",
-          "clickHandlerArgs": {
-            "title": "Rack 12 – High Performance Systems",
-            "description": "<h4>Rack 12 – High Performance Systems</h4><ul><li><b>CDAC Supercomputer</b></li><li><b>NAS (Network Attached Storage) Device</b></li><li><b>GPU Tower Server</b></li><li>➡️ Supports high-performance computing, data analytics, and GPU-based workloads</li></ul>"
+          "pitch":12,
+          "yaw":40,
+          "type":"info",
+          "text":"Rack 12 – High Performance Systems",
+          "clickHandlerArgs":{
+            "title":"Rack 12 – High Performance Systems",
+            "description":"<h4>Rack 12 – High Performance Systems</h4><ul><li><b>CDAC Supercomputer</b></li><li><b>NAS (Network Attached Storage) Device</b></li><li><b>GPU Tower Server</b></li><li>➡️ Supports high-performance computing, data analytics, and GPU-based workloads</li></ul>"
           }
         }
       ]
@@ -868,7 +869,7 @@
             "targetYaw": 0
           }
         },
-        {
+          {
           "pitch": -13,
           "yaw": -43,
           "type": "info",
@@ -1217,7 +1218,7 @@
             "targetYaw": 0
           }
         },
-        {
+         {
           "pitch": -10,
           "yaw": 47,
           "type": "info",
@@ -1322,7 +1323,7 @@
             "targetYaw": 90
           }
         },
-        {
+         {
           "pitch": -8,
           "yaw": 3,
           "type": "info",
@@ -1671,7 +1672,7 @@
             "targetYaw": 180
           }
         },
-        {
+         {
           "pitch": -2,
           "yaw": 65,
           "type": "info",
