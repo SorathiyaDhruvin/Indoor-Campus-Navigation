@@ -672,7 +672,7 @@
         }
 
         if (viewer) {
-            const rotationSpeed = 0.7; // Adjust this value for desired smoothness vs speed
+            const rotationSpeed = 1; // Adjust this value for desired smoothness vs speed
             let pitch = viewer.getPitch();
             let yaw = viewer.getYaw();
             let changed = false;
