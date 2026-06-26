@@ -229,7 +229,7 @@
           "cssClass": "nav-btn animate-bounce-up",
           "clickHandlerArgs": {
             "sceneId": "scene55",
-            "targetYaw": 180
+            "targetYaw": 0
           }
         },
         {
@@ -265,7 +265,7 @@
           "cssClass": "nav-btn animate-bounce-up",
           "clickHandlerArgs": {
             "sceneId": "scene7",
-            "targetYaw": 0
+            "targetYaw": 90
           }
         },
         {

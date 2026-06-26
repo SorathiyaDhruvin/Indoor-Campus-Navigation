@@ -1,0 +1,442 @@
+{
+  "scene1": {
+    "id": "scene1",
+    "image": "assets/ground floor/photo1_result.jpg",
+    "forward": "scene2",
+    "backward": null,
+    "left": null,
+    "right": null
+  },
+  "scene2": {
+    "id": "scene2",
+    "image": "assets/ground floor/photo2_result.jpg",
+    "forward": "scene3",
+    "backward": "scene1",
+    "left": null,
+    "right": null
+  },
+  "scene3": {
+    "id": "scene3",
+    "image": "assets/ground floor/photo3_result.jpg",
+    "forward": "scene6",
+    "backward": "scene2",
+    "left": "scene54",
+    "right": "scene6"
+  },
+  "scene4": {
+    "id": "scene4",
+    "image": "assets/ground floor/photo55_result.jpg",
+    "forward": "scene5",
+    "backward": "scene54",
+    "left": null,
+    "right": null
+  },
+  "scene5": {
+    "id": "scene5",
+    "image": "assets/ground floor/photo56_result.jpg",
+    "forward": null,
+    "backward": null,
+    "left": "scene4",
+    "right": null
+  },
+  "scene6": {
+    "id": "scene6",
+    "image": "assets/ground floor/photo4_result.jpg",
+    "forward": "scene55",
+    "backward": "scene3",
+    "left": null,
+    "right": "scene10"
+  },
+  "scene7": {
+    "id": "scene7",
+    "image": "assets/ground floor/photo24_result.jpg",
+    "forward": "scene8",
+    "backward": null,
+    "left": "scene55",
+    "right": "scene29"
+  },
+  "scene8": {
+    "id": "scene8",
+    "image": "assets/ground floor/photo25_result.jpg",
+    "forward": "scene7",
+    "backward": null,
+    "left": "scene26",
+    "right": null
+  },
+  "scene9": {
+    "id": "scene9",
+    "image": "assets/ground floor/photo9_result.jpg",
+    "forward": "scene19",
+    "backward": "scene55",
+    "left": "scene13",
+    "right": null
+  },
+  "scene10": {
+    "id": "scene10",
+    "image": "assets/ground floor/photo5_result.jpg",
+    "forward": "scene11",
+    "backward": null,
+    "left": "scene6",
+    "right": null
+  },
+  "scene11": {
+    "id": "scene11",
+    "image": "assets/ground floor/photo6_result.jpg",
+    "forward": "scene12",
+    "backward": "scene10",
+    "left": null,
+    "right": null
+  },
+  "scene12": {
+    "id": "scene12",
+    "image": "assets/ground floor/photo7_result.jpg",
+    "forward": null,
+    "backward": "scene11",
+    "left": null,
+    "right": null
+  },
+  "scene13": {
+    "id": "scene13",
+    "image": "assets/ground floor/photo10_result.jpg",
+    "forward": "scene14",
+    "backward": "scene19",
+    "left": null,
+    "right": null
+  },
+  "scene14": {
+    "id": "scene14",
+    "image": "assets/ground floor/photo12_result.jpg",
+    "forward": "scene15",
+    "backward": null,
+    "left": "scene13",
+    "right": null
+  },
+  "scene15": {
+    "id": "scene15",
+    "image": "assets/ground floor/photo13_result.jpg",
+    "forward": null,
+    "backward": null,
+    "left": null,
+    "right": "scene16"
+  },
+  "scene16": {
+    "id": "scene16",
+    "image": "assets/ground floor/photo14_result.jpg",
+    "forward": null,
+    "backward": null,
+    "left": "scene15",
+    "right": "scene17"
+  },
+  "scene17": {
+    "id": "scene17",
+    "image": "assets/ground floor/photo15_result.jpg",
+    "forward": null,
+    "backward": null,
+    "left": "scene16",
+    "right": "scene18"
+  },
+  "scene18": {
+    "id": "scene18",
+    "image": "assets/ground floor/photo16_result.jpg",
+    "forward": null,
+    "backward": null,
+    "left": "scene17",
+    "right": "scene14"
+  },
+  "scene19": {
+    "id": "scene19",
+    "image": "assets/ground floor/photo17_result.jpg",
+    "forward": "scene20",
+    "backward": null,
+    "left": null,
+    "right": "scene9"
+  },
+  "scene20": {
+    "id": "scene20",
+    "image": "assets/ground floor/photo18_result.jpg",
+    "forward": "scene21",
+    "backward": null,
+    "left": null,
+    "right": "scene19"
+  },
+  "scene21": {
+    "id": "scene21",
+    "image": "assets/ground floor/photo19_result.jpg",
+    "forward": "scene22",
+    "backward": "scene20",
+    "left": null,
+    "right": null
+  },
+  "scene22": {
+    "id": "scene22",
+    "image": "assets/ground floor/photo20_result.jpg",
+    "forward": null,
+    "backward": "scene21",
+    "left": null,
+    "right": null
+  },
+  "scene23": {
+    "id": "scene23",
+    "image": "assets/ground floor/photo21_result.jpg",
+    "forward": "scene24",
+    "backward": null,
+    "left": "scene19",
+    "right": null
+  },
+  "scene24": {
+    "id": "scene24",
+    "image": "assets/ground floor/photo22_result.jpg",
+    "forward": "scene25",
+    "backward": "scene23",
+    "left": null,
+    "right": null
+  },
+  "scene25": {
+    "id": "scene25",
+    "image": "assets/ground floor/photo23_result.jpg",
+    "forward": null,
+    "backward": "scene24",
+    "left": null,
+    "right": null
+  },
+  "scene26": {
+    "id": "scene26",
+    "image": "assets/ground floor/photo26_result.jpg",
+    "forward": null,
+    "backward": null,
+    "left": "scene8",
+    "right": "scene27"
+  },
+  "scene27": {
+    "id": "scene27",
+    "image": "assets/ground floor/photo27_result.jpg",
+    "forward": "scene26",
+    "backward": null,
+    "left": null,
+    "right": "scene28"
+  },
+  "scene28": {
+    "id": "scene28",
+    "image": "assets/ground floor/photo28_result.jpg",
+    "forward": "scene26",
+    "backward": null,
+    "left": null,
+    "right": null
+  },
+  "scene29": {
+    "id": "scene29",
+    "image": "assets/ground floor/photo29_result.jpg",
+    "forward": "scene30",
+    "backward": "scene38",
+    "left": null,
+    "right": "scene7"
+  },
+  "scene30": {
+    "id": "scene30",
+    "image": "assets/ground floor/way_107_lab.jpg",
+    "forward": "scene31",
+    "backward": "scene29",
+    "left": null,
+    "right": null
+  },
+  "scene31": {
+    "id": "scene31",
+    "image": "assets/ground floor/photo30_result.jpg",
+    "forward": "scene32",
+    "backward": null,
+    "left": "scene30",
+    "right": null
+  },
+  "scene32": {
+    "id": "scene32",
+    "image": "assets/ground floor/photo31_result.jpg",
+    "forward": "scene33",
+    "backward": null,
+    "left": "scene31",
+    "right": null
+  },
+  "scene33": {
+    "id": "scene33",
+    "image": "assets/ground floor/photo32_result.jpg",
+    "forward": "scene34",
+    "backward": "scene32",
+    "left": null,
+    "right": null
+  },
+  "scene34": {
+    "id": "scene34",
+    "image": "assets/ground floor/photo33_result.jpg",
+    "forward": "scene33",
+    "backward": null,
+    "left": null,
+    "right": null
+  },
+  "scene35": {
+    "id": "scene35",
+    "image": "assets/ground floor/photo34_result.jpg",
+    "forward": "scene36",
+    "backward": null,
+    "left": null,
+    "right": "scene31"
+  },
+  "scene36": {
+    "id": "scene36",
+    "image": "assets/ground floor/photo35_result.jpg",
+    "forward": "scene37",
+    "backward": "scene35",
+    "left": null,
+    "right": null
+  },
+  "scene37": {
+    "id": "scene37",
+    "image": "assets/ground floor/photo36_result.jpg",
+    "forward": null,
+    "backward": "scene36",
+    "left": null,
+    "right": null
+  },
+  "scene38": {
+    "id": "scene38",
+    "image": "assets/ground floor/photo37_result.jpg",
+    "forward": "scene39",
+    "backward": null,
+    "left": "scene44",
+    "right": "scene29"
+  },
+  "scene39": {
+    "id": "scene39",
+    "image": "assets/ground floor/photo38_result.jpg",
+    "forward": null,
+    "backward": "scene40",
+    "left": "scene38",
+    "right": null
+  },
+  "scene40": {
+    "id": "scene40",
+    "image": "assets/ground floor/photo39_result.jpg",
+    "forward": "scene39",
+    "backward": "scene41",
+    "left": null,
+    "right": null
+  },
+  "scene41": {
+    "id": "scene41",
+    "image": "assets/ground floor/photo40_result.jpg",
+    "forward": "scene40",
+    "backward": null,
+    "left": null,
+    "right": null
+  },
+  "scene42": {
+    "id": "scene42",
+    "image": "assets/ground floor/photo42_result.jpg",
+    "forward": "scene43",
+    "backward": null,
+    "left": "scene44",
+    "right": null
+  },
+  "scene43": {
+    "id": "scene43",
+    "image": "assets/ground floor/photo43_result.jpg",
+    "forward": "scene42",
+    "backward": null,
+    "left": null,
+    "right": null
+  },
+  "scene44": {
+    "id": "scene44",
+    "image": "assets/ground floor/photo44_result.jpg",
+    "forward": "scene45",
+    "backward": "scene38",
+    "left": null,
+    "right": null
+  },
+  "scene45": {
+    "id": "scene45",
+    "image": "assets/ground floor/photo45_result.jpg",
+    "forward": "scene54",
+    "backward": null,
+    "left": "scene44",
+    "right": "scene4"
+  },
+  "scene46": {
+    "id": "scene46",
+    "image": "assets/ground floor/photo46_result.jpg",
+    "forward": "scene47",
+    "backward": null,
+    "left": null,
+    "right": "scene54"
+  },
+  "scene47": {
+    "id": "scene47",
+    "image": "assets/ground floor/photo47_result.jpg",
+    "forward": "scene48",
+    "backward": null,
+    "left": null,
+    "right": "scene46"
+  },
+  "scene48": {
+    "id": "scene48",
+    "image": "assets/ground floor/photo48_result.jpg",
+    "forward": null,
+    "backward": "scene49",
+    "left": null,
+    "right": "scene47"
+  },
+  "scene49": {
+    "id": "scene49",
+    "image": "assets/ground floor/photo53_result.jpg",
+    "forward": "scene50",
+    "backward": "scene48",
+    "left": null,
+    "right": "scene51"
+  },
+  "scene50": {
+    "id": "scene50",
+    "image": "assets/ground floor/photo50_result.jpg",
+    "forward": null,
+    "backward": null,
+    "left": null,
+    "right": "scene49"
+  },
+  "scene51": {
+    "id": "scene51",
+    "image": "assets/ground floor/photo51_result.jpg",
+    "forward": null,
+    "backward": null,
+    "left": "scene52",
+    "right": "scene48"
+  },
+  "scene52": {
+    "id": "scene52",
+    "image": "assets/ground floor/photo52_result.jpg",
+    "forward": "scene53",
+    "backward": "scene51",
+    "left": null,
+    "right": null
+  },
+  "scene53": {
+    "id": "scene53",
+    "image": "assets/ground floor/photo54_result.jpg",
+    "forward": null,
+    "backward": "scene52",
+    "left": null,
+    "right": null
+  },
+  "scene54": {
+    "id": "scene54",
+    "image": "assets/ground floor/photo49_result.jpg",
+    "forward": null,
+    "backward": "scene46",
+    "left": "scene3",
+    "right": "scene4"
+  },
+  "scene55": {
+    "id": "scene55",
+    "image": "assets/ground floor/photo8_result.jpg",
+    "forward": "scene9",
+    "backward": "scene6",
+    "left": "scene7",
+    "right": null
+  }
+}

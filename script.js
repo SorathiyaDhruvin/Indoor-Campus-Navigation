@@ -13,6 +13,8 @@
 
         infoBox: $('infoBox'),
         infoBoxText: $('infoBoxText'),
+        btnMenuToggle: $('btnMenuToggle'),
+        mainDropdown: $('mainDropdown'),
         gridOverlay: $('gridOverlay'),
         gridBody: $('gridBody'),
         gridClose: $('gridClose'),
@@ -32,6 +34,8 @@
         navGuidePanel: $('navGuidePanel'),
         navGuideClose: $('navGuideClose'),
         btnNavGuide: $('btnNavGuide'),
+        btnToggleArrows: $('btnToggleArrows'),
+        txtToggleArrows: $('txtToggleArrows'),
         floorSelect: $('floorSelect'),
         labSelect: $('labSelect'),
         navGuideGo: $('navGuideGo'),
@@ -326,6 +330,10 @@
             const onLoad = () => {
                 console.log("[loadScene] Scene loaded successfully: " + sceneId);
 
+                // Enforce target pitch/yaw in case Pannellum restores a cached camera state
+                if (yaw !== undefined && yaw !== null) viewer.setYaw(yaw, false);
+                if (pitch !== undefined && pitch !== null) viewer.setPitch(pitch, false);
+
                 if (activeLoadTimeout) {
                     clearTimeout(activeLoadTimeout);
                     activeLoadTimeout = null;
@@ -391,27 +399,37 @@
        ───────────────────────────────────────────── */
     function smoothTransition(event, args) {
         if (event) event.stopPropagation();
-        console.log("Hotspot clicked");
-        console.log("Target Scene:", args.sceneId);
+        if (typeof playWhoosh === 'function') playWhoosh();
+        
+        console.log("Hotspot clicked, switching to Target Scene:", args.sceneId);
 
         const entryPitch = args.targetPitch ?? 0;
         const entryYaw = args.targetYaw ?? 0;
-        const entryHfov = viewer.getHfov();
+        const currentHfov = viewer.getHfov();
 
-        // Record the entry direction so compass can reset to it
         sceneEntryPositions[args.sceneId] = {
             pitch: entryPitch,
             yaw: entryYaw,
-            hfov: entryHfov
+            hfov: currentHfov
         };
 
-        loadScene(args.sceneId, entryPitch, entryYaw, entryHfov);
+        // Load the scene immediately without camera zoom animation
+        loadScene(args.sceneId, entryPitch, entryYaw, currentHfov);
     }
 
     function hotspotText(div) {
         const el = document.createElement('div');
         el.classList.add('hotspot-content');
-        el.innerHTML = '<img src="assets/arrow.png" class="arrow-img">';
+        el.innerHTML = `
+            <svg class="arrow-img" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- Top Solid Chevron (chev-3) -->
+                <path class="chev-3" d="M 60 5 L 90 50 L 60 95 L 48 95 L 78 50 L 48 5 Z" fill="#ffffff" />
+                <!-- Middle Outline Chevron (chev-2) -->
+                <path class="chev-2" d="M 36 5 L 66 50 L 36 95 L 24 95 L 54 50 L 24 5 Z" fill="none" stroke="#ffffff" stroke-width="2.5" />
+                <!-- Bottom Outline Chevron (chev-1) -->
+                <path class="chev-1" d="M 12 5 L 42 50 L 12 95 L 0 95 L 30 50 L 0 5 Z" fill="none" stroke="#ffffff" stroke-width="2.5" />
+            </svg>
+        `;
         div.innerHTML = '';
         div.appendChild(el);
     }
@@ -438,6 +456,52 @@
     dom.infoPopup.addEventListener('click', (e) => {
         if (e.target === dom.infoPopup) closeInfo();
     });
+
+    // Keyboard shortcuts
+    window.addEventListener('keydown', (e) => {
+        // 'Q' key to toggle the options menu
+        if (e.key === 'q' || e.key === 'Q') {
+            if (dom.mainDropdown) {
+                dom.mainDropdown.classList.toggle('show');
+            }
+        } 
+        else if (e.key === '1') { if (dom.btnNavGuide) dom.btnNavGuide.click(); }
+        else if (e.key === '2') { if (dom.btnGrid) dom.btnGrid.click(); }
+        else if (e.key === '3') { if (dom.btnFullscreen) dom.btnFullscreen.click(); }
+        else if (e.key === '4') { if (dom.btnHelp) dom.btnHelp.click(); }
+        else if (e.key === '5') { if (dom.btnToggleArrows) dom.btnToggleArrows.click(); }
+        // Spacebar to toggle info popup if looking at an info hotspot in the current scene
+        else if (e.code === 'Space' || e.keyCode === 32) {
+            e.preventDefault(); // Prevent page scroll
+            if (dom.infoPopup.classList.contains('active')) {
+                closeInfo();
+            } else {
+                if (viewer && configData && currentSceneId && configData.scenes[currentSceneId]) {
+                    const pitch = viewer.getPitch();
+                    let yaw = viewer.getYaw();
+                    const hotspots = configData.scenes[currentSceneId].hotSpots || [];
+                    
+                    let found = null;
+                    for (const hs of hotspots) {
+                        if (hs.type === 'info' && hs.pitch !== undefined && hs.yaw !== undefined) {
+                            const dPitch = Math.abs(hs.pitch - pitch);
+                            let dYaw = Math.abs(hs.yaw - yaw);
+                            if (dYaw > 180) dYaw = 360 - dYaw; // shortest distance around circle
+                            
+                            const dist = Math.sqrt(dPitch * dPitch + dYaw * dYaw);
+                            if (dist < 35) { // 35 degrees field of view threshold (more forgiving)
+                                found = hs;
+                                break;
+                            }
+                        }
+                    }
+                    if (found && found.clickHandlerArgs) {
+                        showInfo(null, found.clickHandlerArgs);
+                    }
+                }
+            }
+        }
+    }, true);
 
     /* ─────────────────────────────────────────────
        HELP PANEL (right side — only one at a time)
@@ -555,6 +619,21 @@
     dom.btnFullscreen.addEventListener('click', toggleFullscreen);
 
     /* ─────────────────────────────────────────────
+       TOGGLE ARROWS
+       ───────────────────────────────────────────── */
+    function toggleArrows() {
+        document.body.classList.toggle('hide-arrows');
+        if (dom.txtToggleArrows) {
+            if (document.body.classList.contains('hide-arrows')) {
+                dom.txtToggleArrows.innerText = 'Show Arrows';
+            } else {
+                dom.txtToggleArrows.innerText = 'Hide Arrows';
+            }
+        }
+    }
+    if (dom.btnToggleArrows) dom.btnToggleArrows.addEventListener('click', toggleArrows);
+
+    /* ─────────────────────────────────────────────
        UPDATE UI ON SCENE CHANGE
        ───────────────────────────────────────────── */
     function updatePreloads(sceneId) {
@@ -664,29 +743,46 @@
 
     const activeKeys = new Set();
     let isAnimatingCamera = false;
+    let cameraVelPitch = 0;
+    let cameraVelYaw = 0;
 
     function smoothCameraLoop() {
-        if (!activeKeys.has('w') && !activeKeys.has('a') && !activeKeys.has('s') && !activeKeys.has('d')) {
+        if (!viewer) return;
+
+        const maxSpeed = 1.4; // Slightly reduced for better control
+        const acceleration = 0.10; // Slightly reduced ramp-up
+        const friction = 0.88; // Friction for smooth gliding stop
+
+        let inputPitch = 0;
+        let inputYaw = 0;
+
+        if (activeKeys.has('w')) inputPitch += 1;
+        if (activeKeys.has('s')) inputPitch -= 1;
+        if (activeKeys.has('a') || activeKeys.has('arrowleft')) inputYaw -= 1;
+        if (activeKeys.has('d') || activeKeys.has('arrowright')) inputYaw += 1;
+
+        // Apply acceleration
+        cameraVelPitch += inputPitch * acceleration;
+        cameraVelYaw += inputYaw * acceleration;
+
+        // Apply friction
+        cameraVelPitch *= friction;
+        cameraVelYaw *= friction;
+
+        // Stop animating if velocity is extremely low and no keys are pressed
+        if (inputPitch === 0 && inputYaw === 0 && Math.abs(cameraVelPitch) < 0.01 && Math.abs(cameraVelYaw) < 0.01) {
+            cameraVelPitch = 0;
+            cameraVelYaw = 0;
             isAnimatingCamera = false;
             return;
         }
 
-        if (viewer) {
-            const rotationSpeed = 1; // Adjust this value for desired smoothness vs speed
-            let pitch = viewer.getPitch();
-            let yaw = viewer.getYaw();
-            let changed = false;
+        let pitch = viewer.getPitch();
+        let yaw = viewer.getYaw();
+        
+        viewer.setPitch(pitch + cameraVelPitch, false);
+        viewer.setYaw(yaw + cameraVelYaw, false);
 
-            if (activeKeys.has('w')) { pitch += rotationSpeed; changed = true; }
-            if (activeKeys.has('s')) { pitch -= rotationSpeed; changed = true; }
-            if (activeKeys.has('a')) { yaw -= rotationSpeed; changed = true; }
-            if (activeKeys.has('d')) { yaw += rotationSpeed; changed = true; }
-
-            if (changed) {
-                viewer.setPitch(pitch, false);
-                viewer.setYaw(yaw, false);
-            }
-        }
         requestAnimationFrame(smoothCameraLoop);
     }
 
@@ -702,8 +798,8 @@
             return;
         }
 
-        // Smooth fast rotation with WASD
-        if (['w', 'a', 's', 'd'].includes(k)) {
+        // Smooth fast rotation with WASD and Left/Right arrows
+        if (['w', 'a', 's', 'd', 'arrowleft', 'arrowright'].includes(k)) {
             e.preventDefault();
             e.stopPropagation();
             activeKeys.add(k);
@@ -724,7 +820,7 @@
     document.addEventListener('keyup', (e) => {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
         const k = e.key.toLowerCase();
-        if (['w', 'a', 's', 'd'].includes(k)) {
+        if (['w', 'a', 's', 'd', 'arrowleft', 'arrowright'].includes(k)) {
             activeKeys.delete(k);
         }
     }, { capture: true });
@@ -925,7 +1021,29 @@
         dom.navGuidePanel.classList.contains('open') ? closeNavGuide() : openNavGuide();
     }
 
-    dom.btnNavGuide.addEventListener('click', toggleNavGuide);
+    dom.btnNavGuide.addEventListener('click', () => { toggleNavGuide(); closeDropdown(); });
+
+    dom.btnMenuToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        dom.mainDropdown.classList.toggle('show');
+    });
+
+    document.addEventListener('click', function(e) {
+        if (dom.mainDropdown && !dom.mainDropdown.contains(e.target) && e.target !== dom.btnMenuToggle) {
+            closeDropdown();
+        }
+    });
+
+    // Close dropdown when any item inside it is clicked
+    dom.mainDropdown.addEventListener('click', function(e) {
+        if (e.target.closest('.dropdown-item')) {
+            closeDropdown();
+        }
+    });
+
+    function closeDropdown() {
+        if (dom.mainDropdown) dom.mainDropdown.classList.remove('show');
+    }
     dom.navGuideClose.addEventListener('click', closeNavGuide);
 
     /* ── Populate floor dropdown ── */
@@ -1301,4 +1419,107 @@
             })
             .catch((err) => { console.error(err); ready(); });
     });
+
+    /* ==========================================================
+       VR CURSOR & AUDIO SYNTHESIZER
+       ========================================================== */
+    const vrCursor = document.getElementById('vrCursor');
+    if (vrCursor) {
+        let lastMouseX = -1;
+        let lastMouseY = -1;
+        
+        window.addEventListener('mousemove', (e) => {
+            // Only show if the mouse actually moved to avoid phantom events
+            if (lastMouseX !== -1 && (Math.abs(e.clientX - lastMouseX) > 1 || Math.abs(e.clientY - lastMouseY) > 1)) {
+                if (vrCursor.style.display === 'none') vrCursor.style.display = 'block';
+            }
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+            
+            vrCursor.style.left = e.clientX + 'px';
+            vrCursor.style.top = e.clientY + 'px';
+        }, true);
+        
+        // Use capture phase (true) so Pannellum doesn't block the event with stopPropagation
+        window.addEventListener('keydown', () => {
+            vrCursor.style.display = 'none';
+        }, true);
+
+        window.addEventListener('mousedown', () => vrCursor.classList.add('dragging'), true);
+        window.addEventListener('mouseup', () => vrCursor.classList.remove('dragging'), true);
+
+        // Magnetic hover
+        const addMagnetic = () => { vrCursor.classList.add('magnetic'); playTick(); };
+        const removeMagnetic = () => vrCursor.classList.remove('magnetic');
+
+        const attachMagneticToElements = () => {
+            document.querySelectorAll('button, a, select, .grid-item, .nav-btn, .hotspot-content').forEach(el => {
+                if (!el.dataset.vrBound) {
+                    el.addEventListener('mouseenter', addMagnetic);
+                    el.addEventListener('mouseleave', removeMagnetic);
+                    el.dataset.vrBound = 'true';
+                }
+            });
+        };
+        attachMagneticToElements();
+        
+        // Pannellum dynamically creates hotspots, so observe the DOM for changes
+        const observer = new MutationObserver(() => attachMagneticToElements());
+        observer.observe(document.body, { childList: true, subtree: true });
+    }
+
+    // Audio Synthesizer (Web Audio API)
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudio() {
+        if (!audioCtx) audioCtx = new AudioContext();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    // Initialize audio on first user interaction (browser policy)
+    document.addEventListener('click', initAudio, { once: true });
+
+    window.playTick = function() {
+        if (!audioCtx) return;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(2000, audioCtx.currentTime + 0.05);
+        gain.gain.setValueAtTime(0, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.08, audioCtx.currentTime + 0.01);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.06);
+    };
+
+    window.playWhoosh = function() {
+        if (!audioCtx) return;
+        const bufferSize = audioCtx.sampleRate * 0.5;
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1; // White noise
+        }
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(100, audioCtx.currentTime);
+        filter.frequency.exponentialRampToValueAtTime(1500, audioCtx.currentTime + 0.2);
+        filter.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.5);
+        
+        const gain = audioCtx.createGain();
+        gain.gain.setValueAtTime(0, audioCtx.currentTime);
+        gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+        
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(audioCtx.destination);
+        noise.start();
+    };
 })();
