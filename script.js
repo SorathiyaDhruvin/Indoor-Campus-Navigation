@@ -423,11 +423,11 @@
         el.innerHTML = `
             <svg class="arrow-img" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
                 <!-- Top Solid Chevron (chev-3) -->
-                <path class="chev-3" d="M 60 5 L 90 50 L 60 95 L 48 95 L 78 50 L 48 5 Z" fill="#ffffff" />
+                <path class="chev-3" d="M 70 5 L 100 50 L 70 95 L 60 95 L 90 50 L 60 5 Z" fill="#ffffff" />
                 <!-- Middle Outline Chevron (chev-2) -->
-                <path class="chev-2" d="M 36 5 L 66 50 L 36 95 L 24 95 L 54 50 L 24 5 Z" fill="none" stroke="#ffffff" stroke-width="2.5" />
+                <path class="chev-2" d="M 40 5 L 70 50 L 40 95 L 30 95 L 60 50 L 30 5 Z" fill="none" stroke="#ffffff" stroke-width="2.5" />
                 <!-- Bottom Outline Chevron (chev-1) -->
-                <path class="chev-1" d="M 12 5 L 42 50 L 12 95 L 0 95 L 30 50 L 0 5 Z" fill="none" stroke="#ffffff" stroke-width="2.5" />
+                <path class="chev-1" d="M 10 5 L 40 50 L 10 95 L 0 95 L 30 50 L 0 5 Z" fill="none" stroke="#ffffff" stroke-width="2.5" />
             </svg>
         `;
         div.innerHTML = '';
