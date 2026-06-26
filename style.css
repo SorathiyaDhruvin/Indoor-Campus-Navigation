@@ -508,7 +508,7 @@ body {
    ========================================================== */
 .nav-btn {
   width: 80px;
-  height: 150px;
+  height: 80px;
   cursor: pointer;
   z-index: 1;
   background: transparent;
