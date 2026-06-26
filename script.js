@@ -56,6 +56,73 @@
     let currentOnLoadHandler = null;
     const sceneEntryPositions = {};
 
+    /* ── AUDIO MANAGER ── */
+    const AudioManager = {
+        currentAudio: null,
+        isMuted: false,
+        activeSceneAudioData: null,
+        playTimeout: null,
+        
+        playSceneAudio: function(sceneId) {
+            this.stopAudio();
+            const sceneConfig = configData?.scenes?.[sceneId];
+            if (!sceneConfig || !sceneConfig.audio || !sceneConfig.audio.file) return;
+
+            this.activeSceneAudioData = sceneConfig.audio;
+            
+            this.playTimeout = setTimeout(() => {
+                if (this.isMuted) return; // Wait to play if muted
+                this.forcePlayCurrent();
+            }, sceneConfig.audio.delay || 700);
+        },
+
+        forcePlayCurrent: function() {
+            if (!this.activeSceneAudioData || this.isMuted) return;
+            
+            // Unload previous
+            if (this.currentAudio) {
+                this.currentAudio.pause();
+                this.currentAudio.src = "";
+                this.currentAudio = null;
+            }
+
+            this.currentAudio = new Audio(this.activeSceneAudioData.file);
+            this.currentAudio.volume = this.activeSceneAudioData.volume !== undefined ? this.activeSceneAudioData.volume : 1.0;
+            this.currentAudio.loop = !!this.activeSceneAudioData.loop;
+            
+            // Autoplay policy handle
+            this.currentAudio.play().catch(e => {
+                console.warn("[AudioManager] Autoplay prevented. User interaction required.", e);
+            });
+        },
+
+        stopAudio: function() {
+            if (this.playTimeout) {
+                clearTimeout(this.playTimeout);
+                this.playTimeout = null;
+            }
+            if (this.currentAudio) {
+                this.currentAudio.pause();
+                this.currentAudio.currentTime = 0;
+            }
+        },
+
+        toggleMute: function() {
+            this.isMuted = !this.isMuted;
+            if (this.isMuted) {
+                if (this.currentAudio) this.currentAudio.pause();
+            } else {
+                if (this.currentAudio) {
+                    this.currentAudio.play().catch(e => console.warn(e));
+                } else if (this.activeSceneAudioData) {
+                    // Restart from beginning if unmuted
+                    this.forcePlayCurrent();
+                }
+            }
+            return this.isMuted;
+        }
+    };
+
     /* ─────────────────────────────────────────────
        LOADING SCREEN
        ───────────────────────────────────────────── */
@@ -411,7 +478,16 @@
     function hotspotText(div) {
         const el = document.createElement('div');
         el.classList.add('hotspot-content');
-        el.innerHTML = '<img src="assets/arrow.png" class="arrow-img">';
+        el.innerHTML = `
+            <svg class="arrow-img" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- Top Solid Chevron (chev-3) -->
+                <path class="chev-3" d="M 60 5 L 90 50 L 60 95 L 48 95 L 78 50 L 48 5 Z" fill="#ffffff" />
+                <!-- Middle Outline Chevron (chev-2) -->
+                <path class="chev-2" d="M 36 5 L 66 50 L 36 95 L 24 95 L 54 50 L 24 5 Z" fill="none" stroke="#ffffff" stroke-width="2.5" />
+                <!-- Bottom Outline Chevron (chev-1) -->
+                <path class="chev-1" d="M 12 5 L 42 50 L 12 95 L 0 95 L 30 50 L 0 5 Z" fill="none" stroke="#ffffff" stroke-width="2.5" />
+            </svg>
+        `;
         div.innerHTML = '';
         div.appendChild(el);
     }
@@ -448,8 +524,8 @@
         dom.helpOverlay.classList.contains('active') ? closeHelp() : openHelp();
     }
 
-    dom.btnHelp.addEventListener('click', toggleHelp);
-    dom.helpClose.addEventListener('click', closeHelp);
+    if (dom.btnHelp) dom.btnHelp.addEventListener('click', toggleHelp);
+    if (dom.helpClose) dom.helpClose.addEventListener('click', closeHelp);
     dom.helpOverlay.addEventListener('click', (e) => {
         if (e.target === dom.helpOverlay) closeHelp();
     });
@@ -472,8 +548,8 @@
         dom.gridOverlay.classList.contains('active') ? closeGrid() : openGrid();
     }
 
-    dom.btnGrid.addEventListener('click', toggleGrid);
-    dom.gridClose.addEventListener('click', closeGrid);
+    if (dom.btnGrid) dom.btnGrid.addEventListener('click', toggleGrid);
+    if (dom.gridClose) dom.gridClose.addEventListener('click', closeGrid);
     dom.gridOverlay.addEventListener('click', (e) => {
         if (e.target === dom.gridOverlay) closeGrid();
     });
@@ -915,18 +991,18 @@
     function openNavGuide() {
         closeHelp(); closeGrid();
         dom.navGuidePanel.classList.add('open');
-        dom.btnNavGuide.classList.add('active');
+        if (dom.btnNavGuide) dom.btnNavGuide.classList.add('active');
     }
     function closeNavGuide() {
         dom.navGuidePanel.classList.remove('open');
-        dom.btnNavGuide.classList.remove('active');
+        if (dom.btnNavGuide) dom.btnNavGuide.classList.remove('active');
     }
     function toggleNavGuide() {
         dom.navGuidePanel.classList.contains('open') ? closeNavGuide() : openNavGuide();
     }
 
-    dom.btnNavGuide.addEventListener('click', toggleNavGuide);
-    dom.navGuideClose.addEventListener('click', closeNavGuide);
+    if (dom.btnNavGuide) dom.btnNavGuide.addEventListener('click', toggleNavGuide);
+    if (dom.navGuideClose) dom.navGuideClose.addEventListener('click', closeNavGuide);
 
     /* ── Populate floor dropdown ── */
     Object.keys(FLOOR_DATA).forEach(floor => {
@@ -1235,6 +1311,7 @@
                     viewer.on('scenechange', function (sceneId) {
                         updateUI(sceneId);
                         onSceneChangeNav(sceneId);
+                        AudioManager.playSceneAudio(sceneId);
                     });
 
                     /* ── Record entry position for the first scene (config defaults) ── */
@@ -1283,6 +1360,12 @@
 
                     lockHfov(TARGET_HFOV);
                     currentSceneId = first;
+                    
+                    // First scene Audio trigger
+                    setTimeout(() => {
+                        AudioManager.playSceneAudio(first);
+                    }, 500);
+
                     ready();
                 }
 
@@ -1301,4 +1384,95 @@
             })
             .catch((err) => { console.error(err); ready(); });
     });
+
+    /* ==========================================================
+       UI EVENT BINDINGS (Menu & Controls)
+       ========================================================== */
+    const btnMenuToggle = document.getElementById('btnMenuToggle');
+    const menuDropdown = document.getElementById('menuDropdown');
+    const iconHamburger = document.getElementById('iconHamburger');
+    const iconClose = document.getElementById('iconClose');
+    
+    if (btnMenuToggle && menuDropdown) {
+        btnMenuToggle.addEventListener('click', () => {
+            const isHidden = menuDropdown.style.display === 'none';
+            if (isHidden) {
+                menuDropdown.style.display = 'flex';
+                iconHamburger.style.display = 'none';
+                iconClose.style.display = 'block';
+            } else {
+                menuDropdown.style.display = 'none';
+                iconHamburger.style.display = 'block';
+                iconClose.style.display = 'none';
+            }
+        });
+    }
+
+    const btnAudio = document.getElementById('btnAudio');
+    const iconUnmuted = document.getElementById('iconUnmuted');
+    const iconMuted = document.getElementById('iconMuted');
+
+    if (btnAudio) {
+        btnAudio.addEventListener('click', () => {
+            const isMuted = AudioManager.toggleMute();
+            if (isMuted) {
+                iconUnmuted.style.display = 'none';
+                iconMuted.style.display = 'block';
+            } else {
+                iconUnmuted.style.display = 'block';
+                iconMuted.style.display = 'none';
+            }
+        });
+    }
+
+    let arrowsVisible = true;
+    const btnToggleArrows = document.getElementById('btnToggleArrows');
+    const iconEye = document.getElementById('iconEye');
+    const iconEyeOff = document.getElementById('iconEyeOff');
+    
+    if (btnToggleArrows) {
+        btnToggleArrows.addEventListener('click', () => {
+            arrowsVisible = !arrowsVisible;
+            // Target the hotSpots and toggle visibility
+            const hotspots = document.querySelectorAll('.nav-btn');
+            hotspots.forEach(hs => {
+                hs.style.opacity = arrowsVisible ? '1' : '0';
+                hs.style.pointerEvents = arrowsVisible ? 'auto' : 'none';
+            });
+            
+            if (iconEye && iconEyeOff) {
+                if (arrowsVisible) {
+                    iconEye.style.display = 'block';
+                    iconEyeOff.style.display = 'none';
+                } else {
+                    iconEye.style.display = 'none';
+                    iconEyeOff.style.display = 'block';
+                }
+            }
+        });
+        
+        // Ensure new scene hotSpots also follow the current visibility state
+        const observer = new MutationObserver(() => {
+            if (!arrowsVisible) {
+                const hotspots = document.querySelectorAll('.nav-btn');
+                hotspots.forEach(hs => {
+                    hs.style.opacity = '0';
+                    hs.style.pointerEvents = 'none';
+                });
+            }
+        });
+        const panoContainer = document.getElementById('panorama');
+        if (panoContainer) {
+            observer.observe(panoContainer, { childList: true, subtree: true });
+        }
+    }
+
+    const btnFullscreen = document.getElementById('btnFullscreen');
+    if (btnFullscreen) {
+        btnFullscreen.addEventListener('click', () => {
+            if (viewer) {
+                viewer.toggleFullscreen();
+            }
+        });
+    }
 })();
