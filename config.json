@@ -8,7 +8,7 @@
   "scenes": {
     "scene1": {
       "title": "CV RAMAN CENTER ",
-      "panorama": "assets/ground floor/first_image.png",
+      "panorama": "assets/ground floor/photo1_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -21,7 +21,17 @@
             "targetYaw": 0
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene1.mp3",
+        "text": "Welcome to the CV Raman Center, a Center of Excellence for Advanced Computational Skills and Research. During this virtual tour you will explore modern laboratories, advanced technologies, and innovation facilities designed to prepare students for future careers."
+      }
     },
     "scene2": {
       "title": "CV RAMAN CENTER ",
@@ -47,7 +57,17 @@
             "targetYaw": 180
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene2.mp3",
+        "text": "You are in the CV Raman Center. Please continue exploring the campus."
+      }
     },
     "scene3": {
       "title": "CV RAMAN CENTER ",
@@ -100,7 +120,17 @@
             "targetYaw": -180
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene3.mp3",
+        "text": "You are in the CV Raman Center. Please continue exploring the campus."
+      }
     },
     "scene4": {
       "title": "System Support Cell",
@@ -135,7 +165,17 @@
             "targetYaw": 0
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene4.mp3",
+        "text": "Welcome to the System Support Cell. Feel free to explore the area."
+      }
     },
     "scene5": {
       "title": "System Support Cell ",
@@ -152,7 +192,17 @@
             "targetYaw": -180
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene5.mp3",
+        "text": "Welcome to the System Support Cell . Feel free to explore the area."
+      }
     },
     "scene6": {
       "title": "L-102 ARTIFICIAL INTELLIGENCE & MACHINE LEARNING LAB ",
@@ -206,7 +256,17 @@
             "description": "<h4>Purpose</h4><ul><li>Designing, training, and deploying Machine Learning and Deep Learning models</li><li>Exploring Artificial Intelligence techniques including NLP, Computer Vision, and Reinforcement Learning</li><li>Working with real-world datasets for predictive analytics and pattern recognition</li><li>Building intelligent systems using supervised, unsupervised, and semi-supervised learning</li></ul><h4>Key Equipment</h4><ul><li>High-performance GPU workstations (NVIDIA CUDA-enabled) for model training</li><li>AI/ML frameworks – TensorFlow, PyTorch, Keras, and Scikit-learn</li><li>Jupyter Notebook and Google Colab environments for interactive development</li><li>Large-scale datasets and data preprocessing pipelines</li><li>Cloud-based AI services – AWS SageMaker, Google AI Platform, and Azure ML</li></ul><h4>Skills Developed</h4><ul><li>Machine Learning model design, training, and evaluation</li><li>Deep Learning – CNNs, RNNs, Transformers, and GANs</li><li>Natural Language Processing and Computer Vision applications</li><li>Data preprocessing, feature engineering, and exploratory data analysis</li><li>Model deployment, optimization, and MLOps best practices</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene6.mp3",
+        "text": "Welcome to the L-102 ARTIFICIAL INTELLIGENCE & MACHINE LEARNING LAB . . Purpose: Designing, training, and deploying Machine Learning and Deep Learning models, Exploring Artificial Intelligence techniques including NLP, Computer Vision, and Reinforcement Learning, Working with real-world datasets for predictive analytics and pattern recognition, Building intelligent systems using supervised, unsupervised, and semi-supervised learning. . Key Equipment: High-performance GPU workstations (NVIDIA CUDA-enabled) for model training, AI/ML frameworks – TensorFlow, PyTorch, Keras, and Scikit-learn, Jupyter Notebook and Google Colab environments for interactive development, Large-scale datasets and data preprocessing pipelines, Cloud-based AI services – AWS SageMaker, Google AI Platform, and Azure ML. . Skills Developed: Machine Learning model design, training, and evaluation, Deep Learning – CNNs, RNNs, Transformers, and GANs, Natural Language Processing and Computer Vision applications, Data preprocessing, feature engineering, and exploratory data analysis, Model deployment, optimization, and MLOps best practices."
+      }
     },
     "scene7": {
       "title": "APPLE AUTHORIZED TRAINING CENTER",
@@ -251,11 +311,21 @@
             "description": "<h4>Purpose</h4><ul><li>Providing official Apple-certified training for iOS, macOS, watchOS, and visionOS app development</li><li>Hands-on learning of Swift programming, SwiftUI, and UIKit frameworks</li><li>Building production-ready applications for the Apple ecosystem</li><li>Preparing students for Apple Developer certifications and App Store deployment</li></ul><h4>Key Equipment</h4><ul><li>Apple iMac with M1 Chip and 8GB Memory</li><li>iPad Pro 6th Generation (12.9-inch)</li><li>iPad 10th Generation</li><li>iPhone 14</li><li>iPhone 14 Pro</li><li>Xcode IDE with Interface Builder, Instruments, and Simulator</li><li>Large interactive display for live coding demonstrations and UI previews</li></ul><h4>Skills Developed</h4><ul><li>Swift programming and modern app architecture (MVVM, MVC)</li><li>UI development using SwiftUI and UIKit with responsive layouts</li><li>Core Data, CloudKit, and RESTful API integration</li><li>App Store submission, TestFlight beta testing, and CI/CD workflows</li><li>AR development with ARKit and cross-platform Apple ecosystem integration</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene7.mp3",
+        "text": "Welcome to the APPLE AUTHORIZED TRAINING CENTER. . Purpose: Providing official Apple-certified training for iOS, macOS, watchOS, and visionOS app development, Hands-on learning of Swift programming, SwiftUI, and UIKit frameworks, Building production-ready applications for the Apple ecosystem, Preparing students for Apple Developer certifications and App Store deployment. . Key Equipment: Apple iMac with M1 Chip and 8GB Memory, iPad Pro 6th Generation (12.9-inch), iPad 10th Generation, iPhone 14, iPhone 14 Pro, Xcode IDE with Interface Builder, Instruments, and Simulator, Large interactive display for live coding demonstrations and UI previews. . Skills Developed: Swift programming and modern app architecture (MVVM, MVC), UI development using SwiftUI and UIKit with responsive layouts, Core Data, CloudKit, and RESTful API integration, App Store submission, TestFlight beta testing, and CI/CD workflows, AR development with ARKit and cross-platform Apple ecosystem integration."
+      }
     },
     "scene8": {
       "title": "APPLE AUTHORIZED TRAINING CENTER",
-      "panorama": "assets/ground floor/apple_device_result.jpg",
+      "panorama": "assets/ground floor/photo25_result.jpg",
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
@@ -307,7 +377,17 @@
             "description": "<h4>iMac with M1 Chip</h4><ul><li><b>Display:</b> 24-inch 4.5K Retina display with P3 wide color and 500 nits brightness</li><li><b>Chip:</b> Apple M1 chip with 8-core CPU and 7-core or 8-core GPU</li><li><b>Memory:</b> 8GB unified memory (configurable up to 16GB)</li><li><b>Storage:</b> 256GB or 512GB SSD (configurable up to 1TB)</li><li><b>Features:</b> 1080p FaceTime HD camera, six-speaker sound system with Spatial Audio, Magic Keyboard with Touch ID, two Thunderbolt/USB 4 ports</li><li><b>Use in Lab:</b> Primary development workstation for building iOS, macOS, watchOS, and visionOS applications using Xcode IDE, running simulators, and performing UI/UX design with SwiftUI previews</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene8.mp3",
+        "text": "Welcome to the APPLE AUTHORIZED TRAINING CENTER. . iPhone 14 Pro: Display: 6.1-inch Super Retina XDR with ProMotion (120Hz) and Always-On display, Chip: A16 Bionic chip with 6-core CPU and 5-core GPU, Camera: 48MP Main + 12MP Ultra Wide + 12MP Telephoto with 3x optical zoom, Storage: Available in 128GB, 256GB, 512GB, and 1TB, Features: Dynamic Island, Crash Detection, Emergency SOS via satellite, Ceramic Shield front, Surgical-grade stainless steel design, Use in Lab: Used for testing and deploying iOS applications built with Swift and SwiftUI, debugging with Xcode Instruments, and real-device performance profiling."
+      }
     },
     "scene9": {
       "title": "System Support Cell ",
@@ -342,7 +422,6 @@
             "targetYaw": -180
           }
         },
-         
         {
           "pitch": 25,
           "yaw": -60,
@@ -353,7 +432,17 @@
             "description": "<h4>System Support Cell</h4><b>Infrastructure & Hardware</b><ul><li>Dell R740xd (24 Bay) Blade Servers – 6 Nos</li><li>Dell ME4012 Storage Controllers with 49 TB Storage – 2 Nos</li><li>VMware vSphere Standard Subscription – 12 Nos</li><li>VMware Infrastructure Monitoring & Management – 2 Nos</li><li>VMware vCenter Server License – 4 Nos</li><li>Veeam Backup & Replication Enterprise Plus Suite License</li><li>Dell S5248F-ON Core Switch – 25 Nos (100 Gbps Ports) – 2 Nos (Duplicate)</li></ul><b>Networking & Power</b><ul><li>Dell S4148F-ON Core Switch – 25 Nos (100 Gbps Ports)</li><li>Cisco Load Balancer Appliance – 1 No (Duplicate)</li><li>Temp, Humidity & Air Flow Controller – 2 Nos</li><li>Temp & Humidity Sensors for Fire Detection & Suppression System</li><li>Water Leak Detection System</li><li>Door Switch Sensors for Server Rooms</li><li>UPS: 60 KVA – Backup up to 4 Hours for Data Centre (Duplicate)</li></ul><b>Servers & Storage</b><ul><li>EP Blade Centre C7000 (8 Bay Blade Server Chassis) – 2 Nos</li><li>HP MSA 2000 Storage Controllers – 12 TB Storage (Duplicate)</li><li>HP LTO Tape Drive Backup (Duplicate)</li><li>HP DL380 Blade Server (Duplicate)</li><li>QNAP Storage – 18 TB Storage – 2 Nos (Duplicate)</li></ul><b>Computing Resources</b><ul><li>Core i5 Computers – 3300+</li><li>Core i3 Laptops – 600+</li><li>Core i3 Workstations – 200+</li></ul><b>Security & Surveillance</b><ul><li>Endpoint Security (4500 PCs)</li><li>32 Channel Network Video Recorder for Surveillance</li><li>1500+ IP Cameras (24x7 Monitoring)</li><li>Biometric Attendance System</li></ul><b>Networking Infrastructure</b><ul><li>450+ Managed Network Switches (Access Network)</li></ul><b>Labs, Facilities & Campus IT</b><ul><li>20+ Data Centres (Core & Distribution Network)</li><li>Cisco Network Monitoring & Enterprise Software</li><li>High-speed Fiber Backbone Connectivity</li><li>Language Labs (German, French, etc.)</li><li>Multiple Open Stack Labs</li><li>42+ Servers in Racks</li><li>150+ Computer Laboratories for UG & PG Students</li></ul><b>Healthcare & Smart Systems</b><ul><li>Hospital Management System integrated with IoT</li><li>Devices: MRI, CT Scan, Ultrasound, etc.</li><li>Ophthalmology, Skin, Eye, Cath Lab, Operation Theatre Surveillance</li></ul><b>Classroom & Smart Campus</b><ul><li>ICT-enabled Classrooms (Projector, Laptop, Presenter)</li><li>600+ Smart Classrooms (Interactive Panels)</li><li>30+ Seminar Halls</li><li>10+ Conference Halls</li><li>2 Auditoriums (Capacity: 450+)</li></ul><b>Devices & Connectivity</b><ul><li>400+ Laser Printers</li><li>100+ Scanners</li><li>20+ Network Printers</li><li>Network connectivity for 10,000+ IP devices across campus</li></ul><b>Servers & Research</b><ul><li>Supercomputer (Research Purpose)</li><li>IBM Servers – 2 Nos (Duplicate)</li><li>Dell Entry-Level Servers – 2 Nos</li></ul><b>Software & Licenses</b><ul><li>Microsoft Azure / MSDN Academic Alliance</li><li>Campus-wide Microsoft Licenses</li><li>ERP, LMS Systems</li><li>Adobe Suite (Education License)</li><li>Antivirus, Backup, and Security Tools</li><li>AI/ML, Data Analytics, Research Tools</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene9.mp3",
+        "text": "Welcome to the System Support Cell . . System Support Cell: Infrastructure & HardwareDell R740xd (24 Bay) Blade Servers – 6 Nos, Dell ME4012 Storage Controllers with 49 TB Storage – 2 Nos, VMware vSphere Standard Subscription – 12 Nos, VMware Infrastructure Monitoring & Management – 2 Nos, VMware vCenter Server License – 4 Nos, Veeam Backup & Replication Enterprise Plus Suite License, Dell S5248F-ON Core Switch – 25 Nos (100 Gbps Ports) – 2 Nos (Duplicate). Networking & PowerDell S4148F-ON Core Switch – 25 Nos (100 Gbps Ports), Cisco Load Balancer Appliance – 1 No (Duplicate), Temp, Humidity & Air Flow Controller – 2 Nos, Temp & Humidity Sensors for Fire Detection & Suppression System, Water Leak Detection System, Door Switch Sensors for Server Rooms, UPS: 60 KVA – Backup up to 4 Hours for Data Centre (Duplicate). Servers & StorageEP Blade Centre C7000 (8 Bay Blade Server Chassis) – 2 Nos, HP MSA 2000 Storage Controllers – 12 TB Storage (Duplicate), HP LTO Tape Drive Backup (Duplicate), HP DL380 Blade Server (Duplicate), QNAP Storage – 18 TB Storage – 2 Nos (Duplicate). Computing ResourcesCore i5 Computers – 3300+, Core i3 Laptops – 600+, Core i3 Workstations – 200+. Security & SurveillanceEndpoint Security (4500 PCs), 32 Channel Network Video Recorder for Surveillance, 1500+ IP Cameras (24x7 Monitoring), Biometric Attendance System. Networking Infrastructure450+ Managed Network Switches (Access Network). Labs, Facilities & Campus IT20+ Data Centres (Core & Distribution Network), Cisco Network Monitoring & Enterprise Software, High-speed Fiber Backbone Connectivity, Language Labs (German, French, etc.), Multiple Open Stack Labs, 42+ Servers in Racks, 150+ Computer Laboratories for UG & PG Students. Healthcare & Smart SystemsHospital Management System integrated with IoT, Devices: MRI, CT Scan, Ultrasound, etc., Ophthalmology, Skin, Eye, Cath Lab, Operation Theatre Surveillance. Classroom & Smart CampusICT-enabled Classrooms (Projector, Laptop, Presenter), 600+ Smart Classrooms (Interactive Panels), 30+ Seminar Halls, 10+ Conference Halls, 2 Auditoriums (Capacity: 450+). Devices & Connectivity400+ Laser Printers, 100+ Scanners, 20+ Network Printers, Network connectivity for 10,000+ IP devices across campus. Servers & ResearchSupercomputer (Research Purpose), IBM Servers – 2 Nos (Duplicate), Dell Entry-Level Servers – 2 Nos. Software & LicensesMicrosoft Azure / MSDN Academic Alliance, Campus-wide Microsoft Licenses, ERP, LMS Systems, Adobe Suite (Education License), Antivirus, Backup, and Security Tools, AI/ML, Data Analytics, Research Tools."
+      }
     },
     "scene10": {
       "title": "L-102 ARTIFICIAL INTELLIGENCE & MACHINE LEARNING LAB ",
@@ -389,7 +478,17 @@
             "description": "<h4>PC INFORMATION</h4><b>🖥️ Device Details</b><ul><li>Model: HP High Performance Workstation</li><li>System Type: 64-bit (x64-based PC)</li><li>Manufacturer: HP</li></ul><b>⚙️ Processor</b><ul><li>Current CPU: Intel Core i9-14900 (14th Gen)</li><li>Cores/Threads: 24 Cores / 32 Threads</li><li>Base Speed: 2.0 GHz</li></ul><b>🧠 Memory (RAM)</b><ul><li>Installed RAM: 32 GB</li><li>Usable RAM: 31.8 GB</li></ul><b>💾 Storage</b><ul><li>Primary Storage: 1 TB NVMe SSD</li></ul><b>🎮 Graphics</b><ul><li>GPU: Dedicated High-Performance GPU</li></ul><b>🪟 Operating System</b><ul><li>OS: Windows 11 Pro</li></ul><b>🔐 System Features</b><ul><li>BIOS Mode: UEFI</li><li>Virtualization: Enabled</li><li>Secure Boot: On</li></ul><b>🎯 PERFORMANCE STATUS</b><ul><li>✅ Current System: Ultra Performance (Best for AI / heavy tasks)</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene10.mp3",
+        "text": "Welcome to the L-102 ARTIFICIAL INTELLIGENCE & MACHINE LEARNING LAB . . PC INFORMATION: 🖥️ Device DetailsModel: HP High Performance Workstation, System Type: 64-bit (x64-based PC), Manufacturer: HP. ⚙️ ProcessorCurrent CPU: Intel Core i9-14900 (14th Gen), Cores/Threads: 24 Cores / 32 Threads, Base Speed: 2.0 GHz. 🧠 Memory (RAM)Installed RAM: 32 GB, Usable RAM: 31.8 GB. 💾 StoragePrimary Storage: 1 TB NVMe SSD. 🎮 GraphicsGPU: Dedicated High-Performance GPU. 🪟 Operating SystemOS: Windows 11 Pro. 🔐 System FeaturesBIOS Mode: UEFI, Virtualization: Enabled, Secure Boot: On. 🎯 PERFORMANCE STATUS✅ Current System: Ultra Performance (Best for AI / heavy tasks)."
+      }
     },
     "scene11": {
       "title": "L-102 ARTIFICIAL INTELLIGENCE & MACHINE LEARNING LAB ",
@@ -415,7 +514,17 @@
             "targetYaw": 0
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene11.mp3",
+        "text": "Welcome to the L-102 ARTIFICIAL INTELLIGENCE & MACHINE LEARNING LAB . Feel free to explore the area."
+      }
     },
     "scene12": {
       "title": "L-102 ARTIFICIAL INTELLIGENCE & MACHINE LEARNING LAB ",
@@ -432,7 +541,17 @@
             "targetYaw": 180
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene12.mp3",
+        "text": "Welcome to the L-102 ARTIFICIAL INTELLIGENCE & MACHINE LEARNING LAB . Feel free to explore the area."
+      }
     },
     "scene13": {
       "title": "System Support Cell",
@@ -468,7 +587,17 @@
             "description": ""
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene13.mp3",
+        "text": "Welcome to the System Support Cell. Feel free to explore the area."
+      }
     },
     "scene14": {
       "title": "System Support Cell",
@@ -494,7 +623,17 @@
             "targetYaw": 180
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene14.mp3",
+        "text": "Welcome to the System Support Cell. Feel free to explore the area."
+      }
     },
     "scene15": {
       "title": "DATA CENTER",
@@ -512,36 +651,46 @@
           }
         },
         {
-          "pitch":15,
-          "yaw":-35,
-          "type":"info",
-          "text":"Rack 1 – ISP Connectivity",
-          "clickHandlerArgs":{
-            "title":"Rack 1 – ISP Connectivity",
-            "description":"<h4>Rack 1 – ISP Connectivity</h4><ul><li><b>ISP (Internet Service Provider) Infrastructure</b></li><li>➡️ Handles external internet connectivity</li><li>➡ Class A category ISP services</li><li>➡️ Ensures stable and high-availability Internet</li></ul>"
+          "pitch": 15,
+          "yaw": -35,
+          "type": "info",
+          "text": "Rack 1 – ISP Connectivity",
+          "clickHandlerArgs": {
+            "title": "Rack 1 – ISP Connectivity",
+            "description": "<h4>Rack 1 – ISP Connectivity</h4><ul><li><b>ISP (Internet Service Provider) Infrastructure</b></li><li>➡️ Handles external internet connectivity</li><li>➡ Class A category ISP services</li><li>➡️ Ensures stable and high-availability Internet</li></ul>"
           }
         },
         {
-          "pitch":12,
-          "yaw":5,
-          "type":"info",
-          "text":"Rack 2 – CCTV Storage",
-          "clickHandlerArgs":{
-            "title":"Rack 2 – CCTV Storage",
-            "description":"<h4>Rack 2 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
+          "pitch": 12,
+          "yaw": 5,
+          "type": "info",
+          "text": "Rack 2 – CCTV Storage",
+          "clickHandlerArgs": {
+            "title": "Rack 2 – CCTV Storage",
+            "description": "<h4>Rack 2 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
           }
         },
         {
-          "pitch":12,
-          "yaw":30,
-          "type":"info",
-          "text":"Rack 3 – CCTV Storage",
-          "clickHandlerArgs":{
-            "title":"Rack 3 – CCTV Storage",
-            "description":"<h4>Rack 3 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
+          "pitch": 12,
+          "yaw": 30,
+          "type": "info",
+          "text": "Rack 3 – CCTV Storage",
+          "clickHandlerArgs": {
+            "title": "Rack 3 – CCTV Storage",
+            "description": "<h4>Rack 3 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene15.mp3",
+        "text": "Welcome to the DATA CENTER. . Rack 1 – ISP Connectivity: ISP (Internet Service Provider) Infrastructure, ➡️ Handles external internet connectivity, ➡ Class A category ISP services, ➡️ Ensures stable and high-availability Internet."
+      }
     },
     "scene16": {
       "title": "DATA CENTER",
@@ -568,36 +717,46 @@
           }
         },
         {
-          "pitch":15,
-          "yaw":-35,
-          "type":"info",
-          "text":"Rack 4 – CCTV Storage",
-          "clickHandlerArgs":{
-            "title":"Rack 4 – CCTV Storage",
-            "description":"<h4>Rack 4 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
+          "pitch": 15,
+          "yaw": -35,
+          "type": "info",
+          "text": "Rack 4 – CCTV Storage",
+          "clickHandlerArgs": {
+            "title": "Rack 4 – CCTV Storage",
+            "description": "<h4>Rack 4 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
           }
         },
         {
-          "pitch":12,
-          "yaw":5,
-          "type":"info",
-          "text":"Rack 5 – CCTV Storage",
-          "clickHandlerArgs":{
-            "title":"Rack 5 – CCTV Storage",
-            "description":"<h4>Rack 5 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
+          "pitch": 12,
+          "yaw": 5,
+          "type": "info",
+          "text": "Rack 5 – CCTV Storage",
+          "clickHandlerArgs": {
+            "title": "Rack 5 – CCTV Storage",
+            "description": "<h4>Rack 5 – CCTV Storage</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Dedicated for surveillance recording</li></ul>"
           }
         },
         {
-          "pitch":12,
-          "yaw":30,
-          "type":"info",
-          "text":"Rack 6 – Network Security & Distribution",
-          "clickHandlerArgs":{
-            "title":"Rack 6 – Network Security & Distribution",
-            "description":"<h4>Rack 6 – Network Security & Distribution</h4><ul><li><b>Palo Alto Firewall</b></li><li>➡️ Provides network security, threat prevention, and traffic filtering</li><li><b>Distribution Switch</b></li></ul>"
+          "pitch": 12,
+          "yaw": 30,
+          "type": "info",
+          "text": "Rack 6 – Network Security & Distribution",
+          "clickHandlerArgs": {
+            "title": "Rack 6 – Network Security & Distribution",
+            "description": "<h4>Rack 6 – Network Security & Distribution</h4><ul><li><b>Palo Alto Firewall</b></li><li>➡️ Provides network security, threat prevention, and traffic filtering</li><li><b>Distribution Switch</b></li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene16.mp3",
+        "text": "Welcome to the DATA CENTER. . Rack 4 – CCTV Storage: NVR (Network Video Recorder), ➡️ Dedicated for surveillance recording."
+      }
     },
     "scene17": {
       "title": "DATA CENTER",
@@ -624,36 +783,46 @@
           }
         },
         {
-          "pitch":15,
-          "yaw":-45,
-          "type":"info",
-          "text":"Rack 7 – Smart Integrated Data Center",
-          "clickHandlerArgs":{
-            "title":"Rack 7 – Smart Integrated Data Center",
-            "description":"<h4>Rack 7 – Smart Integrated Data Center</h4><p><b>Vertiv SmartCabinet – Data Center in a Box</b></p><b>Key Features:</b><ul><li>Integrated precision cooling system</li><li>Automated fire suppression (CO₂ / clean agent)</li><li>Environmental monitoring (humidity & water leak detection)</li><li>Biometric access control (fingerprint-based)</li><li>Emergency backup fans</li></ul><b>Installed Equipment:</b><ul><li>Dell EMC PowerEdge Servers</li><li>Dell EMC SAN Storage</li><li>HP HPC GPU Server</li><li>VMware and Hyper V</li></ul>"
+          "pitch": 15,
+          "yaw": -45,
+          "type": "info",
+          "text": "Rack 7 – Smart Integrated Data Center",
+          "clickHandlerArgs": {
+            "title": "Rack 7 – Smart Integrated Data Center",
+            "description": "<h4>Rack 7 – Smart Integrated Data Center</h4><p><b>Vertiv SmartCabinet – Data Center in a Box</b></p><b>Key Features:</b><ul><li>Integrated precision cooling system</li><li>Automated fire suppression (CO₂ / clean agent)</li><li>Environmental monitoring (humidity & water leak detection)</li><li>Biometric access control (fingerprint-based)</li><li>Emergency backup fans</li></ul><b>Installed Equipment:</b><ul><li>Dell EMC PowerEdge Servers</li><li>Dell EMC SAN Storage</li><li>HP HPC GPU Server</li><li>VMware and Hyper V</li></ul>"
           }
         },
         {
-          "pitch":12,
-          "yaw":5,
-          "type":"info",
-          "text":"Rack 8 – Core Network Rack",
-          "clickHandlerArgs":{
-            "title":"Rack 8 – Core Network Rack",
-            "description":"<h4>Rack 8 – Core Network Rack</h4><ul><li><b>Core/Tore Network Fiber Switches</b></li><li>➡️ Handles backbone network traffic</li><li>➡️ Supports high-speed Ethernet and fiber connectivity</li><li><b>High-density cabling infrastructure</b></li></ul>"
+          "pitch": 12,
+          "yaw": 5,
+          "type": "info",
+          "text": "Rack 8 – Core Network Rack",
+          "clickHandlerArgs": {
+            "title": "Rack 8 – Core Network Rack",
+            "description": "<h4>Rack 8 – Core Network Rack</h4><ul><li><b>Core/Tore Network Fiber Switches</b></li><li>➡️ Handles backbone network traffic</li><li>➡️ Supports high-speed Ethernet and fiber connectivity</li><li><b>High-density cabling infrastructure</b></li></ul>"
           }
         },
         {
-          "pitch":12,
-          "yaw":50,
-          "type":"info",
-          "text":"Rack 9 – Video Surveillance Server",
-          "clickHandlerArgs":{
-            "title":"Rack 9 – Video Surveillance Server",
-            "description":"<h4>Rack 9 – Video Surveillance Server</h4><ul><li><b>DSS (Dahua Security System)</b></li><li>➡️ Intelligent video surveillance management server</li><li>➡️ Provides centralized monitoring and analytics</li></ul>"
+          "pitch": 12,
+          "yaw": 50,
+          "type": "info",
+          "text": "Rack 9 – Video Surveillance Server",
+          "clickHandlerArgs": {
+            "title": "Rack 9 – Video Surveillance Server",
+            "description": "<h4>Rack 9 – Video Surveillance Server</h4><ul><li><b>DSS (Dahua Security System)</b></li><li>➡️ Intelligent video surveillance management server</li><li>➡️ Provides centralized monitoring and analytics</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene17.mp3",
+        "text": "Welcome to the DATA CENTER. . Rack 7 – Smart Integrated Data Center: Vertiv SmartCabinet – Data Center in a BoxKey Features:Integrated precision cooling system, Automated fire suppression (CO₂ / clean agent), Environmental monitoring (humidity & water leak detection), Biometric access control (fingerprint-based), Emergency backup fans. Installed Equipment:Dell EMC PowerEdge Servers, Dell EMC SAN Storage, HP HPC GPU Server, VMware and Hyper V."
+      }
     },
     "scene18": {
       "title": "DATA CENTER",
@@ -680,36 +849,46 @@
           }
         },
         {
-          "pitch":15,
-          "yaw":-35,
-          "type":"info",
-          "text":"Rack 10 – Surveillance Recording",
-          "clickHandlerArgs":{
-            "title":"Rack 10 – Surveillance Recording",
-            "description":"<h4>Rack 10 – Surveillance Recording</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Used for centralized CCTV recording and storage</li></ul>"
+          "pitch": 15,
+          "yaw": -35,
+          "type": "info",
+          "text": "Rack 10 – Surveillance Recording",
+          "clickHandlerArgs": {
+            "title": "Rack 10 – Surveillance Recording",
+            "description": "<h4>Rack 10 – Surveillance Recording</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Used for centralized CCTV recording and storage</li></ul>"
           }
         },
         {
-          "pitch":12,
-          "yaw":5,
-          "type":"info",
-          "text":"Rack 11 – Surveillance Recording",
-          "clickHandlerArgs":{
-            "title":"Rack 11 – Surveillance Recording",
-            "description":"<h4>Rack 11 – Surveillance Recording</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Used for centralized CCTV recording and storage</li></ul>"
+          "pitch": 12,
+          "yaw": 5,
+          "type": "info",
+          "text": "Rack 11 – Surveillance Recording",
+          "clickHandlerArgs": {
+            "title": "Rack 11 – Surveillance Recording",
+            "description": "<h4>Rack 11 – Surveillance Recording</h4><ul><li><b>NVR (Network Video Recorder)</b></li><li>➡️ Used for centralized CCTV recording and storage</li></ul>"
           }
         },
         {
-          "pitch":12,
-          "yaw":40,
-          "type":"info",
-          "text":"Rack 12 – High Performance Systems",
-          "clickHandlerArgs":{
-            "title":"Rack 12 – High Performance Systems",
-            "description":"<h4>Rack 12 – High Performance Systems</h4><ul><li><b>CDAC Supercomputer</b></li><li><b>NAS (Network Attached Storage) Device</b></li><li><b>GPU Tower Server</b></li><li>➡️ Supports high-performance computing, data analytics, and GPU-based workloads</li></ul>"
+          "pitch": 12,
+          "yaw": 40,
+          "type": "info",
+          "text": "Rack 12 – High Performance Systems",
+          "clickHandlerArgs": {
+            "title": "Rack 12 – High Performance Systems",
+            "description": "<h4>Rack 12 – High Performance Systems</h4><ul><li><b>CDAC Supercomputer</b></li><li><b>NAS (Network Attached Storage) Device</b></li><li><b>GPU Tower Server</b></li><li>➡️ Supports high-performance computing, data analytics, and GPU-based workloads</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene18.mp3",
+        "text": "Welcome to the DATA CENTER. . Rack 10 – Surveillance Recording: NVR (Network Video Recorder), ➡️ Used for centralized CCTV recording and storage."
+      }
     },
     "scene19": {
       "title": "L-103 CLOUD COMPUTING & L-104 CYBAR SECURITY LAB",
@@ -764,7 +943,17 @@
             "description": "<h4>Purpose</h4><ul><li>Deploying and managing cloud-based infrastructure and services</li><li>Working with virtualization, containerization, and cloud orchestration</li><li>Learning IaaS, PaaS, and SaaS cloud service models</li><li>Building scalable and distributed applications on cloud platforms</li></ul><h4>Key Equipment</h4><ul><li>Cloud platforms – AWS, Microsoft Azure, and Google Cloud (GCP)</li><li>Virtualization tools – VMware, VirtualBox, and Hyper-V</li><li>Containerization – Docker and Kubernetes clusters</li><li>High-performance servers with multi-core processors and high RAM</li><li>Networking equipment for cloud simulation and SDN labs</li></ul><h4>Skills Developed</h4><ul><li>Cloud architecture design and deployment</li><li>DevOps practices – CI/CD pipelines, Infrastructure as Code</li><li>Containerization and microservices orchestration</li><li>Cloud security, identity management, and access control</li><li>Serverless computing and auto-scaling configurations</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene19.mp3",
+        "text": "Welcome to the L-103 CLOUD COMPUTING & L-104 CYBAR SECURITY LAB. . Purpose: Monitoring client's critical data and network activities, Detecting and responding to cybersecurity threats, Learning real-time security monitoring and incident response, Improving data protection and threat prevention techniques. . Key Equipment: SIEM tools (Security Information and Event Management), Firewalls and Intrusion Detection Systems (IDS/IPS), Security monitoring dashboards, Threat intelligence and analysis tools, Secure servers and network monitoring systems. . Skills Developed: Security threat detection and analysis, Incident response and mitigation, Network security monitoring, Cyber attack investigation, Data protection and risk management."
+      }
     },
     "scene20": {
       "title": "L-103 Cloud Computing Lab",
@@ -800,7 +989,17 @@
             "description": "<h4>PC INFORMATION</h4><b>🖥️ Device Details</b><ul><li>Model: HP Pro Tower 280 G9 PCI Desktop PC</li><li>System Type: 64-bit (x64-based PC)</li><li>Manufacturer: HP</li></ul><b>⚙️ Processor</b><ul><li>Current CPU: Intel Core i7-12700 (12th Gen)</li><li>Cores/Threads: 12 Cores / 20 Threads</li><li>Base Speed: 2.10 GHz</li></ul><b>🧠 Memory (RAM)</b><ul><li>Installed RAM: 16 GB</li><li>Usable RAM: 15.7 GB</li></ul><b>💾 Storage</b><ul><li>Primary Storage: SSD (Fast Performance) (Exact size depends on configuration)</li></ul><b>🎮 Graphics</b><ul><li>GPU: Intel UHD Graphics (Integrated)</li></ul><b>🪟 Operating System</b><ul><li>OS: Windows 10 Pro</li><li>Version: 10.0.19045</li></ul><b>🔐 System Features</b><ul><li>BIOS Mode: UEFI</li><li>Virtualization: Enabled</li><li>Secure Boot: Off</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene20.mp3",
+        "text": "Welcome to the L-103 Cloud Computing Lab. . PC INFORMATION: 🖥️ Device DetailsModel: HP Pro Tower 280 G9 PCI Desktop PC, System Type: 64-bit (x64-based PC), Manufacturer: HP. ⚙️ ProcessorCurrent CPU: Intel Core i7-12700 (12th Gen), Cores/Threads: 12 Cores / 20 Threads, Base Speed: 2.10 GHz. 🧠 Memory (RAM)Installed RAM: 16 GB, Usable RAM: 15.7 GB. 💾 StoragePrimary Storage: SSD (Fast Performance) (Exact size depends on configuration). 🎮 GraphicsGPU: Intel UHD Graphics (Integrated). 🪟 Operating SystemOS: Windows 10 Pro, Version: 10.0.19045. 🔐 System FeaturesBIOS Mode: UEFI, Virtualization: Enabled, Secure Boot: Off."
+      }
     },
     "scene21": {
       "title": "L-103 Cloud Computing Lab",
@@ -826,7 +1025,17 @@
             "targetYaw": 180
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene21.mp3",
+        "text": "Welcome to the L-103 Cloud Computing Lab. Feel free to explore the area."
+      }
     },
     "scene22": {
       "title": "L-103 Cloud Computing Lab",
@@ -843,7 +1052,17 @@
             "targetYaw": 180
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene22.mp3",
+        "text": "Welcome to the L-103 Cloud Computing Lab. Feel free to explore the area."
+      }
     },
     "scene23": {
       "title": "L-104 CYBAR SECURITY LAB",
@@ -869,7 +1088,7 @@
             "targetYaw": 0
           }
         },
-          {
+        {
           "pitch": -13,
           "yaw": -43,
           "type": "info",
@@ -879,7 +1098,17 @@
             "description": "<h4>PC INFORMATION</h4><b>🖥️ Device Details</b><ul><li>Model: HP High Performance Workstation</li><li>System Type: 64-bit (x64-based PC)</li><li>Manufacturer: HP</li></ul><b>⚙️ Processor</b><ul><li>Current CPU: Intel Core i9-14900 (14th Gen)</li><li>Cores/Threads: 24 Cores / 32 Threads</li><li>Base Speed: 2.0 GHz</li></ul><b>🧠 Memory (RAM)</b><ul><li>Installed RAM: 32 GB</li><li>Usable RAM: 31.8 GB</li></ul><b>💾 Storage</b><ul><li>Primary Storage: 1 TB NVMe SSD</li></ul><b>🎮 Graphics</b><ul><li>GPU: Dedicated High-Performance GPU</li></ul><b>🪟 Operating System</b><ul><li>OS: Windows 11 Pro</li></ul><b>🔐 System Features</b><ul><li>BIOS Mode: UEFI</li><li>Virtualization: Enabled</li><li>Secure Boot: On</li></ul><b>🎯 PERFORMANCE STATUS</b><ul><li>✅ Current System: Ultra Performance (Best for AI / heavy tasks)</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene23.mp3",
+        "text": "Welcome to the L-104 CYBAR SECURITY LAB. . PC INFORMATION: 🖥️ Device DetailsModel: HP High Performance Workstation, System Type: 64-bit (x64-based PC), Manufacturer: HP. ⚙️ ProcessorCurrent CPU: Intel Core i9-14900 (14th Gen), Cores/Threads: 24 Cores / 32 Threads, Base Speed: 2.0 GHz. 🧠 Memory (RAM)Installed RAM: 32 GB, Usable RAM: 31.8 GB. 💾 StoragePrimary Storage: 1 TB NVMe SSD. 🎮 GraphicsGPU: Dedicated High-Performance GPU. 🪟 Operating SystemOS: Windows 11 Pro. 🔐 System FeaturesBIOS Mode: UEFI, Virtualization: Enabled, Secure Boot: On. 🎯 PERFORMANCE STATUS✅ Current System: Ultra Performance (Best for AI / heavy tasks)."
+      }
     },
     "scene24": {
       "title": "L-104 CYBAR SECURITY LAB",
@@ -905,7 +1134,17 @@
             "targetYaw": 180
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene24.mp3",
+        "text": "Welcome to the L-104 CYBAR SECURITY LAB. Feel free to explore the area."
+      }
     },
     "scene25": {
       "title": "L-104 CYBAR SECURITY LAB",
@@ -922,7 +1161,17 @@
             "targetYaw": 180
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene25.mp3",
+        "text": "Welcome to the L-104 CYBAR SECURITY LAB. Feel free to explore the area."
+      }
     },
     "scene26": {
       "title": "APPLE AUTHORIZED TRAINING CENTER",
@@ -978,7 +1227,17 @@
             "description": "<h4>iPad 10th Generation</h4><ul><li><b>Display:</b> 10.9-inch Liquid Retina display with True Tone and 500 nits brightness</li><li><b>Chip:</b> A14 Bionic chip with 6-core CPU and 4-core GPU</li><li><b>Storage:</b> Available in 64GB and 256GB</li><li><b>Features:</b> Touch ID on top button, 12MP rear camera, 12MP Ultra Wide front camera with Center Stage, USB-C connector, Wi-Fi 6, Apple Pencil (1st gen with USB-C adapter) support</li><li><b>Use in Lab:</b> Entry-level device for learning iPadOS app development, testing responsive UI layouts, Swift Playgrounds coding, and exploring basic AR experiences with ARKit</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene26.mp3",
+        "text": "Welcome to the APPLE AUTHORIZED TRAINING CENTER. . MacBook Pro: Display: 13.3-inch or 14-inch Liquid Retina XDR display with ProMotion (up to 120Hz), Chip: Apple M1 / M1 Pro / M2 chip with high-performance CPU and GPU cores, Memory: 8GB to 32GB unified memory for seamless multitasking, Storage: 256GB to 2TB SSD for fast read/write speeds, Features: MagSafe charging, Thunderbolt ports, Magic Keyboard with Touch ID, studio-quality three-mic array, up to 20 hours battery life, Use in Lab: Portable development machine for building and testing Apple ecosystem apps, on-the-go coding with Xcode, Swift Playgrounds, and running macOS/iOS simulators."
+      }
     },
     "scene27": {
       "title": "APPLE AUTHORIZED TRAINING CENTER",
@@ -1004,7 +1263,17 @@
             "targetYaw": 0
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene27.mp3",
+        "text": "Welcome to the APPLE AUTHORIZED TRAINING CENTER. Feel free to explore the area."
+      }
     },
     "scene28": {
       "title": "APPLE AUTHORIZED TRAINING CENTER",
@@ -1021,7 +1290,17 @@
             "targetYaw": -90
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene28.mp3",
+        "text": "Welcome to the APPLE AUTHORIZED TRAINING CENTER. Feel free to explore the area."
+      }
     },
     "scene29": {
       "title": "Network Architecture LAB",
@@ -1067,7 +1346,17 @@
             "image": "assets/Network_architecture.png"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene29.mp3",
+        "text": "Welcome to the Network Architecture LAB. . Purpose: Hands-on learning in network design and configuration, Real-world network scenario simulation, Network planning, implementation, and optimization. . Key Equipment: Advanced routers and managed switches, Enterprise-grade servers, Network analysis and monitoring tools, Security testing platforms. . Skills Developed: Network topology design and implementation, Configuration and troubleshooting, Network security and analysis, IT infrastructure management."
+      }
     },
     "scene30": {
       "title": "L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB",
@@ -1093,7 +1382,17 @@
             "targetYaw": 180
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene30.mp3",
+        "text": "Welcome to the L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB. Feel free to explore the area."
+      }
     },
     "scene31": {
       "title": "L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB",
@@ -1148,7 +1447,17 @@
             "description": "<h4>L-107 Extended Reality & Game Development Lab</h4><p>The Extended Reality & Game Development Lab is a specialized facility designed for hands-on learning and research in Virtual Reality (VR), Augmented Reality (AR), and Mixed Reality (MR).</p><b>🔹 Key Infrastructure</b><ul><li><b>Advanced XR Devices:</b> Equipped with Microsoft HoloLens, Meta VR headsets, and other immersive wearables.</li><li><b>High-Performance Systems:</b> Powerful workstations optimized for real-time game development and interactive simulations.</li><li><b>Development Tools:</b> Software and platforms for creating immersive applications, including Unity and Unreal game engines.</li></ul><b>🔹 Focus Areas</b><ul><li><b>Real-time Game Development:</b> Creating interactive games and immersive media.</li><li><b>3D Visualization & Simulations:</b> Building virtual walkthroughs and professional training simulations.</li><li><b>XR Application Development:</b> Designing practical applications for extended reality.</li><li><b>Research & Innovation:</b> Studying human-computer interaction and advancing immersive technology research to provide industry-ready experience.</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene31.mp3",
+        "text": "Welcome to the L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB. . L-106 IOT Lab: The Internet of Things (IoT) Lab is a dedicated workspace for hands-on learning, prototyping, and research in smart device technology and connected systems.🔹 Key ComponentsMicrocontrollers & SBCs: Equipped with various Arduino boards and Raspberry Pi single-board computers for edge processing., Sensors & Actuators: A wide array of environmental, motion, and biometric sensors alongside motors and relays for physical computing., Smart Device Prototyping: Breadboards, components, and tools for building custom IoT hardware solutions. 🔹 Applications & LearningIoT Development: Programming connected devices and building smart ecosystems., Embedded Systems: Hands-on experience with embedded C/C++ and Python programming on edge devices., Data Collection & Cloud: Integrating sensors with cloud platforms for real-time data monitoring and analytics., Automation Projects: Designing automated solutions for smart homes, agriculture, and industrial IoT (IIoT)."
+      }
     },
     "scene32": {
       "title": "L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB",
@@ -1218,7 +1527,7 @@
             "targetYaw": 0
           }
         },
-         {
+        {
           "pitch": -10,
           "yaw": 47,
           "type": "info",
@@ -1228,7 +1537,17 @@
             "description": "<h4>PC INFORMATION</h4><b>🖥️ Device Details</b><ul><li>Model: HP High Performance Workstation</li><li>System Type: 64-bit (x64-based PC)</li><li>Manufacturer: HP</li></ul><b>⚙️ Processor</b><ul><li>Current CPU: Intel Core i9-14900 (14th Gen)</li><li>Cores/Threads: 24 Cores / 32 Threads</li><li>Base Speed: 2.0 GHz</li></ul><b>🧠 Memory (RAM)</b><ul><li>Installed RAM: 32 GB</li><li>Usable RAM: 31.8 GB</li></ul><b>💾 Storage</b><ul><li>Primary Storage: 1 TB NVMe SSD</li></ul><b>🎮 Graphics</b><ul><li>GPU: Dedicated High-Performance GPU</li></ul><b>🪟 Operating System</b><ul><li>OS: Windows 11 Pro</li></ul><b>🔐 System Features</b><ul><li>BIOS Mode: UEFI</li><li>Virtualization: Enabled</li><li>Secure Boot: On</li></ul><b>🎯 PERFORMANCE STATUS</b><ul><li>✅ Current System: Ultra Performance (Best for AI / heavy tasks)</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene32.mp3",
+        "text": "Welcome to the L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB. . Meta Quest VR Headset: Meta Quest headsets are fully immersive virtual reality (VR) devices designed to transport users into highly realistic digital environments without the need for external trackers or cables.🔹 Key FeaturesStandalone Operation: Fully untethered experience with built-in processing, no PC required., High-Resolution Displays: Crystal clear optics with high refresh rates for smooth visuals., Inside-Out Tracking: Advanced sensors accurately track movement and spatial positioning in real-time., Intuitive Controllers: Motion-tracked Touch controllers provide natural hand presence and interaction., Spatial Audio: Integrated positional audio for immersive soundscapes. 🔹 ApplicationsGaming & Entertainment: Immersive 3D gaming, virtual cinema, and interactive media., Development & Testing: Ideal platform for building and testing VR applications., Training & Simulation: Realistic simulations for professional training and education., Collaboration & XR Research: Virtual meetings and studying human-computer interaction in VR."
+      }
     },
     "scene33": {
       "title": "L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB",
@@ -1254,7 +1573,17 @@
             "targetYaw": 180
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene33.mp3",
+        "text": "Welcome to the L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB. Feel free to explore the area."
+      }
     },
     "scene34": {
       "title": "L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB",
@@ -1271,7 +1600,17 @@
             "targetYaw": 180
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene34.mp3",
+        "text": "Welcome to the L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB. Feel free to explore the area."
+      }
     },
     "scene35": {
       "title": "L-106 INTERNET OF THINGS INNOVATION LAB",
@@ -1297,7 +1636,17 @@
             "targetYaw": -90
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene35.mp3",
+        "text": "Welcome to the L-106 INTERNET OF THINGS INNOVATION LAB. Feel free to explore the area."
+      }
     },
     "scene36": {
       "title": "L-106 INTERNET OF THINGS INNOVATION LAB",
@@ -1323,7 +1672,7 @@
             "targetYaw": 90
           }
         },
-         {
+        {
           "pitch": -8,
           "yaw": 3,
           "type": "info",
@@ -1563,7 +1912,17 @@
             "description": "<h4>Auto Engine Control Unit (ECU)</h4><ul><li><b>Type:</b> Automotive Electronic Control Unit – embedded system for engine management</li><li><b>Processor:</b> Automotive-grade microcontroller (ARM Cortex-M / PowerPC based) with real-time processing capabilities</li><li><b>Sensors Interface:</b> Crankshaft position, throttle position, mass air flow (MAF), oxygen sensor (lambda), coolant temperature, knock sensor inputs</li><li><b>Actuator Control:</b> Fuel injectors, ignition coils, idle air control valve, EGR valve, variable valve timing</li><li><b>Communication:</b> CAN bus (Controller Area Network), OBD-II diagnostic interface, LIN bus</li><li><b>Features:</b> Real-time fuel injection timing, ignition advance mapping, emission control, fault code storage and diagnostic readout</li><li><b>Use in Lab:</b> Demonstrates embedded systems in automotive IoT – students learn CAN bus communication, real-time sensor data processing, engine parameter tuning, and OBD-II diagnostics</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene36.mp3",
+        "text": "Welcome to the L-106 INTERNET OF THINGS INNOVATION LAB. . PC INFORMATION: 🖥️ Device DetailsModel: HP High Performance Workstation, System Type: 64-bit (x64-based PC), Manufacturer: HP. ⚙️ ProcessorCurrent CPU: Intel Core i9-14900 (14th Gen), Cores/Threads: 24 Cores / 32 Threads, Base Speed: 2.0 GHz. 🧠 Memory (RAM)Installed RAM: 32 GB, Usable RAM: 31.8 GB. 💾 StoragePrimary Storage: 1 TB NVMe SSD. 🎮 GraphicsGPU: Dedicated High-Performance GPU. 🪟 Operating SystemOS: Windows 11 Pro. 🔐 System FeaturesBIOS Mode: UEFI, Virtualization: Enabled, Secure Boot: On. 🎯 PERFORMANCE STATUS✅ Current System: Ultra Performance (Best for AI / heavy tasks)."
+      }
     },
     "scene37": {
       "title": "L-106 INTERNET OF THINGS INNOVATION LAB",
@@ -1580,7 +1939,17 @@
             "targetYaw": 180
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene37.mp3",
+        "text": "Welcome to the L-106 INTERNET OF THINGS INNOVATION LAB. Feel free to explore the area."
+      }
     },
     "scene38": {
       "title": "L-108 Network Architecture Lab",
@@ -1646,7 +2015,17 @@
             "image": "assets/image.png"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene38.mp3",
+        "text": "Welcome to the L-108 Network Architecture Lab. . Purpose: Hands-on learning in network design and configuration, Real-world network scenario simulation, Network planning, implementation, and optimization. . Key Equipment: Advanced routers and managed switches, Enterprise-grade servers, Network analysis and monitoring tools, Security testing platforms. . Skills Developed: Network topology design and implementation, Configuration and troubleshooting, Network security and analysis, IT infrastructure management."
+      }
     },
     "scene39": {
       "title": "L-108 Network Architecture Lab",
@@ -1672,7 +2051,7 @@
             "targetYaw": 180
           }
         },
-         {
+        {
           "pitch": -2,
           "yaw": 65,
           "type": "info",
@@ -1722,7 +2101,17 @@
             "description": "<h4>PC INFORMATION</h4><b>🖥️ Device Details</b><ul><li>Model: HP Pro Tower 280 G9 PCI Desktop PC</li><li>System Type: 64-bit (x64-based PC)</li><li>Manufacturer: HP</li></ul><b>⚙️ Processor</b><ul><li>Current CPU: Intel Core i7-12700 (12th Gen)</li><li>Cores/Threads: 12 Cores / 20 Threads</li><li>Base Speed: 2.10 GHz</li></ul><b>🧠 Memory (RAM)</b><ul><li>Installed RAM: 16 GB</li><li>Usable RAM: 15.7 GB</li></ul><b>💾 Storage</b><ul><li>Primary Storage: SSD (Fast Performance) (Exact size depends on configuration)</li></ul><b>🎮 Graphics</b><ul><li>GPU: Intel UHD Graphics (Integrated)</li></ul><b>🪟 Operating System</b><ul><li>OS: Windows 10 Pro</li><li>Version: 10.0.19045</li></ul><b>🔐 System Features</b><ul><li>BIOS Mode: UEFI</li><li>Virtualization: Enabled</li><li>Secure Boot: Off</li></ul>"
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene39.mp3",
+        "text": "Welcome to the L-108 Network Architecture Lab. . Network Server Cabinet: A secure metal enclosure used to house, organize, and protect networking equipment.Function: Provides a centralized location for switches, routers, patch panels, and servers., Features: Includes a glass front door for easy monitoring, ventilation systems for heat dissipation, and standard 19-inch mounting rails., Use in Lab: Teaches students how to physically structure a network, practice cable management, and understand enterprise-grade infrastructure deployment."
+      }
     },
     "scene40": {
       "title": "L-108 Network Architecture Lab",
@@ -1748,7 +2137,17 @@
             "targetYaw": 0
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene40.mp3",
+        "text": "Welcome to the L-108 Network Architecture Lab. Feel free to explore the area."
+      }
     },
     "scene41": {
       "title": "L-108 Network Architecture Lab",
@@ -1765,7 +2164,17 @@
             "targetYaw": 0
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene41.mp3",
+        "text": "Welcome to the L-108 Network Architecture Lab. Feel free to explore the area."
+      }
     },
     "scene42": {
       "title": "Seminar Hall",
@@ -1791,7 +2200,17 @@
             "targetYaw": 0
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene42.mp3",
+        "text": "Welcome to the Seminar Hall. Feel free to explore the area."
+      }
     },
     "scene43": {
       "title": "Seminar Hall",
@@ -1808,7 +2227,17 @@
             "targetYaw": 0
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene43.mp3",
+        "text": "Welcome to the Seminar Hall. Feel free to explore the area."
+      }
     },
     "scene44": {
       "title": "Fan Area",
@@ -1834,7 +2263,17 @@
             "targetYaw": 90
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene44.mp3",
+        "text": "You are currently navigating through the fan area. Please use the navigation arrows to proceed."
+      }
     },
     "scene45": {
       "title": "Way near lift",
@@ -1868,7 +2307,17 @@
             "targetYaw": 160
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene45.mp3",
+        "text": "You are currently navigating through the way near lift. Please use the navigation arrows to proceed."
+      }
     },
     "scene46": {
       "title": "Way to first floor",
@@ -1894,7 +2343,17 @@
             "targetYaw": -150
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene46.mp3",
+        "text": "You are currently navigating through the way to first floor. Please use the navigation arrows to proceed."
+      }
     },
     "scene47": {
       "title": "Way to first floor",
@@ -1920,7 +2379,17 @@
             "targetYaw": 90
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene47.mp3",
+        "text": "You are currently navigating through the way to first floor. Please use the navigation arrows to proceed."
+      }
     },
     "scene48": {
       "title": "Way to first floor",
@@ -1955,7 +2424,17 @@
             "targetYaw": -90
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene48.mp3",
+        "text": "You are currently navigating through the way to first floor. Please use the navigation arrows to proceed."
+      }
     },
     "scene49": {
       "title": "Way to first floor",
@@ -1990,7 +2469,17 @@
             "targetYaw": 0
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene49.mp3",
+        "text": "You are currently navigating through the way to first floor. Please use the navigation arrows to proceed."
+      }
     },
     "scene50": {
       "title": "Way to first floor",
@@ -2007,7 +2496,17 @@
             "targetYaw": 90
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene50.mp3",
+        "text": "You are currently navigating through the way to first floor. Please use the navigation arrows to proceed."
+      }
     },
     "scene51": {
       "title": "Way to first floor",
@@ -2033,7 +2532,17 @@
             "targetYaw": 90
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene51.mp3",
+        "text": "You are currently navigating through the way to first floor. Please use the navigation arrows to proceed."
+      }
     },
     "scene52": {
       "title": "Way to first floor",
@@ -2059,7 +2568,17 @@
             "targetYaw": 90
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene52.mp3",
+        "text": "You are currently navigating through the way to first floor. Please use the navigation arrows to proceed."
+      }
     },
     "scene53": {
       "title": "Way to first floor",
@@ -2076,7 +2595,17 @@
             "targetYaw": 180
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene53.mp3",
+        "text": "You are currently navigating through the way to first floor. Please use the navigation arrows to proceed."
+      }
     },
     "scene54": {
       "title": "Way to first floor",
@@ -2120,7 +2649,17 @@
             "targetYaw": 0
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene54.mp3",
+        "text": "You are currently navigating through the way to first floor. Please use the navigation arrows to proceed."
+      }
     },
     "scene55": {
       "title": "APPLE AUTHORIZED TRAINING CENTER ",
@@ -2155,7 +2694,17 @@
             "targetYaw": 90
           }
         }
-      ]
+      ],
+      "audio": {
+        "autoplayOnSceneEnter": true,
+        "restartOnReEnter": true,
+        "stopOnSceneExit": true,
+        "delay": 700,
+        "loop": false,
+        "volume": 1,
+        "file": "audio/scene55.mp3",
+        "text": "Welcome to the APPLE AUTHORIZED TRAINING CENTER . Feel free to explore the area."
+      }
     }
   }
 }
