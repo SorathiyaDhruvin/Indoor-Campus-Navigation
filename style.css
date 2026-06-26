@@ -508,7 +508,7 @@ body {
    ========================================================== */
 .nav-btn {
   width: 80px;
-  height: 150px;
+  height: 300px;
   cursor: pointer;
   z-index: 1;
   background: transparent;
@@ -541,7 +541,7 @@ body.hide-arrows .nav-btn {
 
 .arrow-img {
   width: 70px;
-  height: 150px;
+  height: 70px;
   filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8));
   transition: filter 0.3s var(--ease), width 0.3s var(--ease), height 0.3s var(--ease);
 }
