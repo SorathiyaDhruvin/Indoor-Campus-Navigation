@@ -1090,7 +1090,7 @@
       "title": "L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB",
       "panorama": "assets/ground floor/photo30_result.jpeg",
       "audio": {
-        "file": "assets/L-107 and L-106.mp3"
+        "file": "audio/L-107 and L-106.mp3"
       },
       "hfov": 110,
       "northOffset": 0,
