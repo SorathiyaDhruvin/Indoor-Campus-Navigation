@@ -9,6 +9,9 @@
     "scene1": {
       "title": "CV RAMAN CENTER ",
       "panorama": "assets/ground floor/photo1_result.jpeg",
+      "audio": {
+        "file": "audio/cv_raman.mp3"
+      },
       "hfov": 110,
       "northOffset": 0,
       "hotSpots": [
