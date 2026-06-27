@@ -403,7 +403,7 @@
     function smoothTransition(event, args) {
         if (event) event.stopPropagation();
         if (typeof playWhoosh === 'function') playWhoosh();
-        
+
         console.log("Hotspot clicked, switching to Target Scene:", args.sceneId);
 
         const entryPitch = args.targetPitch ?? 0;
@@ -424,13 +424,10 @@
         const el = document.createElement('div');
         el.classList.add('hotspot-content');
         el.innerHTML = `
-            <svg class="arrow-img" viewBox="0 0 130 100" xmlns="http://www.w3.org/2000/svg">
-                <!-- Top Chevron (chev-3) -->
-                <path class="chev-3" d="M 95 5 L 125 50 L 95 95 L 77 95 L 107 50 L 77 5 Z" fill="var(--arrow-color, #ffffff)" stroke="var(--arrow-stroke, rgba(0,0,0,0.3))" stroke-width="1.5" />
-                <!-- Middle Chevron (chev-2) -->
-                <path class="chev-2" d="M 60 5 L 90 50 L 60 95 L 42 95 L 72 50 L 42 5 Z" fill="var(--arrow-color, #ffffff)" stroke="var(--arrow-stroke, rgba(0,0,0,0.3))" stroke-width="1.5" />
-                <!-- Bottom Chevron (chev-1) -->
-                <path class="chev-1" d="M 25 5 L 55 50 L 25 95 L 7 95 L 37 50 L 7 5 Z" fill="var(--arrow-color, #ffffff)" stroke="var(--arrow-stroke, rgba(0,0,0,0.3))" stroke-width="1.5" />
+            <svg class="arrow-img" viewBox="0 0 204 100" xmlns="http://www.w3.org/2000/svg">
+                <path class="chev-3" d="M 164 5 L 194 50 L 164 95 L 146 95 L 176 50 L 146 5 Z" fill="var(--arrow-color, #ffffff)" stroke="var(--arrow-stroke, rgba(0,0,0,0.3))" stroke-width="1.5" />
+                <path class="chev-2" d="M 96 5 L 126 50 L 96 95 L 78 95 L 108 50 L 78 5 Z" fill="var(--arrow-color, #ffffff)" stroke="var(--arrow-stroke, rgba(0,0,0,0.3))" stroke-width="1.5" />
+                <path class="chev-1" d="M 28 5 L 58 50 L 28 95 L 10 95 L 40 50 L 10 5 Z" fill="var(--arrow-color, #ffffff)" stroke="var(--arrow-stroke, rgba(0,0,0,0.3))" stroke-width="1.5" />
             </svg>
         `;
         div.innerHTML = '';
@@ -467,7 +464,7 @@
             if (dom.mainDropdown) {
                 dom.mainDropdown.classList.toggle('show');
             }
-        } 
+        }
         else if (e.key === '1') { if (dom.btnNavGuide) dom.btnNavGuide.click(); }
         else if (e.key === '2') { if (dom.btnGrid) dom.btnGrid.click(); }
         else if (e.key === '3') { if (dom.btnFullscreen) dom.btnFullscreen.click(); }
@@ -483,14 +480,14 @@
                     const pitch = viewer.getPitch();
                     let yaw = viewer.getYaw();
                     const hotspots = configData.scenes[currentSceneId].hotSpots || [];
-                    
+
                     let found = null;
                     for (const hs of hotspots) {
                         if (hs.type === 'info' && hs.pitch !== undefined && hs.yaw !== undefined) {
                             const dPitch = Math.abs(hs.pitch - pitch);
                             let dYaw = Math.abs(hs.yaw - yaw);
                             if (dYaw > 180) dYaw = 360 - dYaw; // shortest distance around circle
-                            
+
                             const dist = Math.sqrt(dPitch * dPitch + dYaw * dYaw);
                             if (dist < 35) { // 35 degrees field of view threshold (more forgiving)
                                 found = hs;
@@ -683,7 +680,7 @@
 
         markGridActive(sceneId);
         updatePreloads(sceneId);
-        
+
         if (window.audioManager) {
             window.audioManager.playScene(sceneId);
         }
@@ -786,7 +783,7 @@
 
         let pitch = viewer.getPitch();
         let yaw = viewer.getYaw();
-        
+
         viewer.setPitch(pitch + cameraVelPitch, false);
         viewer.setYaw(yaw + cameraVelYaw, false);
 
@@ -1030,19 +1027,19 @@
 
     dom.btnNavGuide.addEventListener('click', () => { toggleNavGuide(); closeDropdown(); });
 
-    dom.btnMenuToggle.addEventListener('click', function(e) {
+    dom.btnMenuToggle.addEventListener('click', function (e) {
         e.stopPropagation();
         dom.mainDropdown.classList.toggle('show');
     });
 
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (dom.mainDropdown && !dom.mainDropdown.contains(e.target) && e.target !== dom.btnMenuToggle) {
             closeDropdown();
         }
     });
 
     // Close dropdown when any item inside it is clicked
-    dom.mainDropdown.addEventListener('click', function(e) {
+    dom.mainDropdown.addEventListener('click', function (e) {
         if (e.target.closest('.dropdown-item')) {
             closeDropdown();
         }
@@ -1434,19 +1431,43 @@
     if (vrCursor) {
         let lastMouseX = -1;
         let lastMouseY = -1;
-        
-        window.addEventListener('mousemove', (e) => {
-            // Only show if the mouse actually moved to avoid phantom events
-            if (lastMouseX !== -1 && (Math.abs(e.clientX - lastMouseX) > 1 || Math.abs(e.clientY - lastMouseY) > 1)) {
+
+        const updateCursorPos = (x, y) => {
+            if (lastMouseX !== -1 && (Math.abs(x - lastMouseX) > 1 || Math.abs(y - lastMouseY) > 1)) {
                 if (vrCursor.style.display === 'none') vrCursor.style.display = 'block';
             }
-            lastMouseX = e.clientX;
-            lastMouseY = e.clientY;
-            
-            vrCursor.style.left = e.clientX + 'px';
-            vrCursor.style.top = e.clientY + 'px';
-        }, true);
-        
+            lastMouseX = x;
+            lastMouseY = y;
+
+            // Clamp coordinates to prevent clipping at the screen edges
+            const bounds = 12; // Radius + padding
+            const clampedX = Math.max(bounds, Math.min(window.innerWidth - bounds, x));
+            const clampedY = Math.max(bounds, Math.min(window.innerHeight - bounds, y));
+
+            vrCursor.style.left = clampedX + 'px';
+            vrCursor.style.top = clampedY + 'px';
+        };
+
+        window.addEventListener('mousemove', (e) => {
+            updateCursorPos(e.clientX, e.clientY);
+        }, { passive: true, capture: true });
+
+        window.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                updateCursorPos(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true, capture: true });
+
+        window.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 0) {
+                updateCursorPos(e.touches[0].clientX, e.touches[0].clientY);
+            }
+            vrCursor.classList.add('dragging');
+        }, { passive: true, capture: true });
+
+        window.addEventListener('touchend', () => vrCursor.classList.remove('dragging'), { passive: true, capture: true });
+
+
         // Use capture phase (true) so Pannellum doesn't block the event with stopPropagation
         window.addEventListener('keydown', () => {
             vrCursor.style.display = 'none';
@@ -1469,7 +1490,7 @@
             });
         };
         attachMagneticToElements();
-        
+
         // Pannellum dynamically creates hotspots, so observe the DOM for changes
         const observer = new MutationObserver(() => attachMagneticToElements());
         observer.observe(document.body, { childList: true, subtree: true });
@@ -1495,7 +1516,7 @@
 
         init() {
             this.audio.muted = false;
-            
+
             const enableAudio = () => {
                 if (!this.hasInteracted) {
                     this.hasInteracted = true;
@@ -1536,9 +1557,9 @@
                 this.audio.src = file;
                 this.audio.load();
             }
-            
+
             this.audio.currentTime = 0;
-            
+
             if (this.hasInteracted && !this.isMuted) {
                 const playPromise = this.audio.play();
                 if (playPromise !== undefined) {
@@ -1577,7 +1598,7 @@
     };
     window.audioManager.init();
 
-    window.playTick = function() {
+    window.playTick = function () {
         if (!audioCtx) return;
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -1593,7 +1614,7 @@
         osc.stop(audioCtx.currentTime + 0.06);
     };
 
-    window.playWhoosh = function() {
+    window.playWhoosh = function () {
         if (!audioCtx) return;
         const bufferSize = audioCtx.sampleRate * 0.5;
         const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
@@ -1608,12 +1629,12 @@
         filter.frequency.setValueAtTime(100, audioCtx.currentTime);
         filter.frequency.exponentialRampToValueAtTime(1500, audioCtx.currentTime + 0.2);
         filter.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.5);
-        
+
         const gain = audioCtx.createGain();
         gain.gain.setValueAtTime(0, audioCtx.currentTime);
         gain.gain.linearRampToValueAtTime(0.2, audioCtx.currentTime + 0.1);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
-        
+
         noise.connect(filter);
         filter.connect(gain);
         gain.connect(audioCtx.destination);
