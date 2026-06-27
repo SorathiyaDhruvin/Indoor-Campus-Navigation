@@ -228,13 +228,6 @@
                 addedScenes.delete(sceneId);
                 console.log("[unloadScene] Scene removed: " + sceneId);
             }
-            if (preloadedImages[sceneId]) {
-                const link = preloadedImages[sceneId];
-                if (link && link.parentNode) {
-                    link.parentNode.removeChild(link);
-                }
-                delete preloadedImages[sceneId];
-            }
         } catch (e) {
             console.error("[unloadScene] Unload scene failed for " + sceneId, e);
             throw e;
@@ -689,6 +682,29 @@
                     adjacent.push(h.clickHandlerArgs.sceneId);
                 }
             });
+        }
+
+        // Also keep the previous scene in history preloaded
+        if (sceneHistory.length > 0) {
+            const lastSceneId = sceneHistory[sceneHistory.length - 1];
+            if (!adjacent.includes(lastSceneId)) {
+                adjacent.push(lastSceneId);
+            }
+        }
+
+        // If in guided navigation, preload the next and previous steps in the route
+        if (navActive && activeRoute) {
+            const currentRouteIdx = activeRoute.findIndex(s => s.scene === sceneId);
+            if (currentRouteIdx >= 0) {
+                if (currentRouteIdx > 0) {
+                    const prevStepScene = activeRoute[currentRouteIdx - 1].scene;
+                    if (!adjacent.includes(prevStepScene)) adjacent.push(prevStepScene);
+                }
+                if (currentRouteIdx < activeRoute.length - 1) {
+                    const nextStepScene = activeRoute[currentRouteIdx + 1].scene;
+                    if (!adjacent.includes(nextStepScene)) adjacent.push(nextStepScene);
+                }
+            }
         }
 
         for (const id in preloadedImages) {
