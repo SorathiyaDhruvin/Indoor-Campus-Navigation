@@ -773,6 +773,10 @@
         cameraVelPitch *= friction;
         cameraVelYaw *= friction;
 
+         // Clamp to maxSpeed
+        cameraVelPitch = Math.max(-maxSpeed, Math.min(maxSpeed, cameraVelPitch));
+        cameraVelYaw = Math.max(-maxSpeed, Math.min(maxSpeed, cameraVelYaw));
+
         // Stop animating if velocity is extremely low and no keys are pressed
         if (inputPitch === 0 && inputYaw === 0 && Math.abs(cameraVelPitch) < 0.01 && Math.abs(cameraVelYaw) < 0.01) {
             cameraVelPitch = 0;
