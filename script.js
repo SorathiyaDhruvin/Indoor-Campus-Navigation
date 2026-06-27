@@ -13,6 +13,9 @@
 
         infoBox: $('infoBox'),
         infoBoxText: $('infoBoxText'),
+        btnAudioToggle: $('btnAudioToggle'),
+        iconAudioOn: $('iconAudioOn'),
+        iconAudioOff: $('iconAudioOff'),
         btnMenuToggle: $('btnMenuToggle'),
         mainDropdown: $('mainDropdown'),
         gridOverlay: $('gridOverlay'),
@@ -421,13 +424,13 @@
         const el = document.createElement('div');
         el.classList.add('hotspot-content');
         el.innerHTML = `
-            <svg class="arrow-img" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                <!-- Top Solid Chevron (chev-3) -->
-                <path class="chev-3" d="M 70 5 L 100 50 L 70 95 L 60 95 L 90 50 L 60 5 Z" fill="#ffffff" />
-                <!-- Middle Outline Chevron (chev-2) -->
-                <path class="chev-2" d="M 40 5 L 70 50 L 40 95 L 30 95 L 60 50 L 30 5 Z" fill="none" stroke="#ffffff" stroke-width="2.5" />
-                <!-- Bottom Outline Chevron (chev-1) -->
-                <path class="chev-1" d="M 10 5 L 40 50 L 10 95 L 0 95 L 30 50 L 0 5 Z" fill="none" stroke="#ffffff" stroke-width="2.5" />
+            <svg class="arrow-img" viewBox="0 0 130 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- Top Chevron (chev-3) -->
+                <path class="chev-3" d="M 95 5 L 125 50 L 95 95 L 77 95 L 107 50 L 77 5 Z" fill="var(--arrow-color, #ffffff)" stroke="var(--arrow-stroke, rgba(0,0,0,0.3))" stroke-width="1.5" />
+                <!-- Middle Chevron (chev-2) -->
+                <path class="chev-2" d="M 60 5 L 90 50 L 60 95 L 42 95 L 72 50 L 42 5 Z" fill="var(--arrow-color, #ffffff)" stroke="var(--arrow-stroke, rgba(0,0,0,0.3))" stroke-width="1.5" />
+                <!-- Bottom Chevron (chev-1) -->
+                <path class="chev-1" d="M 25 5 L 55 50 L 25 95 L 7 95 L 37 50 L 7 5 Z" fill="var(--arrow-color, #ffffff)" stroke="var(--arrow-stroke, rgba(0,0,0,0.3))" stroke-width="1.5" />
             </svg>
         `;
         div.innerHTML = '';
@@ -680,6 +683,10 @@
 
         markGridActive(sceneId);
         updatePreloads(sceneId);
+        
+        if (window.audioManager) {
+            window.audioManager.playScene(sceneId);
+        }
     }
 
     /* ─────────────────────────────────────────────
@@ -1479,6 +1486,96 @@
 
     // Initialize audio on first user interaction (browser policy)
     document.addEventListener('click', initAudio, { once: true });
+
+    window.audioManager = {
+        audio: new Audio(),
+        isMuted: false,
+        hasInteracted: false,
+        currentFile: null,
+
+        init() {
+            this.audio.muted = false;
+            
+            const enableAudio = () => {
+                if (!this.hasInteracted) {
+                    this.hasInteracted = true;
+                    this.playCurrentScene();
+                }
+                document.removeEventListener('click', enableAudio, true);
+                document.removeEventListener('keydown', enableAudio, true);
+                document.removeEventListener('touchstart', enableAudio, true);
+                document.removeEventListener('mousedown', enableAudio, true);
+            };
+
+            document.addEventListener('click', enableAudio, true);
+            document.addEventListener('keydown', enableAudio, true);
+            document.addEventListener('touchstart', enableAudio, true);
+            document.addEventListener('mousedown', enableAudio, true);
+
+            if (dom.btnAudioToggle) {
+                dom.btnAudioToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.toggleMute();
+                });
+            }
+        },
+
+        playScene(sceneId) {
+            if (!configData || !configData.scenes[sceneId]) return;
+            const scene = configData.scenes[sceneId];
+            const file = scene.audio?.file;
+
+            if (!file) {
+                this.stop();
+                this.currentFile = null;
+                return;
+            }
+
+            if (this.currentFile !== file) {
+                this.currentFile = file;
+                this.audio.src = file;
+                this.audio.load();
+            }
+            
+            this.audio.currentTime = 0;
+            
+            if (this.hasInteracted && !this.isMuted) {
+                const playPromise = this.audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(e => console.warn('Audio play failed', e));
+                }
+            }
+        },
+
+        playCurrentScene() {
+            if (this.currentFile && this.hasInteracted && !this.isMuted) {
+                const playPromise = this.audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(e => console.warn('Audio play failed', e));
+                }
+            }
+        },
+
+        stop() {
+            this.audio.pause();
+            this.audio.currentTime = 0;
+        },
+
+        toggleMute() {
+            this.isMuted = !this.isMuted;
+            this.audio.muted = this.isMuted;
+            if (dom.iconAudioOn && dom.iconAudioOff) {
+                dom.iconAudioOn.style.display = this.isMuted ? 'none' : 'block';
+                dom.iconAudioOff.style.display = this.isMuted ? 'block' : 'none';
+            }
+            if (this.isMuted) {
+                this.audio.pause();
+            } else {
+                this.playCurrentScene();
+            }
+        }
+    };
+    window.audioManager.init();
 
     window.playTick = function() {
         if (!audioCtx) return;

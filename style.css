@@ -22,6 +22,10 @@
   --blur: 20px;
   --ease: cubic-bezier(.4, 0, .2, 1);
   --topbar-h: 80px;
+  
+  /* Arrow Colors */
+  --arrow-color: #ffffff;
+  --arrow-stroke: rgba(0, 0, 0, 0.4);
 }
 
 /* ── Reset ── */
@@ -540,7 +544,7 @@ body.hide-arrows .nav-btn {
 }
 
 .arrow-img {
-  width: 70px;
+  width: 90px;
   height: 70px;
   filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8));
   transition: filter 0.3s var(--ease), width 0.3s var(--ease), height 0.3s var(--ease);
