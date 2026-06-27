@@ -1941,3 +1941,111 @@ body.hide-arrows .nav-btn {
     opacity: 0;
   }
 }
+
+/* ==========================================================
+   WELCOME SPLASH SCREEN CARD
+   ========================================================== */
+#loaderContent {
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+
+#loaderContent.hidden {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+}
+
+.welcome-card {
+  max-width: 540px;
+  width: 90%;
+  background: rgba(30, 42, 120, 0.4); /* Translucent Parul Blue */
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 48px 40px;
+  border-radius: 24px;
+  text-align: center;
+  box-shadow: 
+    0 24px 80px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  transform: translateY(0);
+  opacity: 1;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.welcome-card.hidden {
+  opacity: 0;
+  transform: translateY(30px);
+  pointer-events: none;
+  display: none !important;
+}
+
+.welcome-badge {
+  background: rgba(244, 180, 0, 0.15); /* Parul Gold Accent */
+  color: #F4B400;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid rgba(244, 180, 0, 0.25);
+  margin-bottom: 8px;
+}
+
+.welcome-heading {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.welcome-subheading {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 12px;
+}
+
+.welcome-btn {
+  background: linear-gradient(135deg, #F4B400 0%, #d49c00 100%);
+  color: #111111;
+  border: none;
+  padding: 16px 36px;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 10px 25px rgba(244, 180, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+}
+
+.welcome-btn svg {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #111111;
+}
+
+.welcome-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 35px rgba(244, 180, 0, 0.55);
+  background: linear-gradient(135deg, #ffc82c 0%, #F4B400 100%);
+}
+
+.welcome-btn:hover svg {
+  transform: translateX(4px);
+}
+
+.welcome-btn:active {
+  transform: translateY(0);
+}
