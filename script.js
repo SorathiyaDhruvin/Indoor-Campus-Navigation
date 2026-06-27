@@ -754,7 +754,7 @@
         if (!viewer) return;
 
         const maxSpeed = 1.4; // Slightly reduced for better control
-        const acceleration = 0.10; // Slightly reduced ramp-up
+        const acceleration = 0.30; // Slightly reduced ramp-up
         const friction = 0.88; // Friction for smooth gliding stop
 
         let inputPitch = 0;
