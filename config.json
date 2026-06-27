@@ -57,7 +57,7 @@
       "hotSpots": [
         {
           "pitch": -15,
-          "yaw": -10,
+          "yaw": -25,
           "cssClass": "nav-btn animate-bounce-left",
           "clickHandlerArgs": {
             "sceneId": "scene54",
@@ -66,7 +66,7 @@
         },
         {
           "pitch": -15,
-          "yaw": 10,
+          "yaw": 30,
           "cssClass": "nav-btn animate-bounce-right",
           "clickHandlerArgs": {
             "sceneId": "scene6",
@@ -171,7 +171,7 @@
         },
         {
           "pitch": -15,
-          "yaw": 2,
+          "yaw": 5,
           "cssClass": "nav-btn animate-bounce-up",
           "clickHandlerArgs": {
             "sceneId": "scene55",
@@ -185,15 +185,6 @@
           "clickHandlerArgs": {
             "sceneId": "scene3",
             "targetYaw": 0
-          }
-        },
-        {
-          "pitch": -10,
-          "yaw": -20,
-          "cssClass": "nav-btn animate-bounce-left",
-          "clickHandlerArgs": {
-            "sceneId": "scene7",
-            "targetYaw": 90
           }
         },
         {
@@ -1099,7 +1090,7 @@
       "title": "L-107 EXTENDED REALITY & GAME DEVELOPMENT LAB",
       "panorama": "assets/ground floor/photo30_result.jpeg",
       "audio": {
-        "file": "audio/L-107 and L-106.mp3"
+        "file": "assets/L-107 and L-106.mp3"
       },
       "hfov": 110,
       "northOffset": 0,
