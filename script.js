@@ -51,6 +51,11 @@
         dirPrev: $('dirPrev'),
         dirNext: $('dirNext'),
         navComingSoon: $('navComingSoon'),
+
+        /* Welcome Splash Elements */
+        loaderContent: $('loaderContent'),
+        welcomeCard: $('welcomeCard'),
+        btnEnterTour: $('btnEnterTour'),
     };
 
     let viewer = null;
@@ -77,18 +82,49 @@
         onReady(() => {
             clearInterval(tick);
             dom.loaderFill.style.width = '100%';
-            setTimeout(() => {
-                dom.loading.classList.add('done');
-                dom.topBar.classList.add('show');
-                dom.infoBox.classList.add('show');
 
-                // Focus the panorama container so WASD keys work instantly
-                const pano = document.getElementById('panorama');
-                if (pano) {
-                    pano.setAttribute('tabindex', '0');
-                    pano.focus();
-                }
-            }, 50);
+            // Transition from progress loader to welcome card
+            setTimeout(() => {
+                if (dom.loaderContent) dom.loaderContent.classList.add('hidden');
+
+                setTimeout(() => {
+                    if (dom.loaderContent) dom.loaderContent.style.display = 'none';
+                    if (dom.welcomeCard) {
+                        dom.welcomeCard.classList.remove('hidden');
+                    }
+                }, 500);
+            }, 300);
+
+            // Listen for Start Tour click
+            if (dom.btnEnterTour) {
+                dom.btnEnterTour.addEventListener('click', () => {
+                    // Play modern UI click tick sound
+                    if (window.playTick) playTick();
+
+                    // Hide loading overlay entirely
+                    dom.loading.classList.add('done');
+                    dom.topBar.classList.add('show');
+                    dom.infoBox.classList.add('show');
+
+                    // Resume AudioContext if suspended
+                    if (window.audioCtx && audioCtx.state === 'suspended') {
+                        audioCtx.resume();
+                    }
+
+                    // Unlock audio manager & play background audio narration
+                    if (window.audioManager) {
+                        audioManager.hasInteracted = true;
+                        audioManager.playCurrentScene();
+                    }
+
+                    // Focus the panorama container so WASD keys work instantly
+                    const pano = document.getElementById('panorama');
+                    if (pano) {
+                        pano.setAttribute('tabindex', '0');
+                        pano.focus();
+                    }
+                });
+            }
         });
     }
 
@@ -222,18 +258,23 @@
 
         console.log("[loadScene] Loading started for scene: " + sceneId);
 
-        // 3. Display smooth loading indicator
-        dom.loading.classList.remove('done');
-        dom.loaderFill.style.transition = 'none';
-        dom.loaderFill.style.width = '10%';
+        const isPreloaded = !!preloadedImages[sceneId];
+        let loaderInterval = null;
 
-        // Fast UI feedback
-        let loaderw = 10;
-        let loaderInterval = setInterval(() => {
-            if (loaderw < 90) loaderw += 15;
-            dom.loaderFill.style.transition = 'width 0.1s linear';
-            dom.loaderFill.style.width = loaderw + '%';
-        }, 100);
+        if (!isPreloaded) {
+            // 3. Display smooth loading indicator
+            dom.loading.classList.remove('done');
+            dom.loaderFill.style.transition = 'none';
+            dom.loaderFill.style.width = '10%';
+
+            // Fast UI feedback
+            let loaderw = 10;
+            loaderInterval = setInterval(() => {
+                if (loaderw < 90) loaderw += 15;
+                dom.loaderFill.style.transition = 'width 0.1s linear';
+                dom.loaderFill.style.width = loaderw + '%';
+            }, 100);
+        }
 
         // 4. Prevent memory leaks by removing duplicate load listeners and timeouts
         if (currentOnLoadHandler) {
@@ -262,8 +303,8 @@
                 addSceneToViewer(sceneId);
             } catch (e) {
                 console.error("[loadScene] Error in addSceneToViewer:", e);
-                clearInterval(loaderInterval);
-                dom.loading.classList.add('done');
+                if (loaderInterval) clearInterval(loaderInterval);
+                if (!isPreloaded) dom.loading.classList.add('done');
                 return;
             }
 
@@ -282,8 +323,8 @@
                     currentOnLoadHandler = null;
                 }
 
-                clearInterval(loaderInterval);
-                dom.loading.classList.add('done'); // Hide loading screen
+                if (loaderInterval) clearInterval(loaderInterval);
+                if (!isPreloaded) dom.loading.classList.add('done'); // Hide loading screen
 
                 // Keep the current/previous scene visible instead of locking the app
                 if (prevSceneId && prevSceneId !== sceneId) {
@@ -301,8 +342,8 @@
             activeLoadTimeout = setTimeout(() => {
                 console.warn("[loadScene] Scene timeout (4s) reached for scene: " + sceneId + ". Forcing loader screen hide.");
 
-                clearInterval(loaderInterval);
-                dom.loading.classList.add('done');
+                if (loaderInterval) clearInterval(loaderInterval);
+                if (!isPreloaded) dom.loading.classList.add('done');
 
                 // Assume loaded/loading is far enough along, or failed, but keep app active
                 currentSceneId = sceneId;
@@ -316,7 +357,7 @@
                         } catch (e) {
                             console.warn("[loadScene] Timeout unload failed:", e);
                         }
-                    }, 500);
+                    }, 1500);
                 }
 
                 // Cleanup listeners
@@ -348,15 +389,16 @@
                     currentOnLoadHandler = null;
                 }
 
-                clearInterval(loaderInterval);
-                dom.loaderFill.style.width = '100%';
-
-                setTimeout(() => {
-                    dom.loading.classList.add('done');
-                }, 50);
+                if (loaderInterval) {
+                    clearInterval(loaderInterval);
+                    dom.loaderFill.style.width = '100%';
+                    setTimeout(() => {
+                        dom.loading.classList.add('done');
+                    }, 50);
+                }
 
                 // In Single Scene Strategy, unload previous scene only after next scene is fully loaded
-                // Wrap in setTimeout 500ms to allow Pannellum to complete its load/render loop and avoid WebGL crashes
+                // Wrap in setTimeout 1500ms to allow Pannellum to complete its load/render loop and avoid WebGL crashes
                 if (prevSceneId && prevSceneId !== sceneId) {
                     setTimeout(() => {
                         try {
@@ -365,7 +407,7 @@
                         } catch (e) {
                             console.error("[loadScene] Error unloading previous scene " + prevSceneId + ":", e);
                         }
-                    }, 500);
+                    }, 1500);
                 }
 
                 currentSceneId = sceneId;
@@ -383,8 +425,8 @@
             }
         }, (errorMsg) => {
             // Pre-flight check failed (dimensions too large, timeout, or load error)
-            clearInterval(loaderInterval);
-            dom.loading.classList.add('done');
+            if (loaderInterval) clearInterval(loaderInterval);
+            if (!isPreloaded) dom.loading.classList.add('done');
             alert(errorMsg);
 
             // Roll back to previous scene state representation in UI
@@ -753,8 +795,8 @@
     function smoothCameraLoop() {
         if (!viewer) return;
 
-        const maxSpeed = 1.4; // Slightly reduced for better control
-        const acceleration = 0.30; // Slightly reduced ramp-up
+        const maxSpeed = 1.5; // Increased for faster rotation
+        const acceleration = 0.30; // Increased for faster ramp-up and snappier controls
         const friction = 0.88; // Friction for smooth gliding stop
 
         let inputPitch = 0;
@@ -773,7 +815,7 @@
         cameraVelPitch *= friction;
         cameraVelYaw *= friction;
 
-         // Clamp to maxSpeed
+        // Clamp to maxSpeed
         cameraVelPitch = Math.max(-maxSpeed, Math.min(maxSpeed, cameraVelPitch));
         cameraVelYaw = Math.max(-maxSpeed, Math.min(maxSpeed, cameraVelYaw));
 
@@ -1520,22 +1562,33 @@
 
         init() {
             this.audio.muted = false;
+            this.audio.autoplay = true; // Try to force browser autoplay
 
             const enableAudio = () => {
                 if (!this.hasInteracted) {
                     this.hasInteracted = true;
-                    this.playCurrentScene();
+                    // If audio is paused and we have a file, try to play it
+                    if (this.currentFile && this.audio.paused && !this.isMuted) {
+                        this.playCurrentScene();
+                    }
                 }
                 document.removeEventListener('click', enableAudio, true);
                 document.removeEventListener('keydown', enableAudio, true);
                 document.removeEventListener('touchstart', enableAudio, true);
                 document.removeEventListener('mousedown', enableAudio, true);
+                document.removeEventListener('wheel', enableAudio, true);
+                document.removeEventListener('mousemove', enableAudio, true);
+                document.removeEventListener('pointermove', enableAudio, true);
             };
 
+            // Listen to absolutely every possible event to trick the browser into unlocking audio
             document.addEventListener('click', enableAudio, true);
             document.addEventListener('keydown', enableAudio, true);
             document.addEventListener('touchstart', enableAudio, true);
             document.addEventListener('mousedown', enableAudio, true);
+            document.addEventListener('wheel', enableAudio, true);
+            document.addEventListener('mousemove', enableAudio, true);
+            document.addEventListener('pointermove', enableAudio, true);
 
             if (dom.btnAudioToggle) {
                 dom.btnAudioToggle.addEventListener('click', (e) => {
@@ -1564,16 +1617,21 @@
 
             this.audio.currentTime = 0;
 
-            if (this.hasInteracted && !this.isMuted) {
+            if (!this.isMuted) {
                 const playPromise = this.audio.play();
                 if (playPromise !== undefined) {
-                    playPromise.catch(e => console.warn('Audio play failed', e));
+                    playPromise.then(() => {
+                        this.hasInteracted = true; // Browser allowed autoplay
+                    }).catch(e => {
+                        console.warn('Autoplay blocked by browser. Waiting for user interaction.', e);
+                        this.hasInteracted = false;
+                    });
                 }
             }
         },
 
         playCurrentScene() {
-            if (this.currentFile && this.hasInteracted && !this.isMuted) {
+            if (this.currentFile && !this.isMuted) {
                 const playPromise = this.audio.play();
                 if (playPromise !== undefined) {
                     playPromise.catch(e => console.warn('Audio play failed', e));
