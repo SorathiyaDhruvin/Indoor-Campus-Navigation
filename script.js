@@ -160,8 +160,8 @@
             img.onload = null;
             img.onerror = null;
             console.warn("[checkPanoramaDimensions] Image check timed out for:", url);
-            onFailure("Image verification timed out. The file might be too slow to load or inaccessible.");
-        }, 5000); // 5 seconds pre-flight timeout
+            onFailure("Image verification timed out (30s). The file might be too slow to load or inaccessible.");
+        }, 30000); // 30 seconds pre-flight timeout
 
         img.onload = () => {
             if (isSettled) return;
@@ -420,7 +420,12 @@
             // Pre-flight check failed (dimensions too large, timeout, or load error)
             if (loaderInterval) clearInterval(loaderInterval);
             if (!isPreloaded) dom.loading.classList.add('done');
-            alert(errorMsg);
+            
+            if (dom.infoBoxText && dom.infoBox) {
+                dom.infoBoxText.textContent = "Error: " + errorMsg;
+                dom.infoBox.classList.add('show');
+                setTimeout(() => dom.infoBox.classList.remove('show'), 5000);
+            }
 
             // Roll back to previous scene state representation in UI
             if (prevSceneId) {
@@ -1472,15 +1477,29 @@
 
                 if (firstSceneConfig && firstSceneConfig.panorama) {
                     checkPanoramaDimensions(firstSceneConfig.panorama, () => {
-                        initializeViewer();
+                        try {
+                            initializeViewer();
+                        } catch (e) {
+                            console.error("[init] initializeViewer failed:", e);
+                            ready();
+                        }
                     }, (err) => {
                         console.error("[init] First scene failed GPU compatibility check:", err);
-                        alert("Initial scene loading failed: " + err);
-                        dom.loading.classList.add('done');
-                        ready();
+                        const errP = document.createElement('p');
+                        errP.style.color = '#ff6b6b';
+                        errP.style.marginTop = '20px';
+                        errP.textContent = "Error: " + err;
+                        if (dom.loaderContent) dom.loaderContent.appendChild(errP);
+                        
+                        setTimeout(ready, 3000);
                     });
                 } else {
-                    initializeViewer();
+                    try {
+                        initializeViewer();
+                    } catch (e) {
+                        console.error("[init] initializeViewer failed:", e);
+                        ready();
+                    }
                 }
             })
             .catch((err) => { console.error(err); ready(); });
