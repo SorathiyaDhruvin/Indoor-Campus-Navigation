@@ -420,7 +420,7 @@
             // Pre-flight check failed (dimensions too large, timeout, or load error)
             if (loaderInterval) clearInterval(loaderInterval);
             if (!isPreloaded) dom.loading.classList.add('done');
-            
+
             if (dom.infoBoxText && dom.infoBox) {
                 dom.infoBoxText.textContent = "Error: " + errorMsg;
                 dom.infoBox.classList.add('show');
@@ -510,6 +510,7 @@
         else if (e.key === '3') { if (dom.btnFullscreen) dom.btnFullscreen.click(); }
         else if (e.key === '4') { if (dom.btnHelp) dom.btnHelp.click(); }
         else if (e.key === '5') { if (dom.btnToggleArrows) dom.btnToggleArrows.click(); }
+        else if (e.key === 'm' || e.key === 'M') { if (dom.btnAudioToggle) dom.btnAudioToggle.click(); }
         // Spacebar to toggle info popup if looking at an info hotspot in the current scene
         else if (e.code === 'Space' || e.keyCode === 32) {
             e.preventDefault(); // Prevent page scroll
@@ -1490,7 +1491,7 @@
                         errP.style.marginTop = '20px';
                         errP.textContent = "Error: " + err;
                         if (dom.loaderContent) dom.loaderContent.appendChild(errP);
-                        
+
                         setTimeout(ready, 3000);
                     });
                 } else {
