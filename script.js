@@ -56,6 +56,17 @@
         loaderContent: $('loaderContent'),
         welcomeCard: $('welcomeCard'),
         btnEnterTour: $('btnEnterTour'),
+
+        /* Welcome Orientation Toast */
+        welcomeToast: $('welcomeToast'),
+        welcomeToastClose: $('welcomeToastClose'),
+
+        /* Floor Map */
+        mapOverlay: $('mapOverlay'),
+        btnMapOpen: $('btnMapOpen'),
+        btnDropdownMap: $('btnDropdownMap'),
+        mapClose: $('mapClose'),
+        mapWrapper: $('mapWrapper'),
     };
 
     let viewer = null;
@@ -122,6 +133,26 @@
                     if (pano) {
                         pano.setAttribute('tabindex', '0');
                         pano.focus();
+                    }
+
+                    // Show Welcome Toast with guidance
+                    if (dom.welcomeToast) {
+                        setTimeout(() => {
+                            dom.welcomeToast.classList.add('show');
+                            
+                            // Auto dismiss after 8 seconds
+                            const autoDismissTimeout = setTimeout(() => {
+                                dom.welcomeToast.classList.remove('show');
+                            }, 10000);
+                            
+                            if (dom.welcomeToastClose) {
+                                dom.welcomeToastClose.addEventListener('click', () => {
+                                    clearTimeout(autoDismissTimeout);
+                                    dom.welcomeToast.classList.remove('show');
+                                    if (window.playTick) playTick();
+                                }, { once: true });
+                            }
+                        }, 250);
                     }
                 });
             }
@@ -250,6 +281,12 @@
         }
 
         console.log("[loadScene] Loading started for scene: " + sceneId);
+
+        const sc = configData.scenes[sceneId];
+        const entryPos = sceneEntryPositions[sceneId] || {};
+        pitch = pitch !== undefined ? pitch : (entryPos.pitch !== undefined ? entryPos.pitch : (sc.pitch || 0));
+        yaw = yaw !== undefined ? yaw : (entryPos.yaw !== undefined ? entryPos.yaw : (sc.yaw || 0));
+        hfov = hfov !== undefined ? hfov : (entryPos.hfov !== undefined ? entryPos.hfov : (sc.hfov || 110));
 
         const isPreloaded = !!preloadedImages[sceneId];
         let loaderInterval = null;
@@ -420,7 +457,7 @@
             // Pre-flight check failed (dimensions too large, timeout, or load error)
             if (loaderInterval) clearInterval(loaderInterval);
             if (!isPreloaded) dom.loading.classList.add('done');
-
+            
             if (dom.infoBoxText && dom.infoBox) {
                 dom.infoBoxText.textContent = "Error: " + errorMsg;
                 dom.infoBox.classList.add('show');
@@ -460,10 +497,22 @@
         loadScene(args.sceneId, entryPitch, entryYaw, currentHfov);
     }
 
-    function hotspotText(div) {
+    function hotspotText(div, args) {
         const el = document.createElement('div');
         el.classList.add('hotspot-content');
+        
+        let tooltipHtml = '';
+        if (args && args.sceneId && configData && configData.scenes[args.sceneId]) {
+            let targetTitle = configData.scenes[args.sceneId].title || args.sceneId;
+            // Clean HTML tags if any
+            const tmp = document.createElement('div');
+            tmp.innerHTML = targetTitle;
+            targetTitle = tmp.innerText || tmp.textContent;
+            tooltipHtml = `<div class="arrow-tooltip">${targetTitle}</div>`;
+        }
+        
         el.innerHTML = `
+            ${tooltipHtml}
             <svg class="arrow-img" viewBox="0 0 204 100" xmlns="http://www.w3.org/2000/svg">
                 <path class="chev-3" d="M 164 5 L 194 50 L 164 95 L 146 95 L 176 50 L 146 5 Z" fill="var(--arrow-color, #ffffff)" stroke="var(--arrow-stroke, rgba(0,0,0,0.3))" stroke-width="1.5" />
                 <path class="chev-2" d="M 96 5 L 126 50 L 96 95 L 78 95 L 108 50 L 78 5 Z" fill="var(--arrow-color, #ffffff)" stroke="var(--arrow-stroke, rgba(0,0,0,0.3))" stroke-width="1.5" />
@@ -505,12 +554,14 @@
                 dom.mainDropdown.classList.toggle('show');
             }
         }
+        else if (e.key === 'm' || e.key === 'M') {
+            toggleMap();
+        }
         else if (e.key === '1') { if (dom.btnNavGuide) dom.btnNavGuide.click(); }
         else if (e.key === '2') { if (dom.btnGrid) dom.btnGrid.click(); }
         else if (e.key === '3') { if (dom.btnFullscreen) dom.btnFullscreen.click(); }
         else if (e.key === '4') { if (dom.btnHelp) dom.btnHelp.click(); }
         else if (e.key === '5') { if (dom.btnToggleArrows) dom.btnToggleArrows.click(); }
-        else if (e.key === 'm' || e.key === 'M') { if (dom.btnAudioToggle) dom.btnAudioToggle.click(); }
         // Spacebar to toggle info popup if looking at an info hotspot in the current scene
         else if (e.code === 'Space' || e.keyCode === 32) {
             e.preventDefault(); // Prevent page scroll
@@ -582,6 +633,706 @@
     dom.gridOverlay.addEventListener('click', (e) => {
         if (e.target === dom.gridOverlay) closeGrid();
     });
+
+    /* ─────────────────────────────────────────────
+       FLOOR MAP SYSTEM & COORDINATE EDITOR
+       ───────────────────────────────────────────── */
+    let coordinatesConfig = {};
+    let isEditMode = false;
+    let dragPin = null;
+
+       // Hardcoded fallback coordinates config for all 55 scenes
+    const DEFAULT_COORDINATES = {
+        "scene1": { "x": 59, "y": 68 },
+        "scene2": { "x": 59, "y": 64 },
+        "scene3": { "x": 60, "y": 61 },
+        "scene4": { "x": 44, "y": 51 },
+        "scene5": { "x": 47, "y": 59 },
+        "scene6": { "x": 65, "y": 61 },
+        "scene7": { "x": 71, "y": 52 },
+        "scene8": { "x": 68, "y": 53 },
+        "scene9": { "x": 74, "y": 61 },
+        "scene10": { "x": 65, "y": 64 },
+        "scene11": { "x": 67, "y": 65 },
+        "scene12": { "x": 69, "y": 66 },
+        "scene13": { "x": 74, "y": 56 },
+        "scene14": { "x": 76, "y": 51 },
+        "scene15": { "x": 74, "y": 49 },
+        "scene16": { "x": 74, "y": 46 },
+        "scene17": { "x": 74, "y": 43 },
+        "scene18": { "x": 74, "y": 40 },
+        "scene19": { "x": 78, "y": 61 },
+        "scene20": { "x": 77, "y": 65 },
+        "scene21": { "x": 75, "y": 65 },
+        "scene22": { "x": 73, "y": 65 },
+        "scene23": { "x": 79, "y": 65 },
+        "scene24": { "x": 80, "y": 66 },
+        "scene25": { "x": 82, "y": 66 },
+        "scene26": { "x": 68, "y": 49 },
+        "scene27": { "x": 68, "y": 45 },
+        "scene28": { "x": 87, "y": 19 },
+        "scene29": { "x": 71, "y": 37 },
+        "scene30": { "x": 75, "y": 36 },
+        "scene31": { "x": 77, "y": 35 },
+        "scene32": { "x": 75, "y": 30 },
+        "scene33": { "x": 74, "y": 30 },
+        "scene34": { "x": 72, "y": 30 },
+        "scene35": { "x": 77, "y": 29 },
+        "scene36": { "x": 79, "y": 28 },
+        "scene37": { "x": 81, "y": 27 },
+        "scene38": { "x": 68, "y": 38 },
+        "scene39": { "x": 68, "y": 32 },
+        "scene40": { "x": 69, "y": 32 },
+        "scene41": { "x": 70, "y": 31 },
+        "scene42": { "x": 64, "y": 33 },
+        "scene43": { "x": 62, "y": 33 },
+        "scene44": { "x": 62, "y": 38 },
+        "scene45": { "x": 56, "y": 39 },
+        "scene46": { "x": 53, "y": 52 },
+        "scene47": { "x": 45, "y": 52 },
+        "scene48": { "x": 43, "y": 52 },
+        "scene49": { "x": 41, "y": 52 },
+        "scene50": { "x": 39, "y": 52 },
+        "scene51": { "x": 43, "y": 48 },
+        "scene52": { "x": 41, "y": 48 },
+        "scene53": { "x": 39, "y": 48 },
+        "scene54": { "x": 56, "y": 57 },
+        "scene55": { "x": 71, "y": 59 }
+    };
+
+    // Load coordinates config
+    function loadCoordinatesConfig() {
+        fetch('scenes.json')
+            .then(res => res.json())
+            .then(data => {
+                coordinatesConfig = data;
+                console.log("[loadCoordinatesConfig] Coordinates loaded successfully.");
+                populateEditDropdown();
+                updateJsonText();
+            })
+            .catch(err => {
+                console.warn("[loadCoordinatesConfig] Failed to load JSON config, using hardcoded default coordinates config:", err);
+                coordinatesConfig = Object.assign({}, DEFAULT_COORDINATES);
+                populateEditDropdown();
+                updateJsonText();
+            });
+    }
+
+    function updateJsonText() {
+        const text = document.getElementById('mapEditJsonText');
+        if (text) {
+            text.value = JSON.stringify(coordinatesConfig, null, 2);
+        }
+    }
+
+    function populateEditDropdown() {
+        const select = document.getElementById('mapEditSceneSelect');
+        if (!select) return;
+        select.innerHTML = '';
+        
+        const keys = Object.keys(coordinatesConfig).filter(k => k !== '_labels').sort((a, b) => {
+            const numA = parseInt(a.replace('scene', ''), 10);
+            const numB = parseInt(b.replace('scene', ''), 10);
+            return numA - numB;
+        });
+
+        keys.forEach(sceneId => {
+            const opt = document.createElement('option');
+            opt.value = sceneId;
+            const sceneNum = parseInt(sceneId.replace('scene', ''), 10);
+            if (sceneNum <= 46 || sceneNum === 54 || sceneNum === 55) {
+                opt.textContent = `🔒 ${sceneId.toUpperCase()} (${coordinatesConfig[sceneId].x}%, ${coordinatesConfig[sceneId].y}%) [Locked]`;
+                opt.disabled = true;
+            } else {
+                opt.textContent = `${sceneId.toUpperCase()} (${coordinatesConfig[sceneId].x}%, ${coordinatesConfig[sceneId].y}%)`;
+            }
+            select.appendChild(opt);
+        });
+
+        if (currentSceneId && coordinatesConfig[currentSceneId]) {
+            const currentNum = parseInt(currentSceneId.replace('scene', ''), 10);
+            if (currentNum <= 46 || currentNum === 54 || currentNum === 55) {
+                // Default to the first non-locked scene in the dropdown list
+                const firstNonLocked = keys.find(k => {
+                    const num = parseInt(k.replace('scene', ''), 10);
+                    return num > 46 && num !== 54 && num !== 55;
+                });
+                if (firstNonLocked) {
+                    select.value = firstNonLocked;
+                }
+            } else {
+                select.value = currentSceneId;
+            }
+        }
+    }
+
+    function renderMapPins() {
+        if (!dom.mapWrapper) return;
+        
+        // Remove existing pins
+        const existingPins = dom.mapWrapper.querySelectorAll('.map-pin');
+        existingPins.forEach(pin => pin.remove());
+
+        Object.keys(coordinatesConfig).filter(k => k !== '_labels').forEach(sceneId => {
+            const coord = coordinatesConfig[sceneId];
+            const pin = document.createElement('div');
+            pin.className = 'map-pin';
+            pin.style.left = coord.x + '%';
+            pin.style.top = coord.y + '%';
+            pin.dataset.sceneId = sceneId;
+
+            // Fetch scene title for tooltip
+            let name = sceneId.toUpperCase();
+            if (configData && configData.scenes[sceneId]) {
+                name = configData.scenes[sceneId].title || name;
+            }
+            
+            const sceneNum = parseInt(sceneId.replace('scene', ''), 10);
+            if (sceneNum <= 46 || sceneNum === 54 || sceneNum === 55) {
+                pin.classList.add('locked');
+                pin.setAttribute('data-tooltip', `🔒 ${sceneId.toUpperCase()} - ${name} (Locked)`);
+            } else {
+                pin.setAttribute('data-tooltip', `${sceneId.toUpperCase()} - ${name}`);
+            }
+
+            if (currentSceneId === sceneId) {
+                pin.classList.add('active');
+            }
+
+            // Click listener - navigate to scene (only when NOT in edit mode)
+            pin.addEventListener('click', (e) => {
+                if (isEditMode) {
+                    e.stopPropagation();
+                    return;
+                }
+                e.stopPropagation();
+                if (window.playTick) playTick();
+                if (currentSceneId === sceneId) return;
+                
+                closeMap();
+                loadScene(sceneId);
+            });
+
+            // Drag setup (only for Edit Mode)
+            setupPinDrag(pin);
+
+            dom.mapWrapper.appendChild(pin);
+        });
+        renderMapLabels();
+    }
+
+    function renderMapLabels() {
+        if (!dom.mapWrapper) return;
+        const existingLabels = dom.mapWrapper.querySelectorAll('.map-label');
+        existingLabels.forEach(lbl => lbl.remove());
+
+        if (coordinatesConfig._labels && Array.isArray(coordinatesConfig._labels)) {
+            coordinatesConfig._labels.forEach(labelData => {
+                const lbl = document.createElement('div');
+                lbl.className = 'map-label';
+                lbl.style.left = labelData.x + '%';
+                lbl.style.top = labelData.y + '%';
+                lbl.dataset.id = labelData.id;
+                lbl.textContent = labelData.text;
+                lbl.style.fontSize = (labelData.size || 13) + 'px';
+                lbl.style.transform = `translate(-50%, -50%) rotate(${labelData.rotation || 0}deg)`;
+
+                const editBtn = document.createElement('button');
+                editBtn.className = 'map-label-edit';
+                editBtn.innerHTML = '&#9998;';
+                editBtn.title = 'Edit Properties';
+                editBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (!isEditMode) return;
+                    openLabelProperties(labelData);
+                });
+                lbl.appendChild(editBtn);
+
+                const delBtn = document.createElement('button');
+                delBtn.className = 'map-label-delete';
+                delBtn.innerHTML = '&times;';
+                delBtn.title = 'Delete Label';
+                delBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (!isEditMode) return;
+                    coordinatesConfig._labels = coordinatesConfig._labels.filter(l => l.id !== labelData.id);
+                    updateJsonText();
+                    renderMapLabels();
+                });
+                lbl.appendChild(delBtn);
+                setupLabelDrag(lbl, labelData);
+                dom.mapWrapper.appendChild(lbl);
+            });
+        }
+    }
+
+    let currentEditingLabel = null;
+    function openLabelProperties(labelData) {
+        currentEditingLabel = labelData;
+        const popup = document.getElementById('labelPropsPopup');
+        if (!popup) return;
+        document.getElementById('lpText').value = labelData.text || '';
+        document.getElementById('lpSize').value = labelData.size || 13;
+        document.getElementById('lpRotation').value = labelData.rotation || 0;
+        popup.style.display = 'block';
+    }
+
+    function setupLabelDrag(lbl, labelData) {
+        let isDragging = false;
+        
+        function onDragStart(e) {
+            if (!isEditMode) return;
+            e.stopPropagation();
+            e.preventDefault();
+            isDragging = true;
+            lbl.classList.add('dragging');
+            window.addEventListener('mousemove', onDragMove);
+            window.addEventListener('mouseup', onDragEnd);
+            window.addEventListener('touchmove', onDragMove, { passive: false });
+            window.addEventListener('touchend', onDragEnd);
+        }
+
+        function onDragMove(e) {
+            if (!isDragging || !isEditMode) return;
+            e.preventDefault();
+            const rect = dom.mapWrapper.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            let x = ((clientX - rect.left) / rect.width) * 100;
+            let y = ((clientY - rect.top) / rect.height) * 100;
+            x = Math.max(0, Math.min(100, Math.round(x)));
+            y = Math.max(0, Math.min(100, Math.round(y)));
+            lbl.style.left = x + '%';
+            lbl.style.top = y + '%';
+            labelData.x = x;
+            labelData.y = y;
+            updateJsonText();
+        }
+
+        function onDragEnd() {
+            if (!isDragging) return;
+            isDragging = false;
+            lbl.classList.remove('dragging');
+            window.removeEventListener('mousemove', onDragMove);
+            window.removeEventListener('mouseup', onDragEnd);
+            window.removeEventListener('touchmove', onDragMove);
+            window.removeEventListener('touchend', onDragEnd);
+        }
+
+        lbl.addEventListener('mousedown', onDragStart);
+        lbl.addEventListener('touchstart', onDragStart, { passive: false });
+    }
+
+    function setupPinDrag(pin) {
+        let isDragging = false;
+        
+        function onDragStart(e) {
+            if (!isEditMode) return;
+            
+            const sceneId = pin.dataset.sceneId;
+            const sceneNum = parseInt(sceneId.replace('scene', ''), 10);
+            if (sceneNum <= 46 || sceneNum === 54 || sceneNum === 55) return;
+            
+            e.stopPropagation();
+            e.preventDefault();
+            isDragging = true;
+            dragPin = pin;
+            pin.classList.add('dragging');
+            
+            // Set edit dropdown to this scene ID
+            const select = document.getElementById('mapEditSceneSelect');
+            if (select) select.value = pin.dataset.sceneId;
+
+            window.addEventListener('mousemove', onDragMove);
+            window.addEventListener('mouseup', onDragEnd);
+            window.addEventListener('touchmove', onDragMove, { passive: false });
+            window.addEventListener('touchend', onDragEnd);
+        }
+
+        function onDragMove(e) {
+            if (!isDragging || !isEditMode) return;
+            e.preventDefault();
+            
+            const rect = dom.mapWrapper.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+            let x = ((clientX - rect.left) / rect.width) * 100;
+            let y = ((clientY - rect.top) / rect.height) * 100;
+
+            x = Math.max(0, Math.min(100, Math.round(x)));
+            y = Math.max(0, Math.min(100, Math.round(y)));
+
+            pin.style.left = x + '%';
+            pin.style.top = y + '%';
+
+            // Update config object
+            const sceneId = pin.dataset.sceneId;
+            if (coordinatesConfig[sceneId]) {
+                coordinatesConfig[sceneId].x = x;
+                coordinatesConfig[sceneId].y = y;
+            }
+
+            updateJsonText();
+        }
+
+        function onDragEnd() {
+            if (!isDragging) return;
+            isDragging = false;
+            dragPin = null;
+            pin.classList.remove('dragging');
+            
+            window.removeEventListener('mousemove', onDragMove);
+            window.removeEventListener('mouseup', onDragEnd);
+            window.removeEventListener('touchmove', onDragMove);
+            window.removeEventListener('touchend', onDragEnd);
+
+            populateEditDropdown();
+        }
+
+        pin.addEventListener('mousedown', onDragStart);
+        pin.addEventListener('touchstart', onDragStart, { passive: false });
+    }
+
+    function handleMapWrapperClick(e) {
+        if (!isEditMode) {
+            const card = e.target.closest('.map-container-card');
+            if (card) card.classList.toggle('enlarged');
+            return;
+        }
+        
+        const select = document.getElementById('mapEditSceneSelect');
+        if (!select) return;
+        
+        const sceneId = select.value;
+        if (!sceneId || !coordinatesConfig[sceneId]) return;
+
+        // Check if the selected scene is fixed (scene 1 to 46, scene 54, or scene 55)
+        const sceneNum = parseInt(sceneId.replace('scene', ''), 10);
+        if (sceneNum <= 46 || sceneNum === 54 || sceneNum === 55) return;
+
+        const rect = dom.mapWrapper.getBoundingClientRect();
+        let x = ((e.clientX - rect.left) / rect.width) * 100;
+        let y = ((e.clientY - rect.top) / rect.height) * 100;
+
+        x = Math.max(0, Math.min(100, Math.round(x)));
+        y = Math.max(0, Math.min(100, Math.round(y)));
+
+        // Reposition pin
+        coordinatesConfig[sceneId].x = x;
+        coordinatesConfig[sceneId].y = y;
+
+        // Update pin style
+        const pin = dom.mapWrapper.querySelector(`.map-pin[data-scene-id="${sceneId}"]`);
+        if (pin) {
+            pin.style.left = x + '%';
+            pin.style.top = y + '%';
+        } else {
+            renderMapPins();
+        }
+
+        populateEditDropdown();
+        updateJsonText();
+    }
+
+    function updateActiveMapPin() {
+        if (!dom.mapWrapper) return;
+        const pins = dom.mapWrapper.querySelectorAll('.map-pin');
+        pins.forEach(pin => {
+            if (pin.dataset.sceneId === currentSceneId) {
+                pin.classList.add('active');
+            } else {
+                pin.classList.remove('active');
+            }
+        });
+        
+        const select = document.getElementById('mapEditSceneSelect');
+        if (select && currentSceneId && coordinatesConfig[currentSceneId]) {
+            select.value = currentSceneId;
+        }
+
+        updateMapRadar();
+    }
+
+    function updateMapRadar() {
+        if (!viewer || !dom.mapWrapper) return;
+        const activePin = dom.mapWrapper.querySelector('.map-pin.active');
+        if (!activePin) return;
+
+        let radar = activePin.querySelector('.radar-cone');
+        if (!radar) {
+            // Remove radar from any other pins first just in case
+            const allRadars = dom.mapWrapper.querySelectorAll('.radar-cone');
+            allRadars.forEach(r => r.remove());
+
+            radar = document.createElement('div');
+            radar.className = 'radar-cone';
+            activePin.appendChild(radar);
+        }
+
+        const yaw = viewer.getYaw() || 0;
+        const offset = getSceneMapOffset(currentSceneId);
+        const adjustedYaw = yaw + offset;
+        radar.style.setProperty('--radar-yaw', `${adjustedYaw}deg`);
+    }
+
+    function getSceneMapOffset(sceneId) {
+        if (!configData || !configData.scenes[sceneId] || !coordinatesConfig[sceneId]) return 0;
+        
+        const scene = configData.scenes[sceneId];
+        const coordA = coordinatesConfig[sceneId];
+        
+        const hotspots = scene.hotSpots || [];
+        for (const hp of hotspots) {
+            if (hp.clickHandlerArgs && hp.clickHandlerArgs.sceneId) {
+                const targetId = hp.clickHandlerArgs.sceneId;
+                const coordB = coordinatesConfig[targetId];
+                if (coordB) {
+                    const dx = coordB.x - coordA.x;
+                    const dy = coordB.y - coordA.y;
+                    
+                    // Ignore extremely small differences to avoid division by zero / noise
+                    if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
+                        const mapAngle = Math.atan2(dx, -dy) * (180 / Math.PI);
+                        const hpYaw = hp.yaw || 0;
+                        let offset = mapAngle - hpYaw;
+                        
+                        // Normalize offset to -180 to 180 degrees
+                        while (offset > 180) offset -= 360;
+                        while (offset < -180) offset += 360;
+                        
+                        return offset;
+                    }
+                }
+            }
+        }
+        return 0;
+    }
+
+    function openMap() {
+        closeHelp();
+        closeGrid();
+        renderMapPins();
+        dom.mapOverlay.classList.add('active');
+        const statusLabel = document.getElementById('mapEditStatus');
+        if (statusLabel) statusLabel.textContent = "";
+        window.addEventListener('keydown', handleMapEsc);
+    }
+
+    function closeMap() {
+        dom.mapOverlay.classList.remove('active');
+        window.removeEventListener('keydown', handleMapEsc);
+    }
+
+    function toggleMap() {
+        dom.mapOverlay.classList.contains('active') ? closeMap() : openMap();
+    }
+
+    function handleMapEsc(e) {
+        if (e.key === 'Escape' || e.key === 'Esc') {
+            closeMap();
+        }
+    }
+
+    // Initialize Map Coordinates
+    loadCoordinatesConfig();
+
+    if (dom.btnMapOpen) {
+        dom.btnMapOpen.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (window.playTick) playTick();
+            toggleMap();
+        });
+    }
+    if (dom.btnDropdownMap) {
+        dom.btnDropdownMap.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (window.playTick) playTick();
+            toggleMap();
+        });
+    }
+    if (dom.mapClose) {
+        dom.mapClose.addEventListener('click', closeMap);
+    }
+    if (dom.mapOverlay) {
+        dom.mapOverlay.addEventListener('click', (e) => {
+            if (e.target === dom.mapOverlay) closeMap();
+        });
+    }
+
+    // Attach Edit Mode listeners
+    const editToggle = document.getElementById('btnMapEditToggle');
+    const mapCard = document.querySelector('.map-container-card');
+    if (editToggle && mapCard) {
+        editToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (window.playTick) playTick();
+            isEditMode = !isEditMode;
+            mapCard.classList.toggle('edit-mode', isEditMode);
+            renderMapPins();
+        });
+    }
+
+    if (dom.mapWrapper) {
+        dom.mapWrapper.addEventListener('click', handleMapWrapperClick);
+    }
+
+    const editCopy = document.getElementById('btnMapEditCopy');
+    if (editCopy) {
+        editCopy.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const textarea = document.getElementById('mapEditJsonText');
+            if (textarea) {
+                textarea.select();
+                navigator.clipboard.writeText(textarea.value)
+                    .then(() => {
+                        const originalText = editCopy.innerHTML;
+                        editCopy.innerHTML = "✅ Copied Coordinates!";
+                        setTimeout(() => {
+                            editCopy.innerHTML = originalText;
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error("[Edit Panel] Clipboard copy failed:", err);
+                    });
+            }
+        });
+    }
+
+    const btnMapEditEnlarge = document.getElementById('btnMapEditEnlarge');
+    if (btnMapEditEnlarge) {
+        btnMapEditEnlarge.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!isEditMode) return;
+            dom.mapContainer.classList.toggle('enlarged');
+        });
+    }
+
+    const btnMapAddLabel = document.getElementById('btnMapAddLabel');
+    if (btnMapAddLabel) {
+        btnMapAddLabel.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!isEditMode) return;
+            const text = prompt("Enter text for the new label:");
+            if (!text || text.trim() === "") return;
+
+            if (!coordinatesConfig._labels) {
+                coordinatesConfig._labels = [];
+            }
+            
+            // Add at center of the map (50%, 50%)
+            coordinatesConfig._labels.push({
+                id: 'label_' + Date.now(),
+                text: text.trim(),
+                x: 50,
+                y: 50
+            });
+            
+            updateJsonText();
+            renderMapLabels();
+        });
+    }
+
+    const btnLpCancel = document.getElementById('btnLpCancel');
+    if (btnLpCancel) {
+        btnLpCancel.addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('labelPropsPopup').style.display = 'none';
+            currentEditingLabel = null;
+        });
+    }
+
+    const btnLpSave = document.getElementById('btnLpSave');
+    if (btnLpSave) {
+        btnLpSave.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!currentEditingLabel) return;
+            const text = document.getElementById('lpText').value;
+            const size = parseInt(document.getElementById('lpSize').value, 10);
+            const rotation = parseInt(document.getElementById('lpRotation').value, 10);
+            currentEditingLabel.text = text;
+            currentEditingLabel.size = isNaN(size) ? 13 : size;
+            currentEditingLabel.rotation = isNaN(rotation) ? 0 : rotation;
+            document.getElementById('labelPropsPopup').style.display = 'none';
+            currentEditingLabel = null;
+            updateJsonText();
+            renderMapLabels();
+        });
+    }
+
+    // Input listener to parse typed coordinates JSON manually
+    const jsonTextarea = document.getElementById('mapEditJsonText');
+    const statusLabel = document.getElementById('mapEditStatus');
+    if (jsonTextarea) {
+        jsonTextarea.addEventListener('input', () => {
+            try {
+                const parsed = JSON.parse(jsonTextarea.value);
+                
+                // Validate parsed structure
+                let isValid = true;
+                for (const sceneId in parsed) {
+                    if (typeof parsed[sceneId] !== 'object' || parsed[sceneId] === null || 
+                        typeof parsed[sceneId].x !== 'number' || typeof parsed[sceneId].y !== 'number') {
+                        isValid = false;
+                        break;
+                    }
+                }
+                
+                if (isValid) {
+                    // Force lock scenes 1-46, 54, and 55 to DEFAULT_COORDINATES values
+                    for (let i = 1; i <= 46; i++) {
+                        const sceneId = `scene${i}`;
+                        if (DEFAULT_COORDINATES[sceneId]) {
+                            parsed[sceneId] = Object.assign({}, DEFAULT_COORDINATES[sceneId]);
+                        }
+                    }
+                    if (DEFAULT_COORDINATES["scene54"]) {
+                        parsed["scene54"] = Object.assign({}, DEFAULT_COORDINATES["scene54"]);
+                    }
+                    if (DEFAULT_COORDINATES["scene55"]) {
+                        parsed["scene55"] = Object.assign({}, DEFAULT_COORDINATES["scene55"]);
+                    }
+                    coordinatesConfig = parsed;
+                    updateJsonText(); // Refresh textbox with locked values restored
+                    if (statusLabel) {
+                        statusLabel.textContent = "✅ Valid JSON - Map Updated (Locked scenes preserved)";
+                        statusLabel.style.color = "#00E676";
+                    }
+                    renderMapPins();
+                } else {
+                    if (statusLabel) {
+                        statusLabel.textContent = "❌ Invalid values (need {x,y})";
+                        statusLabel.style.color = "#FF5252";
+                    }
+                }
+            } catch (err) {
+                if (statusLabel) {
+                    statusLabel.textContent = "❌ Invalid JSON structure";
+                    statusLabel.style.color = "#FF5252";
+                }
+            }
+        });
+    }
+
+    // Dropdown change listener to highlight selected pin
+    const editSelect = document.getElementById('mapEditSceneSelect');
+    if (editSelect) {
+        editSelect.addEventListener('change', () => {
+            const sceneId = editSelect.value;
+            const pins = dom.mapWrapper.querySelectorAll('.map-pin');
+            pins.forEach(pin => {
+                if (pin.dataset.sceneId === sceneId) {
+                    pin.style.transform = 'translate(-50%, -50%) scale(1.6)';
+                    pin.style.boxShadow = '0 0 16px rgba(255, 82, 82, 0.9)';
+                    pin.style.zIndex = '15';
+                } else {
+                    pin.style.transform = '';
+                    pin.style.boxShadow = '';
+                    pin.style.zIndex = '';
+                }
+            });
+        });
+    }
 
     function buildGrid(config) {
         dom.gridBody.innerHTML = '';
@@ -748,6 +1499,7 @@
         if (window.audioManager) {
             window.audioManager.playScene(sceneId);
         }
+        updateActiveMapPin();
     }
 
     /* ─────────────────────────────────────────────
@@ -794,7 +1546,7 @@
                 yaw: (bestTargetYaw !== undefined && bestTargetYaw !== null) ? bestTargetYaw : (sc.yaw || 0),
                 hfov: sc.hfov || 110
             };
-            loadScene(bestTarget);
+            loadScene(bestTarget, sceneEntryPositions[bestTarget].pitch, sceneEntryPositions[bestTarget].yaw, sceneEntryPositions[bestTarget].hfov);
         }
     }
 
@@ -803,7 +1555,7 @@
             const lastSceneId = sceneHistory.pop();
             const sc = configData && configData.scenes[lastSceneId] ? configData.scenes[lastSceneId] : {};
             const entryPos = sceneEntryPositions[lastSceneId] || {};
-            loadScene(lastSceneId, entryPos.pitch || sc.pitch || 0, entryPos.yaw || sc.yaw || 0, entryPos.hfov || sc.hfov || 110, true);
+            loadScene(lastSceneId, sc.pitch || 0, sc.yaw || 0, entryPos.hfov || sc.hfov || 110, true);
         } else {
             console.log("No previous scene in history.");
         }
@@ -1370,7 +2122,7 @@
        MAIN INIT
        ───────────────────────────────────────────── */
     runLoader(function (ready) {
-        fetch('config.json')
+        fetch('config.json?v=' + new Date().getTime())
             .then((r) => r.json())
             .then((config) => {
                 configData = config;
@@ -1390,7 +2142,7 @@
                         if (h.type === 'info') {
                             h.clickHandlerFunc = showInfo;
                         } else {
-                            if (!h.createTooltipArgs) h.createTooltipArgs = h.text;
+                            if (!h.createTooltipArgs) h.createTooltipArgs = (h.cssClass && h.cssClass.includes('nav-btn')) ? h.clickHandlerArgs : h.text;
                             h.createTooltipFunc = hotspotText;
                         }
                     });
@@ -1427,43 +2179,25 @@
                         onSceneChangeNav(sceneId);
                     });
 
+                    let lastRadarYaw = null;
+                    function trackRadarView() {
+                        if (viewer && dom.mapOverlay && dom.mapOverlay.classList.contains('active')) {
+                            const yaw = viewer.getYaw();
+                            if (yaw !== lastRadarYaw) {
+                                lastRadarYaw = yaw;
+                                updateMapRadar();
+                            }
+                        }
+                        requestAnimationFrame(trackRadarView);
+                    }
+                    viewer.on('load', trackRadarView);
+
                     /* ── Record entry position for the first scene (config defaults) ── */
                     sceneEntryPositions[first] = {
                         pitch: firstSceneConfig.pitch || 0,
                         yaw: firstSceneConfig.yaw || 0,
                         hfov: firstSceneConfig.hfov || TARGET_HFOV
                     };
-
-                    /* ── Compass click → reset to ENTRY position ── */
-                    viewer.on('load', function () {
-                        const compass = document.querySelector('.pnlm-compass');
-                        if (compass) {
-                            compass.style.cursor = 'pointer';
-                            compass.title = 'Reset to original view';
-
-                            compass.addEventListener('click', function (e) {
-                                e.stopPropagation();
-
-                                // Stay in the SAME scene — reset to the direction user entered from
-                                const id = viewer.getScene();
-                                const pos = sceneEntryPositions[id];
-
-                                if (pos) {
-                                    viewer.setPitch(pos.pitch, true);  // true = animated
-                                    viewer.setYaw(pos.yaw, true);      // entry yaw (targetYaw or config default)
-                                    viewer.setHfov(pos.hfov, true);
-                                }
-
-                                // Visual click feedback — pulse animation
-                                compass.classList.remove('compass-pulse');
-                                void compass.offsetWidth;            // force reflow
-                                compass.classList.add('compass-pulse');
-                                compass.addEventListener('animationend', function () {
-                                    compass.classList.remove('compass-pulse');
-                                }, { once: true });
-                            });
-                        }
-                    });
 
                     /* Move info popup inside panorama for fullscreen support */
                     if (window.innerWidth > 768) {
@@ -1491,7 +2225,7 @@
                         errP.style.marginTop = '20px';
                         errP.textContent = "Error: " + err;
                         if (dom.loaderContent) dom.loaderContent.appendChild(errP);
-
+                        
                         setTimeout(ready, 3000);
                     });
                 } else {

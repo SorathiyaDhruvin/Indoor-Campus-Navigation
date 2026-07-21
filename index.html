@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -8,9 +9,11 @@
         content="Immersive 360° Virtual Campus Tour — Extended Reality Lab & Network Architecture Lab">
     <title>360° Virtual Campus Tour</title>
 
+
     <!-- Pannellum -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css" />
     <script src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -19,12 +22,15 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
         rel="stylesheet">
 
+
     <link href="style.css" rel="stylesheet">
 </head>
+
 
 <body>
     <!-- ========== VR CURSOR ========== -->
     <div class="vr-cursor" id="vrCursor"></div>
+
 
     <!-- ========== LOADING SCREEN ========== -->
     <div id="loadingScreen" class="loading-screen">
@@ -42,6 +48,7 @@
             </div>
         </div>
 
+
         <!-- Welcome Splash State (faded in when loaded) -->
         <div class="welcome-card hidden" id="welcomeCard">
             <div class="welcome-badge">Guided Experience</div>
@@ -57,10 +64,25 @@
         </div>
     </div>
 
+
     <!-- ========== TOP NAVIGATION BAR ========== -->
     <nav id="topBar" class="top-bar">
         <!-- Left: Empty (Logo Removed) -->
-        <div class="top-left"></div>
+        <div class="top-left" style="display: flex; gap: 8px; position: relative;">
+            <button class="icon-btn" id="btnMenuToggle" title="Menu" aria-label="Menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+           
+
+
+        </div>
+
+
+
 
 
 
@@ -77,41 +99,78 @@
                     <line x1="17" y1="9" x2="23" y2="15"></line>
                 </svg>
             </button>
-            <button class="icon-btn" id="btnMenuToggle" title="Menu" aria-label="Menu">
+            <button class="icon-btn" id="btnMapOpen" title="Floor Map (M)" aria-label="Floor Map">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                    <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+                    <line x1="9" y1="3" x2="9" y2="18"></line>
+                    <line x1="15" y1="6" x2="15" y2="21"></line>
                 </svg>
             </button>
-            
-            <div class="dropdown-menu" id="mainDropdown">
-                <button class="dropdown-item" id="btnNavGuide" title="Indoor Navigation (1)" aria-label="Indoor Navigation">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                    Navigation <span class="shortcut-key">1</span>
-                </button>
-                <button class="dropdown-item" id="btnGrid" title="Grid View (2)" aria-label="Grid view">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
-                    Grid View <span class="shortcut-key">2</span>
-                </button>
-                <button class="dropdown-item" id="btnFullscreen" title="Fullscreen (3)" aria-label="Fullscreen">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-                    Fullscreen <span class="shortcut-key">3</span>
-                </button>
-                <button class="dropdown-item" id="btnHelp" title="Help (4)" aria-label="Help">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                    Help <span class="shortcut-key">4</span>
-                </button>
-                <button class="dropdown-item" id="btnToggleArrows" title="Toggle Arrows (5)" aria-label="Toggle Arrows">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
-                    <span id="txtToggleArrows">Hide Arrows</span> <span class="shortcut-key">5</span>
-                </button>
+
+
+    </nav>
+
+
+    <!-- ========== WELCOME ORIENTATION TOAST ========== -->
+    <div id="welcomeToast" class="welcome-toast">
+        <div class="welcome-toast-header">
+            <div class="welcome-toast-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+            </div>
+            <span class="welcome-toast-title">👋 Welcome Guest! Are you visiting for the first time? Please read this Guide:</span>
+            <button class="welcome-toast-close" id="welcomeToastClose" aria-label="Dismiss message">&times;</button>
+        </div>
+        <div class="welcome-toast-body">
+            <div class="toast-item">
+                <span class="toast-item-emoji">🗺️</span>
+                <span>Use the <strong>Top-Right Map</strong> to see your current location on the campus.</span>
+            </div>
+            <div class="toast-item">
+                <span class="toast-item-emoji">☰</span>
+                <span>Open the <strong>Top-Left Menu ➔ Help</strong> (or press key <strong>4</strong>) to read full navigation guide details & keyboard shortcuts.</span>
             </div>
         </div>
-    </nav>
+        <div class="welcome-toast-progress"></div>
+    </div>
+
+
+
+    <!-- ========== LEFT SIDEBAR MENU ========== -->
+    <div class="dropdown-menu" id="mainDropdown">
+        <button class="dropdown-item" id="btnNavGuide" title="Indoor Navigation (1)" aria-label="Indoor Navigation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Navigation <span class="shortcut-key">1</span>
+        </button>
+        <button class="dropdown-item" id="btnDropdownMap" title="Floor Map (M)" aria-label="Floor Map">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></svg>
+            Floor Map <span class="shortcut-key">M</span>
+        </button>
+        <button class="dropdown-item" id="btnGrid" title="Grid View (2)" aria-label="Grid view">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            Grid View <span class="shortcut-key">2</span>
+        </button>
+        <button class="dropdown-item" id="btnFullscreen" title="Fullscreen (3)" aria-label="Fullscreen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+            Fullscreen <span class="shortcut-key">3</span>
+        </button>
+        <button class="dropdown-item" id="btnHelp" title="Help (4)" aria-label="Help">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Help <span class="shortcut-key">4</span>
+        </button>
+        <button class="dropdown-item" id="btnToggleArrows" title="Toggle Arrows (5)" aria-label="Toggle Arrows">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            <span id="txtToggleArrows">Hide Arrows</span> <span class="shortcut-key">5</span>
+        </button>
+    </div>
+
 
     <!-- ========== PANORAMA VIEWER ========== -->
     <div id="panorama"></div>
+
 
     <!-- ========== INDOOR NAVIGATION PANEL ========== -->
     <div class="nav-guide-panel" id="navGuidePanel">
@@ -166,6 +225,8 @@
     </div>
 
 
+
+
     <!-- Direction guidance banner -->
     <div class="direction-banner" id="directionBanner">
         <div class="direction-banner-inner">
@@ -194,10 +255,12 @@
         </div>
     </div>
 
+
     <!-- ========== BOTTOM-LEFT INFO BOX ========== -->
     <div class="info-box" id="infoBox">
         <span class="info-box-text" id="infoBoxText">Loading…</span>
     </div>
+
 
     <!-- ========== GRID VIEW — RIGHT PANEL ========== -->
     <div class="panel-overlay" id="gridOverlay">
@@ -217,6 +280,7 @@
         </div>
     </div>
 
+
     <!-- ========== INFO POPUP (for hotspot details — stays centered) ========== -->
     <div id="infoPopup" class="modal-overlay info-popup-overlay">
         <div class="info-popup">
@@ -230,6 +294,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- ========== HELP — RIGHT PANEL ========== -->
     <div class="panel-overlay" id="helpOverlay">
@@ -265,6 +330,7 @@
             <h4 class="help-sub">Keyboard Shortcuts</h4>
             <div class="shortcut-grid">
                 <div class="sc"><kbd>N</kbd> Navigate</div>
+                <div class="sc"><kbd>M</kbd> Floor Map</div>
                 <div class="sc"><kbd>G</kbd> Grid View</div>
                 <div class="sc"><kbd>H</kbd> Help</div>
                 <div class="sc"><kbd>F</kbd> Fullscreen</div>
@@ -273,7 +339,112 @@
         </div>
     </div>
 
-    <script src="script.js?v=1.0.5"></script>
+
+    <!-- ========== FLOOR MAP OVERLAY ========== -->
+    <div id="mapOverlay" class="modal-overlay map-overlay">
+        <div class="map-container-card animate-scale-up">
+            <button class="panel-close" id="mapClose" aria-label="Close">&times;</button>
+            <div class="map-header">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="map-header-icon">
+                    <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"></polygon>
+                    <line x1="9" y1="3" x2="9" y2="18"></line>
+                    <line x1="15" y1="6" x2="15" y2="21"></line>
+                </svg>
+                <h3>Ground Floor Navigation Map</h3>
+                <button class="map-edit-btn" id="btnMapEditToggle" title="Edit Coordinates">⚙️ Edit Coordinates</button>
+            </div>
+            <div class="map-body">
+                <div class="map-visual-section">
+                    <div class="map-wrapper" id="mapWrapper">
+                        <img src="assets/map_top_view.jpeg" alt="Ground Floor Map" class="map-image">
+                        <!-- Interactive pins will be dynamically generated by JS -->
+                    </div>
+                   
+                    <!-- Label Edit Popup -->
+                    <div id="labelPropsPopup" class="label-props-popup">
+                        <h5>Edit Label Properties</h5>
+                        <div class="lp-group">
+                            <label for="lpText">Text</label>
+                            <input type="text" id="lpText">
+                        </div>
+                        <div class="lp-group">
+                            <label for="lpSize">Size (px)</label>
+                            <input type="number" id="lpSize" value="13">
+                        </div>
+                        <div class="lp-group">
+                            <label for="lpRotation">Rotation (deg)</label>
+                            <input type="number" id="lpRotation" value="0">
+                        </div>
+                        <div class="lp-actions">
+                            <button id="btnLpCancel" class="lp-btn-cancel">Cancel</button>
+                            <button id="btnLpSave" class="lp-btn-save">Save</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="map-edit-section" id="mapEditSection">
+                    <h4>Coordinate Editor</h4>
+                   
+                    <button class="map-edit-copy-btn" id="btnMapEditEnlarge" style="background:#2b6cb0; margin-bottom:16px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            <line x1="11" y1="8" x2="11" y2="14"></line>
+                            <line x1="8" y1="11" x2="14" y2="11"></line>
+                        </svg>
+                        Toggle Enlarge Map
+                    </button>
+
+
+                    <div class="map-edit-group">
+                        <label for="mapEditSceneSelect">Select Scene:</label>
+                        <select id="mapEditSceneSelect" class="map-edit-select">
+                            <!-- Options dynamically populated by JS -->
+                        </select>
+                    </div>
+                    <div class="map-edit-group">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <label for="mapEditJsonText">Coordinates JSON:</label>
+                            <span id="mapEditStatus" style="font-size:0.7rem; font-weight:600; color:#718096;"></span>
+                        </div>
+                        <textarea id="mapEditJsonText" class="map-edit-textarea"></textarea>
+                    </div>
+                    <button class="map-edit-copy-btn" id="btnMapAddLabel" style="background:#4A5568; margin-bottom:12px;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <path d="M12 5v14M5 12h14"/>
+                        </svg>
+                        Add Text Label
+                    </button>
+                    <button class="map-edit-copy-btn" id="btnMapEditCopy">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Copy Coordinates JSON
+                    </button>
+                    <p class="map-edit-help">💡 <strong>Tip:</strong> Drag any pin to reposition it, or select a scene from the dropdown and click anywhere on the map to place it. The JSON updates in real-time!</p>
+                </div>
+            </div>
+            <div class="map-footer">
+                <div class="map-legend">
+                    <div class="legend-item">
+                        <span class="legend-dot current-pos"></span>
+                        <span>Current Location</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot normal-pos"></span>
+                        <span>Lab / Destination Pin</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="script.js?v=1.0.7"></script>
 </body>
 
+
 </html>
+
+
+
