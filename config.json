@@ -106,7 +106,7 @@
       ]
     },
     "scene4": {
-      "title": "System Support Cell",
+      "title": "Student Help Desk",
       "panorama": "assets/ground floor/photo55_result.jpeg",
       "hfov": 110,
       "northOffset": 0,
@@ -141,7 +141,7 @@
       ]
     },
     "scene5": {
-      "title": "System Support Cell ",
+      "title": "Student Help Desk ",
       "panorama": "assets/ground floor/photo56_result.jpeg",
       "hfov": 110,
       "northOffset": 0,
@@ -304,7 +304,7 @@
       ]
     },
     "scene9": {
-      "title": "System Support Cell ",
+      "title": "Student Help Desk ",
       "panorama": "assets/ground floor/photo9_result.jpeg",
       "hfov": 110,
       "northOffset": 0,
@@ -340,10 +340,10 @@
           "pitch": 25,
           "yaw": -60,
           "type": "info",
-          "text": "System Support Cell",
+          "text": "Student Help Desk",
           "clickHandlerArgs": {
-            "title": "System Support Cell ",
-            "description": "<h4>System Support Cell</h4><b>Infrastructure & Hardware</b><ul><li>Dell R740xd (24 Bay) Blade Servers \u2013 6 Nos</li><li>Dell ME4012 Storage Controllers with 49 TB Storage \u2013 2 Nos</li><li>VMware vSphere Standard Subscription \u2013 12 Nos</li><li>VMware Infrastructure Monitoring & Management \u2013 2 Nos</li><li>VMware vCenter Server License \u2013 4 Nos</li><li>Veeam Backup & Replication Enterprise Plus Suite License</li><li>Dell S5248F-ON Core Switch \u2013 25 Nos (100 Gbps Ports) \u2013 2 Nos (Duplicate)</li></ul><b>Networking & Power</b><ul><li>Dell S4148F-ON Core Switch \u2013 25 Nos (100 Gbps Ports)</li><li>Cisco Load Balancer Appliance \u2013 1 No (Duplicate)</li><li>Temp, Humidity & Air Flow Controller \u2013 2 Nos</li><li>Temp & Humidity Sensors for Fire Detection & Suppression System</li><li>Water Leak Detection System</li><li>Door Switch Sensors for Server Rooms</li><li>UPS: 60 KVA \u2013 Backup up to 4 Hours for Data Centre (Duplicate)</li></ul><b>Servers & Storage</b><ul><li>EP Blade Centre C7000 (8 Bay Blade Server Chassis) \u2013 2 Nos</li><li>HP MSA 2000 Storage Controllers \u2013 12 TB Storage (Duplicate)</li><li>HP LTO Tape Drive Backup (Duplicate)</li><li>HP DL380 Blade Server (Duplicate)</li><li>QNAP Storage \u2013 18 TB Storage \u2013 2 Nos (Duplicate)</li></ul><b>Computing Resources</b><ul><li>Core i5 Computers \u2013 3300+</li><li>Core i3 Laptops \u2013 600+</li><li>Core i3 Workstations \u2013 200+</li></ul><b>Security & Surveillance</b><ul><li>Endpoint Security (4500 PCs)</li><li>32 Channel Network Video Recorder for Surveillance</li><li>1500+ IP Cameras (24x7 Monitoring)</li><li>Biometric Attendance System</li></ul><b>Networking Infrastructure</b><ul><li>450+ Managed Network Switches (Access Network)</li></ul><b>Labs, Facilities & Campus IT</b><ul><li>20+ Data Centres (Core & Distribution Network)</li><li>Cisco Network Monitoring & Enterprise Software</li><li>High-speed Fiber Backbone Connectivity</li><li>Language Labs (German, French, etc.)</li><li>Multiple Open Stack Labs</li><li>42+ Servers in Racks</li><li>150+ Computer Laboratories for UG & PG Students</li></ul><b>Healthcare & Smart Systems</b><ul><li>Hospital Management System integrated with IoT</li><li>Devices: MRI, CT Scan, Ultrasound, etc.</li><li>Ophthalmology, Skin, Eye, Cath Lab, Operation Theatre Surveillance</li></ul><b>Classroom & Smart Campus</b><ul><li>ICT-enabled Classrooms (Projector, Laptop, Presenter)</li><li>600+ Smart Classrooms (Interactive Panels)</li><li>30+ Seminar Halls</li><li>10+ Conference Halls</li><li>2 Auditoriums (Capacity: 450+)</li></ul><b>Devices & Connectivity</b><ul><li>400+ Laser Printers</li><li>100+ Scanners</li><li>20+ Network Printers</li><li>Network connectivity for 10,000+ IP devices across campus</li></ul><b>Servers & Research</b><ul><li>Supercomputer (Research Purpose)</li><li>IBM Servers \u2013 2 Nos (Duplicate)</li><li>Dell Entry-Level Servers \u2013 2 Nos</li></ul><b>Software & Licenses</b><ul><li>Microsoft Azure / MSDN Academic Alliance</li><li>Campus-wide Microsoft Licenses</li><li>ERP, LMS Systems</li><li>Adobe Suite (Education License)</li><li>Antivirus, Backup, and Security Tools</li><li>AI/ML, Data Analytics, Research Tools</li></ul>"
+            "title": "Student Help Desk ",
+            "description": "<h4>Student Help Desk</h4><b>Infrastructure & Hardware</b><ul><li>Dell R740xd (24 Bay) Blade Servers \u2013 6 Nos</li><li>Dell ME4012 Storage Controllers with 49 TB Storage \u2013 2 Nos</li><li>VMware vSphere Standard Subscription \u2013 12 Nos</li><li>VMware Infrastructure Monitoring & Management \u2013 2 Nos</li><li>VMware vCenter Server License \u2013 4 Nos</li><li>Veeam Backup & Replication Enterprise Plus Suite License</li><li>Dell S5248F-ON Core Switch \u2013 25 Nos (100 Gbps Ports) \u2013 2 Nos (Duplicate)</li></ul><b>Networking & Power</b><ul><li>Dell S4148F-ON Core Switch \u2013 25 Nos (100 Gbps Ports)</li><li>Cisco Load Balancer Appliance \u2013 1 No (Duplicate)</li><li>Temp, Humidity & Air Flow Controller \u2013 2 Nos</li><li>Temp & Humidity Sensors for Fire Detection & Suppression System</li><li>Water Leak Detection System</li><li>Door Switch Sensors for Server Rooms</li><li>UPS: 60 KVA \u2013 Backup up to 4 Hours for Data Centre (Duplicate)</li></ul><b>Servers & Storage</b><ul><li>EP Blade Centre C7000 (8 Bay Blade Server Chassis) \u2013 2 Nos</li><li>HP MSA 2000 Storage Controllers \u2013 12 TB Storage (Duplicate)</li><li>HP LTO Tape Drive Backup (Duplicate)</li><li>HP DL380 Blade Server (Duplicate)</li><li>QNAP Storage \u2013 18 TB Storage \u2013 2 Nos (Duplicate)</li></ul><b>Computing Resources</b><ul><li>Core i5 Computers \u2013 3300+</li><li>Core i3 Laptops \u2013 600+</li><li>Core i3 Workstations \u2013 200+</li></ul><b>Security & Surveillance</b><ul><li>Endpoint Security (4500 PCs)</li><li>32 Channel Network Video Recorder for Surveillance</li><li>1500+ IP Cameras (24x7 Monitoring)</li><li>Biometric Attendance System</li></ul><b>Networking Infrastructure</b><ul><li>450+ Managed Network Switches (Access Network)</li></ul><b>Labs, Facilities & Campus IT</b><ul><li>20+ Data Centres (Core & Distribution Network)</li><li>Cisco Network Monitoring & Enterprise Software</li><li>High-speed Fiber Backbone Connectivity</li><li>Language Labs (German, French, etc.)</li><li>Multiple Open Stack Labs</li><li>42+ Servers in Racks</li><li>150+ Computer Laboratories for UG & PG Students</li></ul><b>Healthcare & Smart Systems</b><ul><li>Hospital Management System integrated with IoT</li><li>Devices: MRI, CT Scan, Ultrasound, etc.</li><li>Ophthalmology, Skin, Eye, Cath Lab, Operation Theatre Surveillance</li></ul><b>Classroom & Smart Campus</b><ul><li>ICT-enabled Classrooms (Projector, Laptop, Presenter)</li><li>600+ Smart Classrooms (Interactive Panels)</li><li>30+ Seminar Halls</li><li>10+ Conference Halls</li><li>2 Auditoriums (Capacity: 450+)</li></ul><b>Devices & Connectivity</b><ul><li>400+ Laser Printers</li><li>100+ Scanners</li><li>20+ Network Printers</li><li>Network connectivity for 10,000+ IP devices across campus</li></ul><b>Servers & Research</b><ul><li>Supercomputer (Research Purpose)</li><li>IBM Servers \u2013 2 Nos (Duplicate)</li><li>Dell Entry-Level Servers \u2013 2 Nos</li></ul><b>Software & Licenses</b><ul><li>Microsoft Azure / MSDN Academic Alliance</li><li>Campus-wide Microsoft Licenses</li><li>ERP, LMS Systems</li><li>Adobe Suite (Education License)</li><li>Antivirus, Backup, and Security Tools</li><li>AI/ML, Data Analytics, Research Tools</li></ul>"
           }
         }
       ]
@@ -428,7 +428,7 @@
       ]
     },
     "scene13": {
-      "title": "System Support Cell",
+      "title": "Student Help Desk",
       "panorama": "assets/ground floor/photo10_result.jpeg",
       "hfov": 110,
       "northOffset": 0,
@@ -464,7 +464,7 @@
       ]
     },
     "scene14": {
-      "title": "System Support Cell",
+      "title": "Student Help Desk",
       "panorama": "assets/ground floor/photo12_result.jpeg",
       "hfov": 110,
       "northOffset": 0,

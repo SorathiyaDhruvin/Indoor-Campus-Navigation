@@ -57,10 +57,6 @@
         welcomeCard: $('welcomeCard'),
         btnEnterTour: $('btnEnterTour'),
 
-        /* Welcome Orientation Toast */
-        welcomeToast: $('welcomeToast'),
-        welcomeToastClose: $('welcomeToastClose'),
-
         /* Floor Map */
         mapOverlay: $('mapOverlay'),
         btnMapOpen: $('btnMapOpen'),
@@ -115,7 +111,9 @@
                     // Hide loading overlay entirely
                     dom.loading.classList.add('done');
                     dom.topBar.classList.add('show');
-                    dom.infoBox.classList.add('show');
+                    if (dom.infoBox) {
+                        dom.infoBox.classList.add('show');
+                    }
 
                     // Resume AudioContext if suspended
                     if (window.audioCtx && audioCtx.state === 'suspended') {
@@ -133,26 +131,6 @@
                     if (pano) {
                         pano.setAttribute('tabindex', '0');
                         pano.focus();
-                    }
-
-                    // Show Welcome Toast with guidance
-                    if (dom.welcomeToast) {
-                        setTimeout(() => {
-                            dom.welcomeToast.classList.add('show');
-                            
-                            // Auto dismiss after 8 seconds
-                            const autoDismissTimeout = setTimeout(() => {
-                                dom.welcomeToast.classList.remove('show');
-                            }, 10000);
-                            
-                            if (dom.welcomeToastClose) {
-                                dom.welcomeToastClose.addEventListener('click', () => {
-                                    clearTimeout(autoDismissTimeout);
-                                    dom.welcomeToast.classList.remove('show');
-                                    if (window.playTick) playTick();
-                                }, { once: true });
-                            }
-                        }, 250);
                     }
                 });
             }
@@ -267,6 +245,13 @@
 
     function loadScene(sceneId, pitch, yaw, hfov, isBack = false) {
         console.log("Loading Scene:", sceneId);
+        
+        // Hide the controls guide when the user takes a step
+        const controlsGuide = document.querySelector('.controls-guide-card');
+        if (controlsGuide && controlsGuide.style.display !== 'none') {
+            controlsGuide.style.display = 'none';
+        }
+
         // 1. Verify that scene exists before loading
         if (!configData || !configData.scenes[sceneId]) {
             console.error("[loadScene] Scene config not found for: " + sceneId);
@@ -554,18 +539,15 @@
                 dom.mainDropdown.classList.toggle('show');
             }
         }
-        else if (e.key === 'm' || e.key === 'M') {
-            toggleMap();
-        }
         else if (e.key === '1') { if (dom.btnNavGuide) dom.btnNavGuide.click(); }
         else if (e.key === '2') { if (dom.btnGrid) dom.btnGrid.click(); }
         else if (e.key === '3') { if (dom.btnFullscreen) dom.btnFullscreen.click(); }
         else if (e.key === '4') { if (dom.btnHelp) dom.btnHelp.click(); }
         else if (e.key === '5') { if (dom.btnToggleArrows) dom.btnToggleArrows.click(); }
-        // Spacebar to toggle info popup if looking at an info hotspot in the current scene
+        // Spacebar to toggle info popup for info hotspots in current scene
         else if (e.code === 'Space' || e.keyCode === 32) {
             e.preventDefault(); // Prevent page scroll
-            if (dom.infoPopup.classList.contains('active')) {
+            if (dom.infoPopup && dom.infoPopup.classList.contains('active')) {
                 closeInfo();
             } else {
                 if (viewer && configData && currentSceneId && configData.scenes[currentSceneId]) {
@@ -574,16 +556,20 @@
                     const hotspots = configData.scenes[currentSceneId].hotSpots || [];
 
                     let found = null;
+                    let minDist = Infinity;
                     for (const hs of hotspots) {
-                        if (hs.type === 'info' && hs.pitch !== undefined && hs.yaw !== undefined) {
-                            const dPitch = Math.abs(hs.pitch - pitch);
-                            let dYaw = Math.abs(hs.yaw - yaw);
-                            if (dYaw > 180) dYaw = 360 - dYaw; // shortest distance around circle
-
-                            const dist = Math.sqrt(dPitch * dPitch + dYaw * dYaw);
-                            if (dist < 35) { // 35 degrees field of view threshold (more forgiving)
+                        if (hs.type === 'info') {
+                            if (hs.pitch !== undefined && hs.yaw !== undefined) {
+                                const dPitch = Math.abs(hs.pitch - pitch);
+                                let dYaw = Math.abs(hs.yaw - yaw);
+                                if (dYaw > 180) dYaw = 360 - dYaw;
+                                const dist = Math.sqrt(dPitch * dPitch + dYaw * dYaw);
+                                if (dist < minDist) {
+                                    minDist = dist;
+                                    found = hs;
+                                }
+                            } else if (!found) {
                                 found = hs;
-                                break;
                             }
                         }
                     }
@@ -702,19 +688,23 @@
 
     // Load coordinates config
     function loadCoordinatesConfig() {
-        fetch('scenes.json')
+        fetch('map_coordinates.json')
             .then(res => res.json())
             .then(data => {
                 coordinatesConfig = data;
                 console.log("[loadCoordinatesConfig] Coordinates loaded successfully.");
                 populateEditDropdown();
                 updateJsonText();
+                renderMapPins();
+                updateActiveMapPin();
             })
             .catch(err => {
                 console.warn("[loadCoordinatesConfig] Failed to load JSON config, using hardcoded default coordinates config:", err);
                 coordinatesConfig = Object.assign({}, DEFAULT_COORDINATES);
                 populateEditDropdown();
                 updateJsonText();
+                renderMapPins();
+                updateActiveMapPin();
             });
     }
 
@@ -1134,8 +1124,9 @@
         }
     }
 
-    // Initialize Map Coordinates
+    // Initialize Map Coordinates and open map by default
     loadCoordinatesConfig();
+    openMap();
 
     if (dom.btnMapOpen) {
         dom.btnMapOpen.addEventListener('click', (e) => {
@@ -1491,7 +1482,10 @@
         const idx = sceneKeys.indexOf(sceneId) + 1;
 
 
-        dom.infoBoxText.textContent = scene.title;
+        // Info Box was removed in favor of HUD, so safely check if it exists
+        if (dom.infoBoxText) {
+            dom.infoBoxText.textContent = scene.title;
+        }
 
         markGridActive(sceneId);
         updatePreloads(sceneId);
@@ -1635,6 +1629,12 @@
         }
 
         if (k === 'escape') { closeInfo(); closeHelp(); closeGrid(); closeNavGuide(); return; }
+        if (k === 'm') { 
+            e.preventDefault(); 
+            e.stopPropagation(); 
+            toggleMap(); 
+            return; 
+        }
         if (k === 'g') { e.preventDefault(); toggleGrid(); return; }
         if (k === 'h') { e.preventDefault(); toggleHelp(); return; }
         if (k === 'f') { e.preventDefault(); toggleFullscreen(); return; }
@@ -2167,6 +2167,9 @@
                     let activeFirstConfig = Object.assign({}, firstSceneConfig);
                     startupConfig.scenes[first] = activeFirstConfig;
 
+                    // Disable default title box completely
+                    startupConfig.showTitle = false;
+
                     viewer = pannellum.viewer('panorama', startupConfig);
                     window.viewer = viewer;
                     addedScenes.add(first);
@@ -2180,17 +2183,79 @@
                     });
 
                     let lastRadarYaw = null;
+                    let isTrackingRadar = false;
                     function trackRadarView() {
-                        if (viewer && dom.mapOverlay && dom.mapOverlay.classList.contains('active')) {
+                        if (viewer) {
                             const yaw = viewer.getYaw();
                             if (yaw !== lastRadarYaw) {
                                 lastRadarYaw = yaw;
-                                updateMapRadar();
+                                
+                                // 1. Map Radar Update
+                                if (dom.mapOverlay && dom.mapOverlay.classList.contains('active')) {
+                                    updateMapRadar();
+                                }
+                                
+                                // 2. Advanced Navigation HUD
+                                const sceneConfig = viewer.getConfig();
+                                const hudPathsList = document.getElementById('hudPathsList');
+                                
+                                if (sceneConfig && sceneConfig.hotSpots && hudPathsList) {
+                                    let pathsHtml = "";
+                                    const navSpots = sceneConfig.hotSpots.filter(hs => hs.clickHandlerArgs && hs.clickHandlerArgs.sceneId);
+                                    
+                                    if (navSpots.length === 0) {
+                                        pathsHtml = '<div class="hud-path-item empty">No paths detected</div>';
+                                    } else {
+                                        let paths = navSpots.map(hs => {
+                                            let diff = ((hs.yaw - yaw + 540) % 360) - 180;
+                                            const targetTitle = (configData && configData.scenes[hs.clickHandlerArgs.sceneId]) ? (configData.scenes[hs.clickHandlerArgs.sceneId].title || "Next Area") : "Unknown Area";
+                                            return { diff, title: targetTitle };
+                                        });
+                                        
+                                        // Sort by how close they are to the center of view
+                                        paths.sort((a, b) => Math.abs(a.diff) - Math.abs(b.diff));
+                                        
+                                        // Deduplicate so we don't show the same name multiple times
+                                        const seenTitles = new Set();
+                                        const uniquePaths = [];
+                                        paths.forEach(p => {
+                                            if (!seenTitles.has(p.title)) {
+                                                seenTitles.add(p.title);
+                                                uniquePaths.push(p);
+                                            }
+                                        });
+                                        
+                                        uniquePaths.forEach(p => {
+                                            let dirLabel = "↑ Ahead";
+                                            let dirColor = "#00E676"; 
+                                            
+                                            if (p.diff > 20 && p.diff <= 145) { dirLabel = "→ Right"; dirColor = "#74b9ff"; }
+                                            else if (p.diff < -20 && p.diff >= -145) { dirLabel = "← Left"; dirColor = "#74b9ff"; }
+                                            else if (Math.abs(p.diff) > 145) { dirLabel = "↓ Behind"; dirColor = "#ff7675"; }
+                                            
+                                            pathsHtml += `
+                                                <div class="hud-path-item">
+                                                    <div class="hud-path-dir" style="color: ${dirColor}; border-color: ${dirColor}40;">${dirLabel}</div>
+                                                    <div class="hud-path-name" title="${p.title}">${p.title}</div>
+                                                </div>
+                                            `;
+                                        });
+                                    }
+                                    
+                                    if (hudPathsList.innerHTML !== pathsHtml) {
+                                        hudPathsList.innerHTML = pathsHtml;
+                                    }
+                                }
                             }
                         }
                         requestAnimationFrame(trackRadarView);
                     }
-                    viewer.on('load', trackRadarView);
+                    viewer.on('load', () => {
+                        if (!isTrackingRadar) {
+                            isTrackingRadar = true;
+                            trackRadarView();
+                        }
+                    });
 
                     /* ── Record entry position for the first scene (config defaults) ── */
                     sceneEntryPositions[first] = {
@@ -2366,6 +2431,13 @@
                     this.toggleMute();
                 });
             }
+
+            // Keyboard shortcut to toggle mute
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'k' || e.key === 'K') {
+                    this.toggleMute();
+                }
+            });
         },
 
         playScene(sceneId) {
@@ -2472,4 +2544,34 @@
         gain.connect(audioCtx.destination);
         noise.start();
     };
+
+    // Hide controls guide on panorama interaction (camera click/drag/move)
+    const panoramaEl = document.getElementById('panorama');
+    if (panoramaEl) {
+        const hideGuide = () => {
+            const controlsGuide = document.querySelector('.controls-guide-card');
+            if (controlsGuide && controlsGuide.style.display !== 'none') {
+                controlsGuide.style.display = 'none';
+            }
+        };
+        // Use capture phase to ensure we catch it before Pannellum stops propagation
+        panoramaEl.addEventListener('mousedown', hideGuide, true);
+        panoramaEl.addEventListener('touchstart', hideGuide, true);
+        panoramaEl.addEventListener('pointerdown', hideGuide, true);
+        panoramaEl.addEventListener('wheel', hideGuide, true);
+        
+        document.addEventListener('keydown', (e) => {
+            if (!e.key) return;
+            const k = e.key.toLowerCase();
+            if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'w', 'a', 's', 'd'].includes(k)) {
+                hideGuide();
+            } else if (k === 'i') {
+                const controlsGuide = document.querySelector('.controls-guide-card');
+                if (controlsGuide) {
+                    controlsGuide.style.display = controlsGuide.style.display === 'none' ? 'block' : 'none';
+                }
+            }
+        }, true);
+    }
+
 })();
