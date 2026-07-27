@@ -63,6 +63,7 @@
         btnDropdownMap: $('btnDropdownMap'),
         mapClose: $('mapClose'),
         mapWrapper: $('mapWrapper'),
+        mapZoomContainer: $('mapZoomContainer')
     };
 
     let viewer = null;
@@ -486,18 +487,7 @@
         const el = document.createElement('div');
         el.classList.add('hotspot-content');
 
-        let tooltipHtml = '';
-        if (args && args.sceneId && configData && configData.scenes[args.sceneId]) {
-            let targetTitle = configData.scenes[args.sceneId].title || args.sceneId;
-            // Clean HTML tags if any
-            const tmp = document.createElement('div');
-            tmp.innerHTML = targetTitle;
-            targetTitle = tmp.innerText || tmp.textContent;
-            tooltipHtml = `<div class="arrow-tooltip">${targetTitle}</div>`;
-        }
-
         el.innerHTML = `
-            ${tooltipHtml}
             <svg class="arrow-img" viewBox="0 0 204 100" xmlns="http://www.w3.org/2000/svg">
                 <path class="chev-3" d="M 164 5 L 194 50 L 164 95 L 146 95 L 176 50 L 146 5 Z" fill="var(--arrow-color, #ffffff)" stroke="var(--arrow-stroke, rgba(0,0,0,0.3))" stroke-width="1.5" />
                 <path class="chev-2" d="M 96 5 L 126 50 L 96 95 L 78 95 L 108 50 L 78 5 Z" fill="var(--arrow-color, #ffffff)" stroke="var(--arrow-stroke, rgba(0,0,0,0.3))" stroke-width="1.5" />
@@ -806,7 +796,7 @@
             // Drag setup (only for Edit Mode)
             setupPinDrag(pin);
 
-            dom.mapWrapper.appendChild(pin);
+            dom.mapZoomContainer.appendChild(pin);
         });
         renderMapLabels();
     }
@@ -851,7 +841,7 @@
                 });
                 lbl.appendChild(delBtn);
                 setupLabelDrag(lbl, labelData);
-                dom.mapWrapper.appendChild(lbl);
+                dom.mapZoomContainer.appendChild(lbl);
             });
         }
     }
@@ -984,7 +974,10 @@
         pin.addEventListener('touchstart', onDragStart, { passive: false });
     }
 
+    let wasMapDragged = false;
+
     function handleMapWrapperClick(e) {
+        if (wasMapDragged) return;
         if (!isEditMode) {
             const card = e.target.closest('.map-container-card');
             if (card) card.classList.toggle('enlarged');
@@ -1480,7 +1473,6 @@
         if (!scene) return;
         currentSceneId = sceneId;
         const idx = sceneKeys.indexOf(sceneId) + 1;
-
 
         // Info Box was removed in favor of HUD, so safely check if it exists
         if (dom.infoBoxText) {
@@ -2306,76 +2298,23 @@
     });
 
     /* ==========================================================
-       VR CURSOR & AUDIO SYNTHESIZER
+       MAGNETIC HOVER (AUDIO ONLY) & AUDIO SYNTHESIZER
        ========================================================== */
-    const vrCursor = document.getElementById('vrCursor');
-    if (vrCursor) {
-        let lastMouseX = -1;
-        let lastMouseY = -1;
+    const addMagneticSound = () => { if (typeof playTick === 'function') playTick(); };
 
-        const updateCursorPos = (x, y) => {
-            if (lastMouseX !== -1 && (Math.abs(x - lastMouseX) > 1 || Math.abs(y - lastMouseY) > 1)) {
-                if (vrCursor.style.display === 'none') vrCursor.style.display = 'block';
+    const attachMagneticToElements = () => {
+        document.querySelectorAll('button, a, select, .grid-item, .nav-btn, .hotspot-content, .map-pin').forEach(el => {
+            if (!el.dataset.vrBound) {
+                el.addEventListener('mouseenter', addMagneticSound);
+                el.dataset.vrBound = 'true';
             }
-            lastMouseX = x;
-            lastMouseY = y;
+        });
+    };
+    attachMagneticToElements();
 
-            // Clamp coordinates to prevent clipping at the screen edges
-            const bounds = 12; // Radius + padding
-            const clampedX = Math.max(bounds, Math.min(window.innerWidth - bounds, x));
-            const clampedY = Math.max(bounds, Math.min(window.innerHeight - bounds, y));
-
-            vrCursor.style.left = clampedX + 'px';
-            vrCursor.style.top = clampedY + 'px';
-        };
-
-        window.addEventListener('mousemove', (e) => {
-            updateCursorPos(e.clientX, e.clientY);
-        }, { passive: true, capture: true });
-
-        window.addEventListener('touchmove', (e) => {
-            if (e.touches.length > 0) {
-                updateCursorPos(e.touches[0].clientX, e.touches[0].clientY);
-            }
-        }, { passive: true, capture: true });
-
-        window.addEventListener('touchstart', (e) => {
-            if (e.touches.length > 0) {
-                updateCursorPos(e.touches[0].clientX, e.touches[0].clientY);
-            }
-            vrCursor.classList.add('dragging');
-        }, { passive: true, capture: true });
-
-        window.addEventListener('touchend', () => vrCursor.classList.remove('dragging'), { passive: true, capture: true });
-
-
-        // Use capture phase (true) so Pannellum doesn't block the event with stopPropagation
-        window.addEventListener('keydown', () => {
-            vrCursor.style.display = 'none';
-        }, true);
-
-        window.addEventListener('mousedown', () => vrCursor.classList.add('dragging'), true);
-        window.addEventListener('mouseup', () => vrCursor.classList.remove('dragging'), true);
-
-        // Magnetic hover
-        const addMagnetic = () => { vrCursor.classList.add('magnetic'); playTick(); };
-        const removeMagnetic = () => vrCursor.classList.remove('magnetic');
-
-        const attachMagneticToElements = () => {
-            document.querySelectorAll('button, a, select, .grid-item, .nav-btn, .hotspot-content').forEach(el => {
-                if (!el.dataset.vrBound) {
-                    el.addEventListener('mouseenter', addMagnetic);
-                    el.addEventListener('mouseleave', removeMagnetic);
-                    el.dataset.vrBound = 'true';
-                }
-            });
-        };
-        attachMagneticToElements();
-
-        // Pannellum dynamically creates hotspots, so observe the DOM for changes
-        const observer = new MutationObserver(() => attachMagneticToElements());
-        observer.observe(document.body, { childList: true, subtree: true });
-    }
+    // Pannellum dynamically creates hotspots, so observe the DOM for changes
+    const observer = new MutationObserver(() => attachMagneticToElements());
+    observer.observe(document.body, { childList: true, subtree: true });
 
     // Audio Synthesizer (Web Audio API)
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -2573,5 +2512,192 @@
             }
         }, true);
     }
+    let currentMapZoom = 1;
+    let mapPanX = 0;
+    let mapPanY = 0;
+    let isMapDragging = false;
+    let mapDragStartX = 0;
+    let mapDragStartY = 0;
+    let initialMapPanX = 0;
+    let initialMapPanY = 0;
+
+    const btnMapZoomIn = document.getElementById('btnMapZoomIn');
+    const btnMapZoomOut = document.getElementById('btnMapZoomOut');
+
+    function clampMapPan() {
+        if (!dom.mapWrapper || !dom.mapZoomContainer) return;
+        const wrapperRect = dom.mapWrapper.getBoundingClientRect();
+        // Calculate max pan distance based on current scale and wrapper dimensions
+        const maxX = (wrapperRect.width * (currentMapZoom - 1)) / 2;
+        const maxY = (wrapperRect.height * (currentMapZoom - 1)) / 2;
+
+        if (currentMapZoom <= 1) {
+            mapPanX = 0;
+            mapPanY = 0;
+        } else {
+            mapPanX = Math.max(-maxX, Math.min(maxX, mapPanX));
+            mapPanY = Math.max(-maxY, Math.min(maxY, mapPanY));
+        }
+    }
+
+    function applyMapZoom(smooth = true) {
+        if (dom.mapZoomContainer) {
+            clampMapPan();
+            dom.mapZoomContainer.style.transition = smooth ? 'transform 0.25s ease-out' : 'none';
+            dom.mapZoomContainer.style.transform = `translate(${mapPanX}px, ${mapPanY}px) scale(${currentMapZoom})`;
+        }
+    }
+
+    if (btnMapZoomIn) {
+        btnMapZoomIn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentMapZoom = Math.min(currentMapZoom + 0.5, 6);
+            applyMapZoom(true);
+        });
+    }
+    if (btnMapZoomOut) {
+        btnMapZoomOut.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentMapZoom = Math.max(currentMapZoom - 0.5, 1);
+            applyMapZoom(true);
+        });
+    }
+
+    // Map Drag and Wheel Zoom Logic
+    if (dom.mapWrapper && dom.mapZoomContainer) {
+        // Pointer events for dragging (Mouse & Touch 1-finger)
+        dom.mapWrapper.addEventListener('pointerdown', (e) => {
+            if (currentMapZoom <= 1 || isEditMode) return;
+            if (e.target.closest('button') || e.target.closest('.map-label') || e.target.closest('.map-pin')) return;
+
+            isMapDragging = true;
+            mapDragStartX = e.clientX;
+            mapDragStartY = e.clientY;
+            initialMapPanX = mapPanX;
+            initialMapPanY = mapPanY;
+            dom.mapWrapper.style.cursor = 'grabbing';
+            e.preventDefault();
+        });
+
+        window.addEventListener('pointermove', (e) => {
+            if (!isMapDragging) return;
+            e.preventDefault();
+            const dx = e.clientX - mapDragStartX;
+            const dy = e.clientY - mapDragStartY;
+            if (Math.abs(dx) > 3 || Math.abs(dy) > 3) {
+                wasMapDragged = true;
+            }
+            mapPanX = initialMapPanX + dx;
+            mapPanY = initialMapPanY + dy;
+            applyMapZoom(false); // No transition for instant drag feedback
+        });
+
+        window.addEventListener('pointerup', () => {
+            if (isMapDragging) {
+                isMapDragging = false;
+                dom.mapWrapper.style.cursor = 'zoom-in';
+                setTimeout(() => { wasMapDragged = false; }, 50);
+            }
+        });
+
+        // Desktop Wheel Zoom
+        dom.mapWrapper.addEventListener('wheel', (e) => {
+            if (isEditMode) return;
+            e.preventDefault();
+            const zoomAmount = e.deltaY > 0 ? -0.25 : 0.25;
+            currentMapZoom = Math.max(1, Math.min(6, currentMapZoom + zoomAmount));
+            // When zooming out, it might go out of bounds, so clamping will fix it
+            applyMapZoom(false);
+        }, { passive: false });
+
+        // Mobile Pinch Zoom
+        let initialPinchDist = null;
+        let initialPinchZoom = 1;
+
+        dom.mapWrapper.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                isMapDragging = false;
+                const t1 = e.touches[0];
+                const t2 = e.touches[1];
+                initialPinchDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+                initialPinchZoom = currentMapZoom;
+            }
+        }, { passive: false });
+
+        dom.mapWrapper.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2 && initialPinchDist) {
+                e.preventDefault();
+                const t1 = e.touches[0];
+                const t2 = e.touches[1];
+                const dist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+                const scaleChange = dist / initialPinchDist;
+                currentMapZoom = Math.max(1, Math.min(6, initialPinchZoom * scaleChange));
+                applyMapZoom(false);
+            }
+        }, { passive: false });
+
+        dom.mapWrapper.addEventListener('touchend', (e) => {
+            if (e.touches.length < 2) {
+                initialPinchDist = null;
+            }
+        });
+    }
+
+    // ==========================================
+    // Info Hotspot Tooltip Collision Detection
+    // ==========================================
+    document.addEventListener('mouseover', function (e) {
+        const hotspot = e.target.closest('.pnlm-info');
+        if (hotspot) {
+            const tooltip = hotspot.querySelector('.pnlm-tooltip');
+            if (tooltip) {
+                // Reset positional classes
+                tooltip.classList.remove('pos-right', 'pos-left', 'pos-top', 'pos-bottom');
+
+                // Start with default preferred position (Right)
+                tooltip.classList.add('pos-right');
+
+                // Allow browser to render so we can measure bounding rect
+                requestAnimationFrame(() => {
+                    let rect = tooltip.getBoundingClientRect();
+                    const winW = window.innerWidth;
+                    const winH = window.innerHeight;
+                    const hsRect = hotspot.getBoundingClientRect();
+
+                    // If hotspot is near top edge, display below
+                    if (hsRect.top < 50) {
+                        tooltip.classList.remove('pos-right');
+                        tooltip.classList.add('pos-bottom');
+                        return;
+                    }
+
+                    // If hotspot is near bottom edge, display above
+                    if (hsRect.bottom > winH - 50) {
+                        tooltip.classList.remove('pos-right');
+                        tooltip.classList.add('pos-top');
+                        return;
+                    }
+
+                    // Prefer Right, but if overflows right edge, try Left
+                    if (rect.right > winW - 10) {
+                        tooltip.classList.remove('pos-right');
+                        tooltip.classList.add('pos-left');
+
+                        // Check if Left also overflows (screen too narrow)
+                        rect = tooltip.getBoundingClientRect();
+                        if (rect.left < 10) {
+                            // If neither right nor left fits, fallback to top/bottom
+                            tooltip.classList.remove('pos-left');
+                            if (hsRect.top > winH / 2) {
+                                tooltip.classList.add('pos-top');
+                            } else {
+                                tooltip.classList.add('pos-bottom');
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    });
 
 })();
