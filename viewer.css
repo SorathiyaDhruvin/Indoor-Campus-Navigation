@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    360° VIRTUAL TOUR — INSTITUTIONAL PROFESSIONAL THEME
    Parul University Branding
    ============================================================ */
@@ -323,6 +323,8 @@ body {
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 1000;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .dropdown-menu.show {
@@ -2408,6 +2410,12 @@ body.hide-arrows .nav-btn {
 }
 
 .modal-overlay.map-overlay .map-container-card {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  top: auto !important;
+  left: auto !important;
+  transform: translate(0, 0) !important;
   pointer-events: auto !important;
   width: 420px;
   max-width: calc(100vw - 48px);
@@ -2417,7 +2425,7 @@ body.hide-arrows .nav-btn {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
   border: none !important;
   outline: none !important;
-  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .modal-overlay.map-overlay .map-header,
@@ -2431,6 +2439,7 @@ body.hide-arrows .nav-btn {
   overflow: hidden !important;
   border: 2.5px solid #000000 !important;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
 .modal-overlay.map-overlay .map-image {
@@ -2465,6 +2474,12 @@ body.hide-arrows .nav-btn {
   }
 
   .modal-overlay.map-overlay .map-container-card:not(.enlarged) {
+    position: fixed !important;
+    bottom: 10px !important;
+    right: 10px !important;
+    top: auto !important;
+    left: auto !important;
+    transform: translate(0, 0) !important;
     width: 190px !important;
     max-width: 44vw !important;
     max-height: calc(100vh - 20px) !important;
@@ -2580,11 +2595,27 @@ body.hide-arrows .nav-btn {
   transform: translateX(-50%) translateY(-5px);
 }
 
+/* When mini map is enlarged in center, blur the screen outside of mini map */
+.modal-overlay.map-overlay:has(.map-container-card.enlarged),
+.modal-overlay.map-overlay.enlarged-overlay {
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(12px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(150%) !important;
+  pointer-events: auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  padding: 0 !important;
+  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+
 .modal-overlay.map-overlay .map-container-card.enlarged {
   position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
+  top: auto !important;
+  left: auto !important;
+  bottom: 50% !important;
+  right: 50% !important;
+  transform: translate(50%, 50%) !important;
   width: 90vw !important;
   max-width: 1400px !important;
   max-height: 95vh !important;
@@ -3278,3 +3309,9 @@ body.hide-arrows .nav-btn {
     min-height: 28px !important;
   }
 }
+
+/* Hide navigation assistant when menu is opened */
+.dropdown-menu.show ~ #navHudContainer,
+.dropdown-menu.show ~ .nav-hud-container {
+  display: none !important;
+}

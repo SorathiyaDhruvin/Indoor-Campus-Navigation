@@ -980,7 +980,12 @@
         if (wasMapDragged) return;
         if (!isEditMode) {
             const card = e.target.closest('.map-container-card');
-            if (card) card.classList.toggle('enlarged');
+            if (card) {
+                card.classList.toggle('enlarged');
+                if (dom.mapOverlay) {
+                    dom.mapOverlay.classList.toggle('enlarged-overlay', card.classList.contains('enlarged'));
+                }
+            }
             return;
         }
 
@@ -1140,7 +1145,14 @@
     }
     if (dom.mapOverlay) {
         dom.mapOverlay.addEventListener('click', (e) => {
-            if (e.target === dom.mapOverlay) closeMap();
+            if (e.target === dom.mapOverlay) {
+                if (dom.mapContainer && dom.mapContainer.classList.contains('enlarged')) {
+                    dom.mapContainer.classList.remove('enlarged');
+                    dom.mapOverlay.classList.remove('enlarged-overlay');
+                } else {
+                    closeMap();
+                }
+            }
         });
     }
 
@@ -1839,9 +1851,33 @@
 
     dom.btnNavGuide.addEventListener('click', () => { toggleNavGuide(); closeDropdown(); });
 
+    function updateHudVisibility() {
+        const hud = document.getElementById('navHudContainer');
+        const isShow = dom.mainDropdown && dom.mainDropdown.classList.contains('show');
+        if (hud) {
+            if (isShow) {
+                hud.style.setProperty('display', 'none', 'important');
+            } else {
+                hud.style.removeProperty('display');
+            }
+        }
+
+        /* Toggle Menu Button Icon (Hamburger <-> Close) */
+        if (dom.btnMenuToggle) {
+            const iconHamburger = dom.btnMenuToggle.querySelector('.menu-icon-hamburger');
+            const iconClose = dom.btnMenuToggle.querySelector('.menu-icon-close');
+            if (iconHamburger && iconClose) {
+                iconHamburger.style.display = isShow ? 'none' : 'block';
+                iconClose.style.display = isShow ? 'block' : 'none';
+            }
+            dom.btnMenuToggle.classList.toggle('active', isShow);
+        }
+    }
+
     dom.btnMenuToggle.addEventListener('click', function (e) {
         e.stopPropagation();
         dom.mainDropdown.classList.toggle('show');
+        updateHudVisibility();
     });
 
     document.addEventListener('click', function (e) {
@@ -1859,6 +1895,7 @@
 
     function closeDropdown() {
         if (dom.mainDropdown) dom.mainDropdown.classList.remove('show');
+        updateHudVisibility();
     }
     dom.navGuideClose.addEventListener('click', closeNavGuide);
 
