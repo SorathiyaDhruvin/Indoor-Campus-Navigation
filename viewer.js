@@ -1713,6 +1713,121 @@
     })();
 
 
+    /* ── Graph Construction & Shortest Path (BFS) Navigation Engine ── */
+    let sceneGraph = {};
+
+    function buildSceneGraph() {
+        sceneGraph = {};
+        if (!configData || !configData.scenes) return;
+        for (const sceneId in configData.scenes) {
+            sceneGraph[sceneId] = [];
+            const hotSpots = configData.scenes[sceneId].hotSpots || [];
+            hotSpots.forEach(hs => {
+                if (hs.clickHandlerArgs && hs.clickHandlerArgs.sceneId) {
+                    const target = hs.clickHandlerArgs.sceneId;
+                    if (!sceneGraph[sceneId].includes(target)) {
+                        sceneGraph[sceneId].push(target);
+                    }
+                }
+            });
+        }
+    }
+
+    function findShortestPath(startScene, destScene) {
+        if (startScene === destScene) return [startScene];
+        if (!sceneGraph[startScene] || !sceneGraph[destScene]) return null;
+
+        const queue = [[startScene]];
+        const visited = new Set([startScene]);
+
+        while (queue.length > 0) {
+            const path = queue.shift();
+            const node = path[path.length - 1];
+
+            if (node === destScene) {
+                return path;
+            }
+
+            const neighbors = sceneGraph[node] || [];
+            for (const neighbor of neighbors) {
+                if (!visited.has(neighbor)) {
+                    visited.add(neighbor);
+                    queue.push([...path, neighbor]);
+                }
+            }
+        }
+        return null;
+    }
+
+    function getStepDirectionDescription(curScene, nextScene, isLastStep, labLabel) {
+        if (isLastStep) {
+            return '✅ You have arrived at ' + labLabel;
+        }
+        const nextTitle = (configData?.scenes[nextScene]?.title || '').trim();
+
+        if (nextScene === 'scene1' || nextScene === 'scene2' || nextScene === 'scene3') {
+            return 'Head towards Main Entrance Foyer';
+        }
+        if (nextScene === 'scene6' || nextScene === 'scene10') {
+            return 'Proceed towards AI & ML Lab';
+        }
+        if (nextScene === 'scene55' || nextScene === 'scene7' || nextScene === 'scene8') {
+            return 'Head towards Apple Training Center corridor';
+        }
+        if (nextScene === 'scene9' || nextScene === 'scene19' || nextScene === 'scene20' || nextScene === 'scene23') {
+            return 'Proceed towards Cloud & Cyber Security corridor';
+        }
+        if (nextScene === 'scene13' || nextScene === 'scene14' || nextScene === 'scene15') {
+            return 'Proceed towards Data Center corridor';
+        }
+        if (nextScene === 'scene29') {
+            return 'Turn into Network & XR corridor';
+        }
+        if (nextScene === 'scene30' || nextScene === 'scene31') {
+            return 'Proceed into Extended Reality (XR) Lab';
+        }
+        if (nextScene === 'scene35') {
+            return 'Turn into IoT Innovation Lab';
+        }
+        if (nextScene === 'scene38' || nextScene === 'scene39') {
+            return 'Proceed towards Network Architecture Lab';
+        }
+        if (nextScene === 'scene42') {
+            return 'Turn into Seminar Hall';
+        }
+        if (nextScene === 'scene44' || nextScene === 'scene45' || nextScene === 'scene54') {
+            return 'Proceed via Lift & Central Hallway';
+        }
+        if (nextScene.startsWith('scene') && parseInt(nextScene.replace('scene', '')) >= 46) {
+            return 'Way to 1st Floor / Stairs';
+        }
+        if (nextTitle) {
+            return 'Proceed straight towards ' + nextTitle;
+        }
+        return 'Continue straight ahead';
+    }
+
+    function buildDynamicRoute(startScene, lab) {
+        if (!sceneGraph || Object.keys(sceneGraph).length === 0) {
+            buildSceneGraph();
+        }
+        const path = findShortestPath(startScene, lab.destinationScene);
+        if (!path || path.length === 0) return null;
+
+        const route = [];
+        for (let i = 0; i < path.length; i++) {
+            const cur = path[i];
+            const next = path[i + 1] || null;
+            const isLast = (i === path.length - 1);
+            route.push({
+                scene: cur,
+                arrowTarget: next,
+                direction: getStepDirectionDescription(cur, next, isLast, lab.label)
+            });
+        }
+        return route;
+    }
+
     const FLOOR_DATA = {
 
         /* ══════ GROUND FLOOR (ACTIVE — has 360° images) ══════ */
@@ -1721,52 +1836,62 @@
                 {
                     id: 'xr-lab',
                     label: 'L-107 Extended Reality & Game Development Lab',
-                    destinationScene: 'scene1',
-                    destinationInfo: 'L-107 Extended Reality & Game Development Lab',
-                    route: [
-                        { scene: 'scene4', direction: 'Go straight ahead', arrowTarget: 'scene1' },
-                        { scene: 'scene1', direction: '✅ You have arrived!', arrowTarget: null }
-                    ]
+                    destinationScene: 'scene31',
+                    destinationInfo: 'L-107 Extended Reality & Game Development Lab'
                 },
                 {
                     id: 'iot-lab',
                     label: 'L-106 IOT Lab',
-                    destinationScene: 'scene1',
-                    destinationInfo: 'L-106 IOT Lab',
-                    route: [
-                        { scene: 'scene4', direction: 'Go straight ahead', arrowTarget: 'scene1' },
-                        { scene: 'scene1', direction: '✅ IOT Lab is on your right', arrowTarget: null }
-                    ]
+                    destinationScene: 'scene35',
+                    destinationInfo: 'L-106 IOT Lab'
                 },
                 {
                     id: 'network-lab',
                     label: 'L-108 Network Architecture Lab',
-                    destinationScene: 'scene5',
-                    destinationInfo: 'L-108 Network Architecture Lab',
-                    route: [
-                        { scene: 'scene4', direction: 'Go to the end of the corridor', arrowTarget: 'scene5' },
-                        { scene: 'scene5', direction: '✅ Network Lab is on your left', arrowTarget: null }
-                    ]
+                    destinationScene: 'scene39',
+                    destinationInfo: 'L-108 Network Architecture Lab'
+                },
+                {
+                    id: 'aiml-lab',
+                    label: 'L-102 Artificial Intelligence & Machine Learning Lab',
+                    destinationScene: 'scene10',
+                    destinationInfo: 'L-102 ARTIFICIAL INTELLIGENCE & MACHINE LEARNING LAB '
+                },
+                {
+                    id: 'apple-lab',
+                    label: 'Apple Authorized Training Center',
+                    destinationScene: 'scene8',
+                    destinationInfo: 'Apple Authorized Training Center'
                 },
                 {
                     id: 'data-center',
                     label: 'Data Center',
-                    destinationScene: 'scene4',
-                    destinationInfo: 'Data Center',
-                    route: [
-                        { scene: 'scene4', direction: '✅ Data Center is right here', arrowTarget: null }
-                    ]
+                    destinationScene: 'scene15',
+                    destinationInfo: 'Rack 1 – ISP Connectivity'
+                },
+                {
+                    id: 'cloud-lab',
+                    label: 'L-103 Cloud Computing Lab',
+                    destinationScene: 'scene20',
+                    destinationInfo: 'L-103 Cloud Computing Lab'
+                },
+                {
+                    id: 'cyber-lab',
+                    label: 'L-104 Cyber Security Lab',
+                    destinationScene: 'scene23',
+                    destinationInfo: 'L-104 Cyber Security Lab'
                 },
                 {
                     id: 'seminar-hall',
                     label: 'Seminar Hall',
-                    destinationScene: 'scene10',
-                    destinationInfo: null,
-                    route: [
-                        { scene: 'scene4', direction: 'Continue straight ahead', arrowTarget: 'scene5' },
-                        { scene: 'scene5', direction: 'Go straight to Seminar Hall', arrowTarget: 'scene10' },
-                        { scene: 'scene10', direction: '✅ Welcome to the Seminar Hall', arrowTarget: null }
-                    ]
+                    destinationScene: 'scene42',
+                    destinationInfo: 'Seminar Hall'
+                },
+                {
+                    id: 'support-cell',
+                    label: 'System Support Cell / Student Help Desk',
+                    destinationScene: 'scene4',
+                    destinationInfo: 'Student Help Desk'
                 }
             ]
         },
@@ -1970,25 +2095,21 @@
 
         const floorData = FLOOR_DATA[floor];
         const lab = floorData.labs.find(l => l.id === labId);
-        if (!lab || !lab.route || lab.route.length === 0) return;
+        if (!lab) return;
+
+        /* Compute route dynamically from user's ACTUAL current scene */
+        const curScene = viewer ? viewer.getScene() : (currentSceneId || 'scene1');
+        const computedRoute = buildDynamicRoute(curScene, lab);
+        if (!computedRoute) {
+            alert('Unable to calculate route from current location.');
+            return;
+        }
 
         activeLabData = lab;
-        activeRoute = lab.route;
+        activeRoute = computedRoute;
+        currentStepIndex = 0;
 
         navActive = true;
-
-        /* Find which step matches the current scene, or start at 0 */
-        const curScene = viewer ? viewer.getScene() : currentSceneId;
-        const matchIdx = activeRoute.findIndex(s => s.scene === curScene);
-        currentStepIndex = matchIdx >= 0 ? matchIdx : 0;
-
-        /* If the user is not on the route's first scene, navigate there */
-        if (matchIdx < 0 && activeRoute.length > 0) {
-            const firstStep = activeRoute[0];
-            if (viewer && viewer.getScene() !== firstStep.scene) {
-                loadScene(firstStep.scene);
-            }
-        }
 
         /* Add nav-active class to panorama for dimming non-highlighted */
         const pano = document.getElementById('panorama');
@@ -2049,18 +2170,27 @@
         }
 
         /* Highlight destination info hotspot (blinking) */
-        if (curScene === activeLabData.destinationScene && activeLabData.destinationInfo) {
+        if (curScene === activeLabData.destinationScene) {
             if (configData && configData.scenes[curScene]) {
                 const sceneHotspots = configData.scenes[curScene].hotSpots || [];
                 const allHs = document.querySelectorAll('#panorama .pnlm-hotspot');
+                let foundMatch = false;
                 sceneHotspots.forEach((hsCfg, idx) => {
-                    if (hsCfg.type === 'info' && hsCfg.clickHandlerArgs &&
-                        hsCfg.clickHandlerArgs.title === activeLabData.destinationInfo) {
+                    const titleStr = hsCfg.text || hsCfg.title || hsCfg.clickHandlerArgs?.title || hsCfg.createTooltipArgs || '';
+                    if (hsCfg.type === 'info' && activeLabData.destinationInfo && titleStr.toLowerCase().includes(activeLabData.destinationInfo.toLowerCase())) {
                         if (allHs[idx]) {
                             allHs[idx].classList.add('highlight-destination');
+                            foundMatch = true;
                         }
                     }
                 });
+                if (!foundMatch) {
+                    sceneHotspots.forEach((hsCfg, idx) => {
+                        if (hsCfg.type === 'info' && allHs[idx]) {
+                            allHs[idx].classList.add('highlight-destination');
+                        }
+                    });
+                }
             }
         }
     }
@@ -2118,14 +2248,23 @@
         }
     });
 
-    /* ── Re-apply highlights on scene change ── */
+    /* ── Re-apply highlights & handle off-route dynamic re-routing on scene change ── */
     function onSceneChangeNav(sceneId) {
-        if (!navActive || !activeRoute) return;
-        const matchIdx = activeRoute.findIndex(s => s.scene === sceneId);
+        if (!navActive || !activeLabData) return;
+
+        const matchIdx = activeRoute ? activeRoute.findIndex(s => s.scene === sceneId) : -1;
         if (matchIdx >= 0) {
             currentStepIndex = matchIdx;
-            updateDirectionStep();
+        } else {
+            /* Dynamic re-routing if user took an off-route path */
+            const newRoute = buildDynamicRoute(sceneId, activeLabData);
+            if (newRoute) {
+                activeRoute = newRoute;
+                currentStepIndex = 0;
+            }
         }
+
+        updateDirectionStep();
         /* Delay highlight application to allow Pannellum to render hotspots */
         setTimeout(applyHighlights, 200);
     }
@@ -2155,6 +2294,7 @@
             .then((r) => r.json())
             .then((config) => {
                 configData = config;
+                buildSceneGraph();
                 sceneKeys = Object.keys(config.scenes);
                 totalScenes = sceneKeys.length;
 
